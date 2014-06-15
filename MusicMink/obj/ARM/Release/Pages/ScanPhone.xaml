@@ -1,0 +1,85 @@
+﻿<Page
+    x:Class="MusicMink.Pages.ScanPhone"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:MusicMink.Converters"
+    xmlns:local="using:MusicMink.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Uid="AddContentHeader"
+            Text=""
+            Style="{ThemeResource HeaderTextBlockStyle}"
+            Margin="20,0,0,0"
+            />
+                       
+        <!--TODO: Content should be placed within the following grid-->
+        <StackPanel Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            <StackPanel HorizontalAlignment="Center">                
+                <Button x:Uid="SyncPhoneContentButton"
+                    Command="{Binding ScanLocalLibrary}"
+                    />
+                <Button x:Uid="SyncPhoneContentCancelButton"
+                    Command="{Binding CancelScanLocalLibrary}"
+                    Visibility="{Binding IsLocalSyncInProgress, Converter={StaticResource BoolToVisibilityConverter}}"
+                    />
+            </StackPanel>
+            
+            <TextBlock x:Uid="ScanInProgressMessage"
+                FontSize="{StaticResource TextStyleLargeFontSize}"
+                FontStyle="Italic"
+                Foreground="{StaticResource PhoneForegroundBrush}"
+                Visibility="{Binding IsNoSyncInProgress, Converter={StaticResource NotBoolToVisibilityConverter}}"
+                />
+
+            <TextBlock x:Uid="ScanNotInProgressMessage"
+                FontSize="{StaticResource TextStyleLargeFontSize}"
+                Foreground="{StaticResource PhoneForegroundBrush}"
+                Visibility="{Binding IsNoSyncInProgress, Converter={StaticResource BoolToVisibilityConverter}}"
+                />
+
+            <TextBlock
+                FontSize="{StaticResource TextStyleLargeFontSize}"
+                Foreground="{StaticResource PhoneForegroundBrush}"
+                >
+                <Run x:Uid="ScanNewSongsFoundCount"
+                    FontWeight="Bold"                    
+                    />
+                <Run Text="{Binding SongsFound}" />
+            </TextBlock>
+
+            <TextBlock
+                FontSize="{StaticResource TextStyleLargeFontSize}"
+                Foreground="{StaticResource PhoneForegroundBrush}"
+                >
+                <Run x:Uid="ScanSongsSkippedCount"
+                    FontWeight="Bold"
+                    />
+                <Run Text="{Binding SongsSkipped}" />
+            </TextBlock>
+
+            <Button                
+                Content="Update ALL Art"
+                Command="{Binding ScanLastFMForArt}"
+                />
+            <TextBlock
+                FontSize="{StaticResource TextStyleLargeFontSize}"
+                Foreground="{StaticResource PhoneForegroundBrush}"
+                >                
+            <Run Text="Albums left:"
+                    FontWeight="Bold"
+                    />
+            <Run Text="{Binding ArtSyncAlbumsLeft}" />
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</Page>
+

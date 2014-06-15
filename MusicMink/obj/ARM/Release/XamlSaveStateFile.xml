@@ -1,0 +1,7 @@
+<XamlCompilerSaveState>
+  <ReferenceAssemblyList>
+    <LocalAssembly PathName="c:\users\clucky\documents\visual studio 2013\projects\chime81\chime81\obj\arm\release\intermediatexaml\chime81.exe" HashGuid="e91f217e-ce44-c409-9c8e-447c1352e80b" />
+    <ReferenceAssembly PathName="c:\users\clucky\documents\visual studio 2013\projects\chime81\chimeapplayer\bin\arm\release\chimeapplayer.dll" HashGuid="376f063b-2e55-77de-83aa-4e6be685f2d0" />
+    <ReferenceAssembly PathName="c:\users\clucky\documents\visual studio 2013\projects\chime81\chimebackgroundaudioplayer\bin\arm\release\musicminkbackgroundaudioplayer.winmd" HashGuid="40796f7f-2d1e-55dd-7d1b-f12033178843" />
+  </ReferenceAssemblyList>
+</XamlCompilerSaveState>

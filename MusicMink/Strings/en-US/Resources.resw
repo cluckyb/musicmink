@@ -1,0 +1,453 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddPlaylist.PrimaryButtonText" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddPlaylist.SecondaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="AddPlaylist.Title" xml:space="preserve">
+    <value>New Playlist</value>
+  </data>
+  <data name="AddPlaylistTextBox.Header" xml:space="preserve">
+    <value>Playlist Name</value>
+  </data>
+  <data name="AlbumArtPickerHeader.Text" xml:space="preserve">
+    <value>Select Album Art</value>
+  </data>
+  <data name="AlbumListHeader.Text" xml:space="preserve">
+    <value>Albums</value>
+  </data>
+  <data name="AlbumPageEditButton.Label" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="AlbumPagePlayButton.Label" xml:space="preserve">
+    <value>Play Now</value>
+  </data>
+  <data name="AlbumPageQueueButton.Label" xml:space="preserve">
+    <value>Queue</value>
+  </data>
+  <data name="AlbumPageShuffleButton.Label" xml:space="preserve">
+    <value>Shuffle</value>
+  </data>
+  <data name="DialogAddToPlaylist.PrimaryButtonText" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="DialogAddToPlaylist.SecondaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DialogAddToPlaylist.Title" xml:space="preserve">
+    <value>Add to Playlist</value>
+  </data>
+  <data name="DialogAddToPlaylistComboBox.Header" xml:space="preserve">
+    <value>Playlist</value>
+  </data>
+  <data name="Example.Text" xml:space="preserve">
+    <value>Happy</value>
+  </data>
+  <data name="FormatHoursPlural" xml:space="preserve">
+    <value>Hours</value>
+  </data>
+  <data name="FormatHoursSingular" xml:space="preserve">
+    <value>Hour</value>
+  </data>
+  <data name="FormatMinutesPlural" xml:space="preserve">
+    <value>Minutes</value>
+  </data>
+  <data name="FormatMinutesSingular" xml:space="preserve">
+    <value>Minute</value>
+  </data>
+  <data name="FormatSongsPlural" xml:space="preserve">
+    <value>Songs</value>
+  </data>
+  <data name="FormatSongsSingular" xml:space="preserve">
+    <value>Song</value>
+  </data>
+  <data name="PlaylistListAddButton.Label" xml:space="preserve">
+    <value>Add Playlist</value>
+  </data>
+  <data name="PlaylistListHeader.Text" xml:space="preserve">
+    <value>Playlists</value>
+  </data>
+  <data name="PlaylistListShowButton.Label" xml:space="preserve">
+    <value>Show Hidden</value>
+  </data>
+  <data name="PlaylistPageEditButton.Label" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="PlaylistPagePlayButton.Label" xml:space="preserve">
+    <value>Play Now</value>
+  </data>
+  <data name="PlaylistPageQueueButton.Label" xml:space="preserve">
+    <value>Play Later</value>
+  </data>
+  <data name="PlaylistPageReorderButton.Label" xml:space="preserve">
+    <value>Reorder Playlist</value>
+  </data>
+  <data name="PlaylistPageShuffleButton.Label" xml:space="preserve">
+    <value>Shuffle</value>
+  </data>
+  <data name="PlayQueueClearPlayed.Label" xml:space="preserve">
+    <value>Clear History</value>
+  </data>
+  <data name="PlayQueueReorder.Label" xml:space="preserve">
+    <value>Reorder Queue</value>
+  </data>
+  <data name="PlayQueueShuffleRemaining.Label" xml:space="preserve">
+    <value>Shuffle Remaining</value>
+  </data>
+  <data name="QueueItemAddRoundButton.Label" xml:space="preserve">
+    <value>Add to List</value>
+  </data>
+  <data name="QueueItemEditRoundButton.Label" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="QueueItemPlayRoundButton.Label" xml:space="preserve">
+    <value>Play from Here</value>
+  </data>
+  <data name="QueueItemQueueRoundButton.Label" xml:space="preserve">
+    <value>Queue</value>
+  </data>
+  <data name="QueueItemRemoveRoundButton.Label" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="AddContentHeader.Text" xml:space="preserve">
+    <value>Add Content</value>
+  </data>
+  <data name="SongExtraInfoDate" xml:space="preserve">
+    <value>{0}, last played {1}</value>
+  </data>
+  <data name="SongExtraInfoPlay" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="SongExtraInfoPlays" xml:space="preserve">
+    <value>Plays</value>
+  </data>
+  <data name="SongItemAddRoundButton.Label" xml:space="preserve">
+    <value>Add to List</value>
+  </data>
+  <data name="SongItemEditRoundButton.Label" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="SongItemPlayRoundButton.Label" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="SongItemQueueRoundButton.Label" xml:space="preserve">
+    <value>Queue</value>
+  </data>
+  <data name="SongsListHeader.Text" xml:space="preserve">
+    <value>Songs</value>
+  </data>
+  <data name="HomePageSongsTile.Text" xml:space="preserve">
+    <value>Songs</value>
+  </data>
+  <data name="TitleStartStripMatch" xml:space="preserve">
+    <value>the </value>
+  </data>
+  <data name="UnknownAlbumString" xml:space="preserve">
+    <value>Untitled Album</value>
+  </data>
+  <data name="UnknownArtistString" xml:space="preserve">
+    <value>Untitled Artist</value>
+  </data>
+  <data name="UnknownPlaylistString" xml:space="preserve">
+    <value>Untitled Playlist</value>
+  </data>
+  <data name="UnknownSongString" xml:space="preserve">
+    <value>Untitled Song</value>
+  </data>
+  <data name="DialogEditAlbum.PrimaryButtonText" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="DialogEditAlbum.SecondaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DialogEditAlbum.Title" xml:space="preserve">
+    <value>Edit Album</value>
+  </data>
+  <data name="DialogEditAlbumArtistNameTextBox.Header" xml:space="preserve">
+    <value>Artist</value>
+  </data>
+  <data name="DialogEditAlbumGetLastFMButton.Content" xml:space="preserve">
+    <value>Get from Last.FM</value>
+  </data>
+  <data name="DialogEditAlbumLaunchFilePickerButton.Content" xml:space="preserve">
+    <value>Use File Picker</value>
+  </data>
+  <data name="DialogEditAlbumNameTextBox.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="DialogEditAlbumUpdateArtCheckbox.Content" xml:space="preserve">
+    <value>Update Art</value>
+  </data>
+  <data name="DialogEditPlaylist.PrimaryButtonText" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="DialogEditPlaylist.SecondaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DialogEditPlaylist.Title" xml:space="preserve">
+    <value>Edit Playlist</value>
+  </data>
+  <data name="DialogEditPlaylistDeleteCheckBox.Content" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DialogEditPlaylistDeleteConfirmCheckBox.Content" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="DialogEditPlaylistNameTextBox.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ArtistListHeader.Text" xml:space="preserve">
+    <value>Artists</value>
+  </data>
+  <data name="ArtistPageEditButton.Label" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="ArtistPageQueueButton.Label" xml:space="preserve">
+    <value>Shuffle Later</value>
+  </data>
+  <data name="ArtistPageShuffleButton.Label" xml:space="preserve">
+    <value>Shuffle All</value>
+  </data>
+  <data name="DialogEditNoArtMessage.Text" xml:space="preserve">
+    <value>Couldn't get song. Please try again.</value>
+  </data>
+  <data name="DialogEditSong.PrimaryButtonText" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="DialogEditSong.SecondaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DialogEditSong.Title" xml:space="preserve">
+    <value>Edit Song</value>
+  </data>
+  <data name="DialogEditSongAlbumArtistNameTextBox.Header" xml:space="preserve">
+    <value>Album Artist</value>
+  </data>
+  <data name="DialogEditSongAlbumNameTextBox.Header" xml:space="preserve">
+    <value>Album</value>
+  </data>
+  <data name="DialogEditSongArtistNameTextBox.Header" xml:space="preserve">
+    <value>Artist</value>
+  </data>
+  <data name="DialogEditSongNameTextBox.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="DialogEditSongTrackNumberTextBox.Header" xml:space="preserve">
+    <value>Track Number</value>
+  </data>
+  <data name="FormatAlbumsPlural" xml:space="preserve">
+    <value>Albums</value>
+  </data>
+  <data name="FormatAlbumsSingular" xml:space="preserve">
+    <value>Album</value>
+  </data>
+  <data name="SendLogsBody" xml:space="preserve">
+    <value>Logs have been attached as txt files. </value>
+  </data>
+  <data name="SendLogsSubject" xml:space="preserve">
+    <value>MusicMink Logs</value>
+  </data>
+  <data name="SettingsEnableLoggingHelpMessage.Text" xml:space="preserve">
+    <value>Logs are only stored locally on your device and will only be sent by the Send Logs button below. They are used solely for debugging purposes.</value>
+  </data>
+  <data name="SettingsEnableLoggingToggleSwitch.Header" xml:space="preserve">
+    <value>Logging</value>
+  </data>
+  <data name="SettingsEnableLoggingToggleSwitch.OffContent" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="SettingsEnableLoggingToggleSwitch.OnContent" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="SettingsHeader.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsUploadLogs.Content" xml:space="preserve">
+    <value>Upload Logs</value>
+  </data>
+  <data name="DialogEditSongDeleteCheckBox.Content" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DialogEditSongDeleteConfirmCheckBox.Content" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="SettingsEnableLastFMScrobbling.Header" xml:space="preserve">
+    <value>LastFM Scrobbling</value>
+  </data>
+  <data name="SettingsLastFMPassword.Header" xml:space="preserve">
+    <value>LastFM Password</value>
+  </data>
+  <data name="SettingsLastFMUsername.Header" xml:space="preserve">
+    <value>LastFM Username</value>
+  </data>
+  <data name="ScanInProgressMessage.Text" xml:space="preserve">
+    <value>Scan in progress...</value>
+  </data>
+  <data name="ScanNewSongsFoundCount.Text" xml:space="preserve">
+    <value>New Songs Found:</value>
+  </data>
+  <data name="ScanNotInProgressMessage.Text" xml:space="preserve">
+    <value>Last Scan Results:</value>
+  </data>
+  <data name="ScanSongsSkippedCount.Text" xml:space="preserve">
+    <value>Songs Skipped:</value>
+  </data>
+  <data name="SyncPhoneContentButton.Content" xml:space="preserve">
+    <value>Sync Phone Content</value>
+  </data>
+  <data name="SyncPhoneContentCancelButton.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ImportStatsContentButton.Content" xml:space="preserve">
+    <value>Import Stat File</value>
+  </data>
+  <data name="ImportStatsSongsFoundCount.Text" xml:space="preserve">
+    <value>Matches Found</value>
+  </data>
+  <data name="ImportStatsSongsSkippedCount.Text" xml:space="preserve">
+    <value>Entries Skipped</value>
+  </data>
+  <data name="HomePageAlbumsTile.Text" xml:space="preserve">
+    <value>Albums</value>
+  </data>
+  <data name="HomePageArtistsTile.Text" xml:space="preserve">
+    <value>Artists</value>
+  </data>
+  <data name="HomePageManageLibraryTile.Text" xml:space="preserve">
+    <value>Manage Library</value>
+  </data>
+  <data name="HomePagePlaylistsTile.Text" xml:space="preserve">
+    <value>Playlists</value>
+  </data>
+  <data name="HomePageSettingsTile.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="UpdateLastFMArtAlbumsLeft.Text" xml:space="preserve">
+    <value>Albums Left To Process</value>
+  </data>
+  <data name="UpdateLastFMArtButton.Content" xml:space="preserve">
+    <value>Update All Album Art</value>
+  </data>
+  <data name="UpdateLastFMArtHelpMessage.Text" xml:space="preserve">
+    <value>Art pulled from last.fm. Will only be downloaded if no art currently exists.</value>
+  </data>
+</root>

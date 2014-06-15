@@ -1,0 +1,209 @@
+﻿<UserControl
+    x:Class="MusicMink.ListItems.SongListItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:MusicMink.Controls"
+    xmlns:local="using:MusicMink.ListItems"
+    xmlns:design="using:MusicMink.Design"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DataContext="{Binding Source={d:DesignInstance Type=design:SongDesignStub, IsDesignTimeCreatable=True}}"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ViewTypeStates">
+                <VisualState x:Name="ViewTypeSongList" />
+                <VisualState x:Name="ViewTypeAlbumPage">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="TrackNumberTextBlock"
+                            Storyboard.TargetProperty="Visibility"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="ExtraInfoStringTextBlock"
+                            Storyboard.TargetProperty="Margin"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="35,0,0,0" />
+                        </ObjectAnimationUsingKeyFrames>                        
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="RootGrid"
+                            Storyboard.TargetProperty="Margin"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="0,2,0,2" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+            
+            <VisualStateGroup x:Name="ExpandedStates">
+                <VisualState x:Name="ExpandedStateClosed">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="ExtraContent"
+                            Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="Collapsed" />
+                        </ObjectAnimationUsingKeyFrames>                        
+                        <DoubleAnimation
+                            Storyboard.TargetName="ExtraContent"
+                            Storyboard.TargetProperty="Height"
+                            From="150"
+                            To="0"
+                            EnableDependentAnimation="True"
+                            BeginTime="0"
+                            Duration="0:0:0.2"
+                            />                        
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="ExpandedStateOpen">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="ExtraContent"
+                            Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                        <DoubleAnimation
+                            Storyboard.TargetName="ExtraContent"
+                            Storyboard.TargetProperty="Height"
+                            From="0"
+                            To="150"
+                            EnableDependentAnimation="True"
+                            BeginTime="0"
+                            Duration="0:0:0.2"
+                            />
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+            
+            
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid
+            x:Name="RootGrid"
+            Margin="10,3,10,3"
+            >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
+            <Grid x:ConnectionId='1'
+                                          
+                >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock
+                    x:Name="NameTest"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Text="{Binding Name}"
+                    FontSize="{StaticResource TextStyleExtraLargeFontSize}"
+                    Foreground="{ThemeResource PhoneForegroundBrush}"
+                    />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    FontSize="{StaticResource TextStyleSmallFontSize}"
+                    Foreground="{ThemeResource PhoneMidBrush}"
+                    >
+                    <Run Text="{Binding ArtistName}" />
+                    <Run Text="-" />
+                    <Run Text="{Binding DurationText}" />
+                </TextBlock>
+
+                <TextBlock
+                    x:Name="TrackNumberTextBlock"
+                    Visibility="Collapsed"
+                    Grid.Column="0"
+                    Grid.RowSpan="2"
+                    TextAlignment="Right"
+                    Width="25"
+                    FontSize="{StaticResource TextStyleExtraLargeFontSize}"
+                    Foreground="{ThemeResource PhoneMidBrush}"                    
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0"
+                    >
+                    <Run Text="{Binding TrackNumber}" />
+                </TextBlock>
+            </Grid>
+            
+            <Grid x:Name="ExtraContent"
+                Grid.Row="1"
+                Height="0"
+                Visibility="Collapsed"
+                >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                
+                <controls:StarRater
+                    Grid.Row="1"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Rating="{Binding Rating, Mode=TwoWay}"
+                    />
+
+                    <TextBlock
+					    Grid.Row="0"
+                        x:Name="ExtraInfoStringTextBlock"
+					    FontSize="{StaticResource TextStyleSmallFontSize}"
+                        Foreground="{ThemeResource PhoneMidBrush}"                    
+					    Text="{Binding ExtraInfoString}"
+					/>
+
+                <Grid x:Name="IconList"
+                    Grid.Row="2"
+                    Margin="0,0,0,0"
+                    >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <AppBarButton x:ConnectionId='2' x:Uid="SongItemPlayRoundButton"
+                        Grid.Column="0"                             
+                        Icon="Play"
+                                                     
+                        />
+
+                    <AppBarButton x:ConnectionId='3' x:Uid="SongItemQueueRoundButton"
+                        Grid.Column="1"                             
+                        Icon="Clock"
+                                                                                        
+                        />
+
+                    <AppBarButton x:ConnectionId='4' x:Uid="SongItemAddRoundButton"
+                        Grid.Column="2"                             
+                        Icon="List"
+                                                                                                
+                        />
+
+                    <AppBarButton x:ConnectionId='5' x:Uid="SongItemEditRoundButton"
+                        Grid.Column="3"                             
+                        Icon="Edit"
+                                                                                           
+                        />
+
+                </Grid>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
+

@@ -1,0 +1,3 @@
+C:\Users\clucky\documents\visual studio 2013\Projects\Chime81\Chime81\Chime81.csproj;neutral
+C:\Users\clucky\documents\visual studio 2013\Projects\Chime81\ChimeAppLayer\ChimeAppLayer.csproj;neutral
+C:\Users\clucky\documents\visual studio 2013\Projects\Chime81\ChimeBackgroundAudioPlayer\ChimeBackgroundAudioPlayer.csproj;neutral

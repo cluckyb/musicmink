@@ -1,0 +1,4 @@
+C:\Users\clucky\Documents\Visual Studio 2013\Projects\MusicMink\MusicMink\MusicMink.csproj;arm
+C:\Users\clucky\Documents\Visual Studio 2013\Projects\MusicMink\MusicMinkAppLayer\MusicMinkAppLayer.csproj;arm
+C:\Users\clucky\Documents\Visual Studio 2013\Projects\MusicMink\MusicMinkAppLayer\MusicMinkAppLayer.csproj;arm
+C:\Users\clucky\Documents\Visual Studio 2013\Projects\MusicMink\MusicMinkBackgroundAudioPlayer\MusicMinkBackgroundAudioPlayer.csproj;arm

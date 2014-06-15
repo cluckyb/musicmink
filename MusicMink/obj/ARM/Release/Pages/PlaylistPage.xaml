@@ -1,0 +1,97 @@
+﻿<Page
+    x:Class="MusicMink.Pages.PlaylistPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicMink.Pages"
+    xmlns:items="using:MusicMink.ListItems"
+    xmlns:controls="using:MusicMink.Controls"
+    xmlns:converters="using:MusicMink.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <converters:ReorderModeToBoolConverter x:Key="BoolToReorderModeConverter" />
+        <converters:ReorderModeToBoolConverter x:Key="NotBoolToReorderModeConverter" Invert="True"/>
+    </Page.Resources>
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Margin="20,0,20,0">
+
+            <controls:ScalingTextBox x:Uid="PlaylistPageHeader"
+                Text="{Binding Name}" 
+                MaxFontSize="{StaticResource HeaderFontSize}"                    
+                MinFontSize="{StaticResource TextStyleSmallFontSize}"
+                Foreground="{ThemeResource PhoneForegroundBrush}"
+                />
+
+            <TextBlock
+                Text="{Binding LengthInfo}" 
+                FontSize="{StaticResource TextStyleLargeFontSize}"
+                Foreground="{ThemeResource PhoneMidBrush}"
+                />
+            
+        </StackPanel>
+
+        <!--TODO: Content should be placed within the following grid-->
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="0,9.5,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                <AppBarButton x:ConnectionId='2' x:Uid="PlaylistPagePlayButton"
+                    Icon="Play"
+                    IsEnabled="{Binding ReorderMode, ElementName=PlaylistListView, Converter={StaticResource NotBoolToReorderModeConverter}}"                                    
+                                                 
+                    />
+
+                <AppBarButton x:ConnectionId='3' x:Uid="PlaylistPageQueueButton"
+                    Icon="Clock"
+                    IsEnabled="{Binding ReorderMode, ElementName=PlaylistListView, Converter={StaticResource NotBoolToReorderModeConverter}}"                                    
+                                                  
+                    />
+
+                <AppBarButton x:ConnectionId='4' x:Uid="PlaylistPageShuffleButton"
+                    Icon="Shuffle"
+                    IsEnabled="{Binding ReorderMode, ElementName=PlaylistListView, Converter={StaticResource NotBoolToReorderModeConverter}}"                                    
+                                                    
+                    />
+
+                <AppBarToggleButton x:ConnectionId='5' x:Uid="PlaylistPageReorderButton"
+                    Icon="Repair"                                    
+                                                                  
+                    IsChecked="{Binding ReorderMode, ElementName=PlaylistListView, Converter={StaticResource BoolToReorderModeConverter}, Mode=TwoWay}"                                    
+                    />
+
+                <AppBarButton x:ConnectionId='6' x:Uid="PlaylistPageEditButton"
+                    Icon="Edit"
+                                                         
+                    IsEnabled="{Binding ReorderMode, ElementName=PlaylistListView, Converter={StaticResource NotBoolToReorderModeConverter}}"                                    
+                    />
+            </StackPanel>
+            
+            <ListView x:ConnectionId='1' x:Name="PlaylistListView"
+                Grid.Row="0"
+                ItemsSource="{Binding Songs}"
+                                               
+                                                                               
+                >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <items:SongListItem DataContext="{Binding Song}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>
+

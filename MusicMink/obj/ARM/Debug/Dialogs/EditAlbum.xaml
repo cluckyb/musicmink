@@ -1,0 +1,94 @@
+﻿<ContentDialog x:ConnectionId='1'
+    x:Class="MusicMink.Dialogs.EditAlbum"
+    x:Uid="DialogEditAlbum"        
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicMink.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+                                                              
+                                                                  
+    RequestedTheme="Dark"
+    >
+
+    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <TextBox x:Uid="DialogEditAlbumNameTextBox"
+            Name="editAlbumName"
+            Text="{Binding Name}"
+            />
+
+        <TextBox x:Uid="DialogEditAlbumArtistNameTextBox"
+            Name="editAlbumArtistName"
+            Text="{Binding Artist.Name}"
+            />             
+        
+        <TextBlock
+            Text="Current Art"
+            FontSize="{StaticResource TextStyleMediumFontSize}"
+            />
+        <Border
+            HorizontalAlignment="Left"
+            BorderThickness="3"
+            BorderBrush="White"
+            Width="100"
+            Height="100"
+            >
+            <Image
+                Source="{Binding AlbumArt}"
+                Stretch="Fill"
+                />
+        </Border>
+                      
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox x:Uid="DialogEditAlbumUpdateArtCheckbox"
+                x:Name="updateArt"
+                />
+            <Button x:ConnectionId='2' x:Uid="DialogEditAlbumLaunchFilePickerButton"            
+                Grid.Row="1"
+                                                         
+                />
+
+            <Button x:ConnectionId='3' x:Uid="DialogEditAlbumGetLastFMButton"            
+                Grid.Row="2"                    
+                x:Name="lastFMArtButton"
+                                                     
+                />
+
+            <Border
+                Grid.Column="1"
+                Grid.RowSpan="3"
+                BorderThickness="3"
+                BorderBrush="White"
+                Margin="10"
+                >
+                <Image
+                    x:Name="ImagePreview"
+                    Stretch="Fill"
+                    />
+            </Border>
+            
+            <TextBlock x:Uid="DialogEditNoArtMessage"
+                x:Name="noArtMessage"     
+                Visibility="Collapsed"                       
+                Grid.Row="3"
+                Grid.ColumnSpan="2"
+                FontSize="{StaticResource TextStyleSmallFontSize}"
+                />
+                
+        </Grid>
+    </StackPanel>
+</ContentDialog>
+

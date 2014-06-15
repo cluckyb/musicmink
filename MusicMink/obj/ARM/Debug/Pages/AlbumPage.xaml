@@ -1,0 +1,94 @@
+﻿<local:BasePage
+    x:Class="MusicMink.Pages.AlbumPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicMink.Pages"
+    xmlns:items="using:MusicMink.ListItems"
+    xmlns:controls="using:MusicMink.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    >
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.Background>
+            <ImageBrush ImageSource="{Binding AlbumArt}" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center" Opacity="0.25" />
+        </Grid.Background>
+
+        <StackPanel Margin="{StaticResource DefaultHeaderMargin}">
+            <controls:ScalingTextBox x:Uid="AlbumPageHeader"
+                Text="{Binding Name}" 
+                MaxFontSize="{StaticResource HeaderFontSize}"                    
+                MinFontSize="{StaticResource TextStyleSmallFontSize}"
+                TextForeground="{ThemeResource PhoneForegroundBrush}"
+                />
+
+            <TextBlock
+                Text="{Binding Artist.Name}" 
+                FontSize="{StaticResource TextStyleExtraLargeFontSize}"
+                Foreground="{ThemeResource PhoneForegroundBrush}"
+                />
+            
+            <TextBlock
+                Text="{Binding LengthInfo}" 
+                FontSize="{StaticResource TextStyleSmallFontSize}"
+                Foreground="{ThemeResource PhoneForegroundBrush}"
+                />
+
+        </StackPanel>
+
+        <Grid
+            Grid.Row="1"
+            x:Name="ContentRoot"
+            Margin="{StaticResource DefaultContentMargin}"
+            >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
+            <Rectangle Fill="Black" Opacity="0.50" Grid.Row="1" Margin="-15,0,-15,0" />
+            <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" Margin="0,0,0,0">
+                <AppBarButton x:Uid="AlbumPagePlayButton"
+                    Icon="Play"
+                    Command="{Binding PlayAlbum}"
+                    />
+
+                <AppBarButton x:Uid="AlbumPageQueueButton"
+                    Icon="Clock"
+                    Command="{Binding QueueAlbum}"
+                    />
+
+                <AppBarButton x:Uid="AlbumPageShuffleButton"
+                    Icon="Shuffle"
+                    Command="{Binding ShuffleAlbum}"
+                    />
+
+                <AppBarButton x:Uid="AlbumPageEditButton"
+                    Icon="Edit"
+                    Command="{Binding EditAlbum}"
+                    />
+            </StackPanel>
+            
+            <ListView
+                Grid.Row="0"
+                Style="{StaticResource StandardAlphaListZoomedInListStyle}"                              
+                ItemsSource="{Binding Songs}"
+                >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <items:SongListItem DataContext="{Binding}" ViewType="AlbumPage" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>                
+    </Grid>
+</local:BasePage>
+

@@ -1,0 +1,7 @@
+<XamlCompilerSaveState>
+  <ReferenceAssemblyList>
+    <LocalAssembly PathName="c:\users\clucky\documents\visual studio 2013\projects\musicmink\musicmink\obj\arm\debug\intermediatexaml\musicmink.exe" HashGuid="f664ad97-4c66-b2f5-8016-bbd420544fa8" />
+    <ReferenceAssembly PathName="c:\users\clucky\documents\visual studio 2013\projects\musicmink\musicminkapplayer\bin\arm\debug\musicminkapplayer.dll" HashGuid="1cc97753-8924-9406-21c1-a2872c67e176" />
+    <ReferenceAssembly PathName="c:\users\clucky\documents\visual studio 2013\projects\musicmink\musicminkbackgroundaudioplayer\bin\arm\debug\musicminkbackgroundaudioplayer.winmd" HashGuid="f81a764a-c1a8-63f2-52ad-a5127ddaa1a5" />
+  </ReferenceAssemblyList>
+</XamlCompilerSaveState>
