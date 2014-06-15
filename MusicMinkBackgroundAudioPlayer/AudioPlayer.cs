@@ -3,9 +3,14 @@ using MusicMinkAppLayer.Helpers;
 using MusicMinkAppLayer.PlayQueue;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Media;
 using Windows.Media.Playback;
+using Windows.UI.StartScreen;
+using Windows.UI.Notifications;
+using Windows.Data.Xml.Dom;
+using Windows.Storage;
 
 namespace MusicMinkBackgroundAudioPlayer
 {
@@ -85,7 +90,7 @@ namespace MusicMinkBackgroundAudioPlayer
             
         }
 
-        #region background task stuff
+        #region Background Task Stuff
 
         private void HandleTaskInstanceTaskCompleted(BackgroundTaskRegistration sender, BackgroundTaskCompletedEventArgs args)
         {
@@ -124,14 +129,14 @@ namespace MusicMinkBackgroundAudioPlayer
 
         #endregion
 
-        #region Media Control stuff
+        #region Media Control Stuff
 
         private void HandleBackgroundMediaPlayerSeekComplete(MediaPlayer sender, object args)
         {
             PlayQueueManager.Current.SendMessageToForeground(PlayQueueConstantBGMessageId.SeekComplete);
         }
 
-        void HandlePlayQueueTrackChanged(PlayQueueManager sender, TrackInfo args)
+        private async void HandlePlayQueueTrackChanged(PlayQueueManager sender, TrackInfo args)
         {
             int newRowId = 0;
 
@@ -164,6 +169,51 @@ namespace MusicMinkBackgroundAudioPlayer
             }
 
             systemMediaTransportControls.DisplayUpdater.Update();
+
+            await UpdateTile(args);
+        }
+
+        private async Task UpdateTile(TrackInfo args)
+        {
+            if (args == null)
+            {
+                TileUpdateManager.CreateTileUpdaterForApplication("App").Clear();
+            }
+            else
+            {
+                string artPath = string.Empty;
+                if (!string.IsNullOrEmpty(args.ArtPath))
+                {
+
+                    IStorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(args.ArtPath);
+
+                    artPath = file.Path;
+                }
+
+                XmlDocument tileTemplate = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquare150x150PeekImageAndText01);
+
+                XmlNodeList textAttributes = tileTemplate.GetElementsByTagName("text");
+
+                textAttributes[0].AppendChild(tileTemplate.CreateTextNode(args.Title));
+                textAttributes[1].AppendChild(tileTemplate.CreateTextNode(args.Artist));
+                textAttributes[2].AppendChild(tileTemplate.CreateTextNode(args.Album));
+
+                XmlNodeList imageAttribute = tileTemplate.GetElementsByTagName("image");
+                XmlElement imageElement = (XmlElement)imageAttribute[0];
+                imageElement.SetAttribute("src", artPath);
+
+                // Create the notification from the XML.
+                var tileNotification = new TileNotification(tileTemplate);
+
+                try
+                {
+                    TileUpdateManager.CreateTileUpdaterForApplication("App").Update(tileNotification);
+                }
+                catch (Exception)
+                {
+                }
+            }
+
         }
 
         private void HandleSystemMediaTransportControlsPropertyChanged(SystemMediaTransportControls sender, SystemMediaTransportControlsPropertyChangedEventArgs args)
