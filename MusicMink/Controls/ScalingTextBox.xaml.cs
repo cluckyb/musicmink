@@ -14,7 +14,7 @@ namespace MusicMink.Controls
     {
         public static readonly DependencyProperty TextForegroundProperty =
             DependencyProperty.Register(
-            "Foreground", typeof(Brush),
+            "TextForeground", typeof(Brush),
             typeof(ScalingTextBox), new PropertyMetadata(null, HandleForegroundPropertyChanged)
             );
 
