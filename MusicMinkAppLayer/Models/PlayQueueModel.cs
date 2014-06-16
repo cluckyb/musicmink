@@ -413,48 +413,27 @@ namespace MusicMinkAppLayer.Models
             // TODO: #3 can batch scrobbles
             foreach (HistoryTable historyItem in historyItems)
             {
-                SongModel song = LibraryModel.Current.LookupSongById(historyItem.SongId);
-
-                if (song != null)
+                if (!historyItem.Scrobbled)
                 {
-                    if (!historyItem.Scrobbled)
+                    LastfmStatusCode scrobbleResult = await LastFMManager.Current.ScrobbleTrack(historyItem.SongName, historyItem.ArtistName, new DateTime(historyItem.DatePlayed));
+
+                    Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Scrobbling row {0} result {1}", historyItem.RowId, scrobbleResult);
+
+                    // "Failure" is non-recoverable, so actually mark it as scrobbled so we don't retry later
+                    if (scrobbleResult == LastfmStatusCode.Success ||
+                        scrobbleResult == LastfmStatusCode.Failure)
                     {
-                        // TODO: #2 this will go to the database, won't it? Maybe do it better
-                        ArtistModel artist = LibraryModel.Current.LookupArtistById(song.ArtistId);
-
-                        string artistName = string.Empty;
-                        if (artist != null)
-                        {
-                            artistName = artist.Name;
-                        }
-                        else
-                        {
-                            DebugHelper.Alert(new CallerInfo(), "Couldn't find artistId {0}", song.ArtistId);
-                        }
-                        
-                        LastfmStatusCode scrobbleResult = await LastFMManager.Current.ScrobbleTrack(song.Name, artistName, new DateTime(historyItem.DatePlayed));
-
-                        Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Scrobbling row {0} result {1}", historyItem.RowId, scrobbleResult);
-
-                        if (scrobbleResult == LastfmStatusCode.Success ||
-                            scrobbleResult == LastfmStatusCode.Failure)
-                        {
-                            historyItem.Scrobbled = true;
-                        }
+                        historyItem.Scrobbled = true;
                     }
+                }
 
-                    if (historyItem.Processed && historyItem.Scrobbled)
-                    {
-                        DatabaseManager.Current.DeleteHistoryItem(historyItem.RowId);
-                    }
-                    else
-                    {
-                        DatabaseManager.Current.Update(historyItem);
-                    }
+                if (historyItem.Processed && historyItem.Scrobbled)
+                {
+                    DatabaseManager.Current.DeleteHistoryItem(historyItem.RowId);
                 }
                 else
                 {
-                    DebugHelper.Alert(new CallerInfo(), "No song matching ID {0} found", historyItem.SongId);
+                    DatabaseManager.Current.Update(historyItem);
                 }
             }
 

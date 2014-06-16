@@ -19,11 +19,13 @@ namespace MusicMinkAppLayer.PlayQueue
         public string Path { get; private set; }
         public string ArtPath { get; private set; }
 
+        public int SongId { get; private set; }
+
         public int RowId { get; private set; }
         public int NextId { get; private set; }
         public int PrevId { get; private set; }
 
-        public TrackInfo(string title, string artist, string album, string albumArtist, string path, string artPath, int rowId, int nextId, int prevId)
+        public TrackInfo(string title, string artist, string album, string albumArtist, string path, string artPath, int rowId, int nextId, int prevId, int songId)
         {
             ArtPath = artPath;
             Title = title;
@@ -34,6 +36,7 @@ namespace MusicMinkAppLayer.PlayQueue
             RowId = rowId;
             NextId = nextId;
             PrevId = prevId;
+            SongId = songId;
         }
 
         public static TrackInfo TrackInfoFromRowId(int rowId)
@@ -55,7 +58,7 @@ namespace MusicMinkAppLayer.PlayQueue
 
                         if (albumArtistTable != null)
                         {
-                            return new TrackInfo(songTable.Name, artistTable.Name, albumTable.Name, albumArtistTable.Name, songTable.Source, albumTable.AlbumArt, rowId, playQueueEntry.NextId, playQueueEntry.PrevId);
+                            return new TrackInfo(songTable.Name, artistTable.Name, albumTable.Name, albumArtistTable.Name, songTable.Source, albumTable.AlbumArt, rowId, playQueueEntry.NextId, playQueueEntry.PrevId, playQueueEntry.SongId);
                         }
                         else
                         {

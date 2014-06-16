@@ -13,7 +13,7 @@ namespace MusicMinkAppLayer.Tables
     internal class DatabaseManager
     {
         private static string DB_PATH = Path.Combine(ApplicationData.Current.LocalFolder.Path, "MusicMinkDB.sqlite");
-        private static int DB_VERSION = 1;
+        private static int DB_VERSION = 2;
         private static string DB_VERSION_KEY = "MAIN_DATABASE_VERSION";
 
         public SQLiteConnection sqlConnection;
@@ -51,6 +51,10 @@ namespace MusicMinkAppLayer.Tables
                 sqlConnection.CreateTable<PlayQueueEntryTable>();
                 sqlConnection.CreateTable<PlaylistTable>();
                 sqlConnection.CreateTable<PlaylistEntryTable>();
+                sqlConnection.CreateTable<HistoryTable>();
+            }
+            else if (currentDatabaseVersion < 2)
+            {
                 sqlConnection.CreateTable<HistoryTable>();
             }
 

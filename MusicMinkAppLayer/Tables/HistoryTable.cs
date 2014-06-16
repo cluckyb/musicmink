@@ -21,6 +21,9 @@ namespace MusicMinkAppLayer.Tables
             public const string Scrobbled = "Scrobbled";
             public const string Processed = "Processed";
             public const string DatePlayed = "DatePlayed";
+
+            public const string SongName = "SongName";
+            public const string ArtistName = "ArtistName";
         }
 
         public HistoryTable()
@@ -29,14 +32,18 @@ namespace MusicMinkAppLayer.Tables
             Scrobbled = false;
             Processed = false;
             DatePlayed = 0;
+            SongName = string.Empty;
+            ArtistName = string.Empty;
         }
 
-        public HistoryTable(int songId, bool scrobbled, bool processed, long datePlayed)
+        public HistoryTable(int songId, bool scrobbled, bool processed, long datePlayed, string songName, string artistName)
         {
             SongId = songId;
             Scrobbled = scrobbled;
             Processed = processed;
             DatePlayed = datePlayed;
+            SongName = songName;
+            ArtistName = artistName;
         }
 
         public int SongId { get; set; }
@@ -46,5 +53,9 @@ namespace MusicMinkAppLayer.Tables
         public bool Processed { get; set; }
 
         public long DatePlayed { get; set; }
+
+        public string SongName { get; set; }
+
+        public string ArtistName { get; set; }
     }
 }

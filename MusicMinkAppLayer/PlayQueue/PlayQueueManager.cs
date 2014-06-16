@@ -60,16 +60,15 @@ namespace MusicMinkAppLayer.PlayQueue
 
         }
 
+        private TrackInfo playingTrack = null;
+
         private void HandleMediaPlayerMediaEnded(MediaPlayer sender, object args)
         {
-            int rowId = ApplicationSettings.GetSettingsValue<int>(ApplicationSettings.CURRENT_PLAYQUEUE_POSITION, 0);
-            PlayQueueEntryTable currentPlayQueueRow = DatabaseManager.Current.LookupPlayQueueEntryById(rowId);
+            DebugHelper.Assert(new CallerInfo(), playingTrack != null);
 
-            DebugHelper.Assert(new CallerInfo(), currentPlayQueueRow != null, "No row {0} found when track ended", rowId);
-
-            if (currentPlayQueueRow != null)
+            if (playingTrack != null)
             {
-                DatabaseManager.Current.AddHistoryItem(new HistoryTable(currentPlayQueueRow.SongId, false, false, DateTime.UtcNow.Ticks));
+                DatabaseManager.Current.AddHistoryItem(new HistoryTable(playingTrack.SongId, false, false, DateTime.UtcNow.Ticks, playingTrack.Title, playingTrack.Artist));
 
                 SendMessageToForeground(PlayQueueConstantBGMessageId.TrackPlayed);
             }
@@ -99,7 +98,8 @@ namespace MusicMinkAppLayer.PlayQueue
 
             Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Trying to play row {0}", trackId);
 
-            TrackChanged.Invoke(this, TrackInfo.TrackInfoFromRowId(trackId));
+            playingTrack = TrackInfo.TrackInfoFromRowId(trackId);
+            TrackChanged.Invoke(this, playingTrack);
         }
 
         #endregion
