@@ -16,6 +16,8 @@ namespace MusicMink.ViewModels
 
         public static class Properties
         {
+            public const string AutoPullArtFromLastFM = "AutoPullArtFromLastFM";
+
             public const string IsLoggingEnabled = "IsLoggingEnabled";
             public const string IsLastFMScrobblingEnabled = "IsLastFMScrobblingEnabled";
 
@@ -83,7 +85,6 @@ namespace MusicMink.ViewModels
 
             StorageFolder logFolder = await localFolder.GetFolderAsync(Logger.LOG_FOLDER);
 
-            // TODO: #4 show alert or something 
             if (logFolder == null) return;
 
             IReadOnlyList<StorageFile> files = await logFolder.GetFilesAsync();
@@ -114,6 +115,18 @@ namespace MusicMink.ViewModels
         #endregion
 
         #region Properties
+
+        public bool AutoPullArtFromLastFM
+        {
+            get
+            {
+                return GetSettingField<bool>(ApplicationSettings.SETTING_IS_AUTO_PULL_ART_FROM_LASTFM_ON, true);
+            }
+            set
+            {
+                SetSettingField<bool>(ApplicationSettings.SETTING_IS_AUTO_PULL_ART_FROM_LASTFM_ON, value, Properties.AutoPullArtFromLastFM);
+            }
+        }
 
         public bool IsLoggingEnabled
         {

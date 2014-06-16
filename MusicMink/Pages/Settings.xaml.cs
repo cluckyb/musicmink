@@ -12,6 +12,8 @@ namespace MusicMink.Pages
         public Settings()
         {
             this.InitializeComponent();
+
+            this.DataContext = SettingsViewModel.Current;
         }
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -28,11 +30,6 @@ namespace MusicMink.Pages
         {
             SettingsViewModel.Current.LastFMPassword = LastFMPasswordBox.Password;
             SettingsViewModel.Current.ReauthLastFM();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            throw new Exception("Debug crash");
         }
     }
 }

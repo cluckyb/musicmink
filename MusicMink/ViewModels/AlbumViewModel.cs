@@ -154,7 +154,14 @@ namespace MusicMink.ViewModels
             }
         }
 
-        private async void UpdateAlbumArt()
+        public async Task<Uri> GetAlbumArt()
+        {
+            await UpdateAlbumArt();
+
+            return AlbumArt;
+        }
+
+        private async Task UpdateAlbumArt()
         {
             if (!HasAlbumArt)
             {

@@ -1,6 +1,7 @@
 ﻿using MusicMinkAppLayer.Diagnostics;
 using MusicMinkAppLayer.Enums;
 using MusicMinkAppLayer.Tables;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -44,6 +45,20 @@ namespace MusicMinkAppLayer.Models
                 _playQueue = value;
             }
         }
+
+        #region Events
+
+        public event EventHandler<AlbumCreatedEventArgs> AlbumCreated;
+
+        public void RaiseAlbumCreated(AlbumModel album)
+        {
+            if (AlbumCreated != null)
+            {
+                AlbumCreated(this, new AlbumCreatedEventArgs(album));
+            }
+        }
+
+        #endregion
 
         #region Collections
 
@@ -229,6 +244,8 @@ namespace MusicMinkAppLayer.Models
                 AlbumModel albumModel = new AlbumModel(newAlbum);
                 albumLookupDictionary.Add(albumModel.AlbumId, albumModel);
 
+                RaiseAlbumCreated(albumModel);
+
                 return albumModel;
             }
             else
@@ -408,5 +425,16 @@ namespace MusicMinkAppLayer.Models
         }
 
         #endregion
+    }
+
+    public class AlbumCreatedEventArgs : EventArgs
+    {
+        public AlbumModel NewAlbum { get; private set; }
+
+        public AlbumCreatedEventArgs(AlbumModel album)
+            : base()
+        {
+            this.NewAlbum = album;
+        }
     }
 }

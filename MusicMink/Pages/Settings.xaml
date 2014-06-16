@@ -41,6 +41,16 @@
                     HorizontalAlignment="Center"
                     IsEnabled="{Binding IsLoggingEnabled}"
                     />
+                <ToggleSwitch x:Uid="SettingsAutoPullArtFromLastFMToggleSwitch"
+                    IsOn="{Binding AutoPullArtFromLastFM, Mode=TwoWay}"
+                    />
+                <TextBlock x:Uid="SettingsAutoPullArtFromLastFMHelpMessage"
+                    FontSize="{StaticResource TextStyleSmallFontSize}"
+                    TextWrapping="WrapWholeWords"
+                    TextAlignment="Justify"
+                    FontStyle="Italic"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    />
                 <ToggleSwitch x:Uid="SettingsEnableLastFMScrobbling"
                     x:Name="EnableLastFM"
                     IsOn="{Binding IsLastFMScrobblingEnabled, Mode=TwoWay}"
@@ -58,8 +68,7 @@
                     GotFocus="PasswordBox_GotFocus"
                     LostFocus="PasswordBox_LostFocus"                             
                     />
-                <TextBlock
-                    Text="LastFM Status: Logging In..."
+                <TextBlock x:Uid="SettingsLastFMStatusLoggingIn"
                     FontSize="{StaticResource TextStyleSmallFontSize}"
                     Foreground="{StaticResource PhoneForegroundBrush}"
                     Visibility="{Binding IsLastFMAuthInProgress, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -67,20 +76,17 @@
                 <Grid
                     Visibility="{Binding IsLastFMAuthInProgress, Converter={StaticResource NotBoolToVisibilityConverter}}"
                     >
-                    <TextBlock
-                        Text="LastFM Status: Session Valid"
+                    <TextBlock x:Uid="SettingsLastFMStatusLoggedIn"
                         FontSize="{StaticResource TextStyleSmallFontSize}"
                         Foreground="{StaticResource PhoneForegroundBrush}"
                         Visibility="{Binding IsLastFMAuthed, Converter={StaticResource BoolToVisibilityConverter}}"
                         />
-                    <TextBlock
-                        Text="LastFM Status: Session Invalid"
+                    <TextBlock x:Uid="SettingsLastFMStatusLoggedOut"
                         FontSize="{StaticResource TextStyleSmallFontSize}"
                         Foreground="{StaticResource PhoneForegroundBrush}"
                         Visibility="{Binding IsLastFMAuthed, Converter={StaticResource NotBoolToVisibilityConverter}}"
                         />
                 </Grid>
-                <Button Content="Crash Me" Click="Button_Click" />
             </StackPanel>
             </ScrollViewer>
         </Grid>

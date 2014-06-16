@@ -42,6 +42,8 @@ namespace MusicMink.ViewModels
             LibraryModel.Current.AllSongs.CollectionChanged += HandleAllSongsCollectionChanged;
             LibraryModel.Current.Playlists.CollectionChanged += HandlePlaylistsCollectionChanged;
 
+            LibraryModel.Current.AlbumCreated += HandleLibraryModelAlbumCreated;
+
             _playQueue = new PlayQueueViewModel(LibraryModel.Current.PlayQueue);
 
             perf.Trace("first pass load done");
@@ -78,6 +80,16 @@ namespace MusicMink.ViewModels
         }
 
         # region Event Handlers
+
+        private async void HandleLibraryModelAlbumCreated(object sender, AlbumCreatedEventArgs e)
+        {
+            if (SettingsViewModel.Current.AutoPullArtFromLastFM && string.IsNullOrEmpty(e.NewAlbum.AlbumArt))
+            {
+                AlbumViewModel newViewModel = LookupAlbum(e.NewAlbum);
+
+                await newViewModel.SetArtToLastFM(false);
+            }
+        }
 
         private void HandlePlaylistsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -488,8 +500,6 @@ namespace MusicMink.ViewModels
                 return newViewModel;
             }
         }
-
-        // TODO: #7 Alert Song Changed 
 
         #endregion
 

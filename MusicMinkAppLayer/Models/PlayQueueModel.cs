@@ -681,7 +681,7 @@ namespace MusicMinkAppLayer.Models
                 {
                     if (CurrentPlaybackQueueEntryId == head.RowId)
                     {
-                        // TODO: #4 raise alert about queue being full
+                        // TODO: #6 raise alert about queue being full
                         return -1;
                     }
                     else

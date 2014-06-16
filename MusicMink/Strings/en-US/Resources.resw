@@ -450,4 +450,19 @@
   <data name="UpdateLastFMArtHelpMessage.Text" xml:space="preserve">
     <value>Art pulled from last.fm. Will only be downloaded if no art currently exists.</value>
   </data>
+  <data name="SettingsAutoPullArtFromLastFMHelpMessage.Text" xml:space="preserve">
+    <value>If this is on, will automatically attempt to download album art from last.fm whenever creating a new album.</value>
+  </data>
+  <data name="SettingsAutoPullArtFromLastFMToggleSwitch.Header" xml:space="preserve">
+    <value>Automatically Get Art</value>
+  </data>
+  <data name="SettingsLastFMStatusLoggedIn.Text" xml:space="preserve">
+    <value>LastFM Status: Session Valid</value>
+  </data>
+  <data name="SettingsLastFMStatusLoggedOut.Text" xml:space="preserve">
+    <value>LastFM Status: Session Invalid</value>
+  </data>
+  <data name="SettingsLastFMStatusLoggingIn.Text" xml:space="preserve">
+    <value>LastFM Status: Logging In...</value>
+  </data>
 </root>
