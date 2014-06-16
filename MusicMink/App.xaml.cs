@@ -19,10 +19,6 @@ using Windows.UI.Xaml.Navigation;
  * Scrobbling: Batch scrobbles - #3
  * Scrobbling: Ensure it doesn't block startup - #3
  * 
- * Art: Livetile - #4
- * 
- * Playback: Wire up buttons - edit/add to playlist/enqueue song still left to do - #5
- * 
  * Alerts: Basic alert prototyping/work - #6
  * Alerts: Show alert if song changes locations
  * 

@@ -150,8 +150,6 @@ namespace MusicMink.Dialogs
 
                 AlbumViewModel newAlbum = LibraryViewModel.Current.AlbumSearch(newAlbumName, newArtistName);
 
-                // Copy over songs if this album already exists 
-                // TODO: #9 merge album art; 
                 if (newAlbum != null)
                 {
                     List<SongViewModel> oldSongs = new List<SongViewModel>(newAlbum.Songs);

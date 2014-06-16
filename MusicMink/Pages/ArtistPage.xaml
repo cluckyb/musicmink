@@ -5,10 +5,15 @@
     xmlns:local="using:MusicMink.Pages"
     xmlns:items="using:MusicMink.ListItems"
     xmlns:controls="using:MusicMink.Controls"
+    xmlns:converters="using:MusicMink.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <converters:NumericTransformConverter x:Key="AppWidthToAlbumSectionConverter" Margin="2" Sections="2" />
+    </Page.Resources>
 
     <Grid x:Name="LayoutRoot">
 
@@ -76,12 +81,19 @@
                 <PivotItem
                     Header="{Binding ContentInfoAlbums}"
                     >
-                    <GridView                
+                    <GridView       
+                        x:Name="ZoomedInView"
                         ItemsSource="{Binding Albums}"
+                        SelectionMode="None"
+                        Margin="0"
                         >
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <items:AlbumListItem DataContext="{Binding}" />
+                                <items:AlbumListItem
+                                    DataContext="{Binding}"
+                                    Height="{Binding ActualWidth, ElementName=ZoomedInView, Converter={StaticResource AppWidthToAlbumSectionConverter}}"
+                                    Width="{Binding ActualWidth, ElementName=ZoomedInView, Converter={StaticResource AppWidthToAlbumSectionConverter}}"                                    
+                                    />
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>

@@ -26,13 +26,9 @@ namespace MusicMink.MediaSources
 
         private async Task LoadFolder(StorageFolder folder)
         {
-            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Loading Folder {0}", folder.Name);
-
             if (isCanceled) return;
 
             IReadOnlyList<IStorageItem> fileList = await folder.GetItemsAsync();
-
-            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "{0} Items Found", fileList.Count);
 
             foreach (IStorageItem storageItem in fileList)
             {
@@ -53,8 +49,6 @@ namespace MusicMink.MediaSources
 
         private async Task LoadFile(StorageFile file)
         {
-            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Loading File {0} Type {1}", file.Name, file.FileType);
-
             if (isCanceled) return;
 
             if (Utilities.IsSupportedFileType(file.FileType))

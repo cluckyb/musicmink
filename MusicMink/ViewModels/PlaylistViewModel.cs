@@ -219,8 +219,6 @@ namespace MusicMink.ViewModels
             EditPlaylist editPlaylistDialog = new EditPlaylist(this);
 
             await editPlaylistDialog.ShowAsync();
-
-            // TODO: #10 do this Could be stuck on an null album now
         }
 
         private bool CanExecuteEditPlaylist(object parameter)

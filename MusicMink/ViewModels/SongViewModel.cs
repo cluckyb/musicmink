@@ -461,8 +461,6 @@ namespace MusicMink.ViewModels
             EditSong editSongDialog = new EditSong(this);
 
             await editSongDialog.ShowAsync();
-
-            // TODO: #10 Could be stuck on an null album now
         }
 
         private bool CanExecuteEditSong(object parameter)
