@@ -7,6 +7,7 @@ namespace MusicMinkAppLayer.Diagnostics
     /// </summary>
     public class PerfTracer
     {
+        private DateTime FirstTick = DateTime.MinValue;
         private DateTime LastTick = DateTime.MinValue;
         private string Id;
 
@@ -14,13 +15,14 @@ namespace MusicMinkAppLayer.Diagnostics
         {
             Id = id;
             LastTick = DateTime.Now;
+            FirstTick = LastTick;
         }
 
         public void Trace(string message)
         {
             DateTime now = DateTime.Now;
 
-            Logger.Current.Log(new CallerInfo(), LogLevel.Perf, "Trace: {0} Lap Time: {1} Info: {2}", Id, (now - LastTick).TotalSeconds.ToString("F3"), message);
+            Logger.Current.Log(new CallerInfo(), LogLevel.Perf, "Trace: {0} Lap Time: {1} Total Time: {2} Info: {3}", Id, (now - LastTick).TotalSeconds.ToString("F3"), (now - FirstTick).TotalSeconds.ToString("F3"), message);
 
             LastTick = now;
         }
@@ -28,6 +30,7 @@ namespace MusicMinkAppLayer.Diagnostics
         public void Restart()
         {
             LastTick = DateTime.Now;
+            FirstTick = LastTick;
         }
     }
 }

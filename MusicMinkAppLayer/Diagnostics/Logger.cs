@@ -77,7 +77,7 @@ namespace MusicMinkAppLayer.Diagnostics
             isInit = true;
 
             FILENAME = LOG_FOLDER + "\\" + MyType.ToString() + "_" + BASE_FILENAME;
-            SPOOLED_FILENAME = LOG_FOLDER + "\\" + MyType.ToString() + "_" + BASE_SPOOLED_FILENAME;
+            SPOOLED_FILENAME = MyType.ToString() + "_" + BASE_SPOOLED_FILENAME;
         }
 
         private Logger()
@@ -179,7 +179,7 @@ namespace MusicMinkAppLayer.Diagnostics
 
             StringBuilder builder = new StringBuilder();
 
-            builder.Append(DateTime.Now.ToString()).Append(" - ").Append(info.FileName).Append(":").Append(info.FunctionName);
+            builder.Append(DateTime.Now.ToString("MM/dd/yy hh:mm:ss.fff")).Append(" - ").Append(info.FileName).Append(":").Append(info.FunctionName);
             builder.Append("(line ").Append(info.LineNumber).Append(") - ").AppendLine(string.Format(message, args));
 
             var async = ThreadPool.RunAsync(new WorkItemHandler((IAsyncAction) =>

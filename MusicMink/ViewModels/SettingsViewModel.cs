@@ -81,6 +81,8 @@ namespace MusicMink.ViewModels
 
         private async void ExecuteUploadLogs(object parameter)
         {
+            await Logger.Current.Flush();
+
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
 
             StorageFolder logFolder = await localFolder.GetFolderAsync(Logger.LOG_FOLDER);
