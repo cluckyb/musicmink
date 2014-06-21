@@ -52,30 +52,15 @@ namespace MusicMinkAppLayer.Models
         public void Start()
         {
             Populate();
-            
-            UpdatePlayingAndActivity(BackgroundMediaPlayer.Current);
-            
-            if (IsActive)
-            {
-                CurrentTime = BackgroundMediaPlayer.Current.Position;
-            }
-            else
-            {
-                double percentage = ApplicationSettings.GetSettingsValue<double>(ApplicationSettings.CURRENT_TRACK_PERCENTAGE, 0);
-
-                CurrentTime = TimeSpan.FromTicks((long)(FullTime.Ticks * percentage));
-            }
-            
+           
             Init();
-
-            UpdateHistory();
         }
 
         #region Event Handlers
 
         private void HandleProgressTimerTick(object sender, object e)
         {
-            if (!isScrubInProgress)
+            if (!isScrubInProgress && IsActive)
             {
                 CurrentTime = BackgroundMediaPlayer.Current.Position;
             }
@@ -119,6 +104,15 @@ namespace MusicMinkAppLayer.Models
                             UpdateHistory();
                         });
                         break;
+                    case PlayQueueMessageHelper.PlayQueueFinished:
+                        await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        {
+                            ResetPlayerToStart();
+                            IsActive = false;
+                            IsPlaying = false;
+                            CurrentTime = TimeSpan.Zero;
+                        });
+                        break;
                 }
             }
         }
@@ -139,22 +133,13 @@ namespace MusicMinkAppLayer.Models
 
         #region Private Properties / Members
 
-        private bool _isBackgroundAudioTaskRunning = false;
+        private bool IsBackgroundStarted = false;
+
         private bool IsBackgroundAudioTaskRunning
         {
             get
             {
-                if (_isBackgroundAudioTaskRunning) return true;
-
-                if (ApplicationSettings.GetSettingsValue<bool>(ApplicationSettings.IS_BACKGROUND_PROCESS_ACTIVE, false))
-                {
-                    _isBackgroundAudioTaskRunning = true;
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return ApplicationSettings.GetSettingsValue<bool>(ApplicationSettings.IS_BACKGROUND_PROCESS_ACTIVE, false);
             }
         }
 
@@ -175,6 +160,7 @@ namespace MusicMinkAppLayer.Models
                     }
 
                     _currentEntry = value;
+                    UpdateFullTime();
 
                     if (_currentEntry != null)
                     {
@@ -263,7 +249,7 @@ namespace MusicMinkAppLayer.Models
                     }
                     else
                     {
-                        if (!isScrubInProgress)
+                        if (!isScrubInProgress && IsActive)
                         {
                             CurrentTime = BackgroundMediaPlayer.Current.Position;
                         }
@@ -721,40 +707,50 @@ namespace MusicMinkAppLayer.Models
 
         private void Play()
         {
-            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Current state when play: {0}", BackgroundMediaPlayer.Current.CurrentState);
+            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Current state when play: {0} IsBackgroundRunning: {1}", BackgroundMediaPlayer.Current.CurrentState, IsBackgroundAudioTaskRunning);
 
-            if (IsBackgroundAudioTaskRunning)
-            {
-                SendMessageToBackground(PlayQueueConstantFGMessageId.StartPlayback);
-            }
-            else
-            {
-                StartBackgroundTask();
-            }
+            SentMessageToBackgroundOrInit(PlayQueueConstantFGMessageId.StartPlayback);
         }
 
         public void Resume()
         {
+            CurrentPlaybackQueueEntryId = ApplicationSettings.GetSettingsValue<int>(ApplicationSettings.CURRENT_PLAYQUEUE_POSITION, 0);
+
+            if (CurrentPlaybackQueueEntryId == 0)
+            {
+                ResetPlayerToStart();
+            }
+
             Init();
         }
 
         private void Init()
         {
-            AttachBackgroundMediaPlayerEventHandlers();
-
-            ApplicationSettings.PutSettingsValue(ApplicationSettings.IS_FOREGROUND_PROCESS_ACTIVE, true);
-
             if (IsBackgroundAudioTaskRunning)
             {
-                Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Starting App, Background Already Running");
+                IsBackgroundStarted = true;
+
+                UpdatePlayingAndActivity(BackgroundMediaPlayer.Current);
+
+                AttachBackgroundMediaPlayerEventHandlers();
 
                 SendMessageToBackground(PlayQueueConstantFGMessageId.AppResumed);
             }
             else
             {
-                Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Starting App, Background Not Running");
+                IsActive = false;
+               
+                IsBackgroundStarted = false;
             }
 
+            UpdateFullTime();
+            double percentage = ApplicationSettings.GetSettingsValue<double>(ApplicationSettings.CURRENT_TRACK_PERCENTAGE, 0.0);
+
+            CurrentTime = TimeSpan.FromTicks((long)(FullTime.Ticks * percentage));
+
+            UpdateHistory();
+
+            ApplicationSettings.PutSettingsValue(ApplicationSettings.IS_FOREGROUND_PROCESS_ACTIVE, true);
         }
 
         public void Suspend()
@@ -768,6 +764,8 @@ namespace MusicMinkAppLayer.Models
 
         void AttachBackgroundMediaPlayerEventHandlers()
         {
+            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Events attached");
+
             BackgroundMediaPlayer.MessageReceivedFromBackground -= HandleBackgroundMediaPlayerMessageReceivedFromBackground;
             BackgroundMediaPlayer.MessageReceivedFromBackground += HandleBackgroundMediaPlayerMessageReceivedFromBackground;
 
@@ -785,9 +783,9 @@ namespace MusicMinkAppLayer.Models
 
         private void UpdatePlayingAndActivity(MediaPlayer sender)
         {
-            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Changed state: {0}", sender.CurrentState);
+            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Changed state: {0} Is End: {1}", sender.CurrentState, sender.NaturalDuration.Ticks == sender.Position.Ticks);
 
-            if (sender.CurrentState == MediaPlayerState.Playing)
+            if (sender.CurrentState == MediaPlayerState.Playing || (IsActive && sender.CurrentState == MediaPlayerState.Paused && sender.NaturalDuration.Ticks == sender.Position.Ticks))
             {
                 IsPlaying = true;
             }
@@ -796,8 +794,7 @@ namespace MusicMinkAppLayer.Models
                 IsPlaying = false;
             }
 
-            if (sender.CurrentState == MediaPlayerState.Stopped ||
-                sender.CurrentState == MediaPlayerState.Paused ||
+            if (sender.CurrentState == MediaPlayerState.Paused ||
                 sender.CurrentState == MediaPlayerState.Playing)
             {
                 IsActive = true;
@@ -807,23 +804,28 @@ namespace MusicMinkAppLayer.Models
             {
                 IsActive = false;
 
-                if (CurrentEntry == null)
+                UpdateFullTime();
+            }
+        }
+
+        private void UpdateFullTime()
+        {
+            if (CurrentEntry == null)
+            {
+                FullTime = TimeSpan.Zero;
+            }
+            else
+            {
+                SongTable song = DatabaseManager.Current.LookupSongById(CurrentEntry.SongId);
+
+                if (song == null)
                 {
+                    DebugHelper.Alert(new CallerInfo(), "SongId {0} got from a playqueue row but couldn't find it in database!!", CurrentEntry.SongId);
                     FullTime = TimeSpan.Zero;
                 }
                 else
                 {
-                    SongTable song = DatabaseManager.Current.LookupSongById(CurrentEntry.SongId);
-
-                    if (song == null)
-                    {
-                        DebugHelper.Alert(new CallerInfo(), "SongId {0} got from a playqueue row but couldn't find it in database!!", CurrentEntry.SongId);
-                        FullTime = TimeSpan.Zero;
-                    }
-                    else
-                    {
-                        FullTime = TimeSpan.FromTicks(song.Duration);
-                    }
+                    FullTime = TimeSpan.FromTicks(song.Duration);
                 }
             }
         }
@@ -834,16 +836,19 @@ namespace MusicMinkAppLayer.Models
             BackgroundMediaPlayer.Current.CurrentStateChanged -= HandleBackgroundMediaPlayerCurrentStateChanged;
         }
 
-        private void StartBackgroundTask()
+        private void StartBackgroundTask(PlayQueueConstantFGMessageId message)
         {
             Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Starting background task...");
+            AttachBackgroundMediaPlayerEventHandlers();
 
             var backgroundtaskinitializationresult = CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 bool result = BackgroundInitialized.WaitOne(20000);
                 if (result == true)
                 {
-                    SendMessageToBackground(PlayQueueConstantFGMessageId.StartPlayback);
+                    IsBackgroundStarted = true;
+
+                    SendMessageToBackground(message);
                 }
                 else
                 {
@@ -856,22 +861,22 @@ namespace MusicMinkAppLayer.Models
 
         public void InformBackgroundLoggingChanged()
         {
-            SendMessageToBackground(PlayQueueConstantFGMessageId.LoggingEnabledChanged);
+            SentMessageToBackgroundOrInit(PlayQueueConstantFGMessageId.LoggingEnabledChanged);
         }
 
         public void PlayPause()
         {
-            SendMessageToBackground(PlayQueueConstantFGMessageId.PlayPauseTrack);
+            SentMessageToBackgroundOrInit(PlayQueueConstantFGMessageId.PlayPauseTrack);
         }
 
         public void Skip()
         {
-            SendMessageToBackground(PlayQueueConstantFGMessageId.SkipTrack);
+            SentMessageToBackgroundOrInit(PlayQueueConstantFGMessageId.SkipTrack);
         }
 
         public void GoBack()
         {
-            SendMessageToBackground(PlayQueueConstantFGMessageId.PrevTrack);
+            SentMessageToBackgroundOrInit(PlayQueueConstantFGMessageId.PrevTrack);
         }
 
         public void PlayFromSong(int rowId)
@@ -880,7 +885,7 @@ namespace MusicMinkAppLayer.Models
 
             CurrentPlaybackQueueEntryId = rowId;
 
-            SendMessageToBackground(PlayQueueConstantFGMessageId.StartPlayback);
+            SentMessageToBackgroundOrInit(PlayQueueConstantFGMessageId.StartPlayback);
         }
 
         public void ScrubToPercentage(double percentage)
@@ -913,6 +918,20 @@ namespace MusicMinkAppLayer.Models
         private void SendMessageToBackground(PlayQueueConstantFGMessageId messageId)
         {
             SendMessageToBackground(messageId, DateTime.Now.ToString());
+        }
+
+        private void SentMessageToBackgroundOrInit(PlayQueueConstantFGMessageId messageId)
+        {
+            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Sending Message To Background Message: {0} IsRunning: {1}", messageId.ToString(), IsBackgroundAudioTaskRunning);
+
+            if (IsBackgroundStarted)
+            {
+                SendMessageToBackground(messageId);
+            }
+            else
+            {
+                StartBackgroundTask(messageId);
+            }
         }
 
         #endregion

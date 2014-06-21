@@ -42,6 +42,8 @@ namespace MusicMink.ViewModels
 
         public void Initalize()
         {
+            LookupDictionary.Clear();
+
             PlaybackQueue = new ObservableCopyCollection<PlayQueueEntryViewModel, PlayQueueEntryModel>(rootModel.PlaybackQueue,
                 (playQueueEntryModel) => { return new PlayQueueEntryViewModel(playQueueEntryModel); });
 
@@ -96,6 +98,7 @@ namespace MusicMink.ViewModels
                     NotifyPropertyChanged(Properties.IsActive);
                     break;
                 case PlayQueueModel.Properties.NowPlaying:
+                    Debug.WriteLine("Now playing: {0}", rootModel.NowPlaying);
                     CurrentTrack = LibraryViewModel.Current.LookupSongById(rootModel.NowPlaying);
                     break;
                 case PlayQueueModel.Properties.NextTrack:
@@ -127,10 +130,6 @@ namespace MusicMink.ViewModels
         int oldIndex;
         private void HandlePlaybackQueueCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            // NotifyPropertyChanged(Properties.IsQueueEmpty);
-
-            Debug.WriteLine("Change of type {0} IsRootChanging? {1} IsEndChanging? {2}", e.Action.ToString(), PlaybackQueue.IsRootChanging, PlaybackQueue.IsEndChanging);
-
             if (!PlaybackQueue.IsRootChanging)
             {
                 if (e.Action == NotifyCollectionChangedAction.Remove)

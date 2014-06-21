@@ -103,6 +103,8 @@ namespace MusicMinkBackgroundAudioPlayer
         {
             PlayQueueManager.Current.Disconnect();
 
+            TileUpdateManager.CreateTileUpdaterForApplication("App").Clear();
+
             Logger.Current.Log(new CallerInfo(), LogLevel.Info, "AudioPlayer Background Task Completed id:{0} reason:{1}", taskInstance.Task.TaskId, reason.ToString());
             
             ApplicationSettings.PutSettingsValue(ApplicationSettings.IS_BACKGROUND_PROCESS_ACTIVE, false);
@@ -184,7 +186,6 @@ namespace MusicMinkBackgroundAudioPlayer
                 string artPath = string.Empty;
                 if (!string.IsNullOrEmpty(args.ArtPath))
                 {
-
                     IStorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(args.ArtPath);
 
                     artPath = file.Path;
@@ -350,15 +351,27 @@ namespace MusicMinkBackgroundAudioPlayer
                         systemMediaTransportControls.IsPreviousEnabled = PlayQueueManager.Current.CanBack();
                         break;
                     case PlayQueueMessageHelper.PlayPauseTrack:
-                        if (BackgroundMediaPlayer.Current.CurrentState == MediaPlayerState.Playing)
+                        Logger.Current.Log(new CallerInfo(), LogLevel.Info, "PlayPause State: {0}", BackgroundMediaPlayer.Current.CurrentState);
+
+                        bool isActiveAndValidState = false;
+
+                        if (PlayQueueManager.Current.IsActive)
                         {
-                            BackgroundMediaPlayer.Current.Pause();
+                            if (BackgroundMediaPlayer.Current.CurrentState == MediaPlayerState.Playing)
+                            {
+                                BackgroundMediaPlayer.Current.Pause();
+
+                                isActiveAndValidState = true;
+                            }
+                            else if (BackgroundMediaPlayer.Current.CurrentState == MediaPlayerState.Paused)
+                            {
+                                BackgroundMediaPlayer.Current.Play();
+
+                                isActiveAndValidState = true;
+                            }
                         }
-                        else if (BackgroundMediaPlayer.Current.CurrentState == MediaPlayerState.Paused)
-                        {
-                            BackgroundMediaPlayer.Current.Play();
-                        }
-                        else
+
+                        if (!isActiveAndValidState)
                         {
                             // TODO: #16 flashy flash goes the play button
                             if (backgroundTaskState != BackgroundTaskState.Running)

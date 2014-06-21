@@ -22,6 +22,7 @@ namespace MusicMinkAppLayer.PlayQueue
         TrackChanged,
         TrackPlayed,
         SeekComplete,
+        PlayQueueFinished,
     }
 
     /// <summary>
@@ -84,7 +85,10 @@ namespace MusicMinkAppLayer.PlayQueue
 
         public const string TrackChanged = "trackchanged";
         public const string TrackPlayed = "trackplayed";
-        public const string SeekComplete = "SeekComplete";
+        public const string SeekComplete = "seekcomplete";
+
+        public const string PlayQueueFinished = "playqueuefinished";
+
 
         public static string BGMessageIdToMessageString(PlayQueueConstantBGMessageId messageId)
         {
@@ -100,6 +104,8 @@ namespace MusicMinkAppLayer.PlayQueue
                     return TrackChanged;
                 case PlayQueueConstantBGMessageId.TrackPlayed:
                     return TrackPlayed;
+                case PlayQueueConstantBGMessageId.PlayQueueFinished:
+                    return PlayQueueFinished;
                 default:
                     DebugHelper.Alert(new CallerInfo(), "Unexpected PlayQueueConstantBGMessageId {0} encountered", messageId.ToString());
                     return Unknown;

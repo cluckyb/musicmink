@@ -43,7 +43,7 @@ namespace MusicMinkAppLayer.PlayQueue
             mediaPlayer.MediaEnded += HandleMediaPlayerMediaEnded;
             mediaPlayer.MediaOpened += HandleMediaPlayerMediaOpened;
 
-            mediaPlayer.AutoPlay = true;
+            mediaPlayer.AutoPlay = false;
 
             IsActive = false;
         }
@@ -57,7 +57,6 @@ namespace MusicMinkAppLayer.PlayQueue
         private void HandleMediaPlayerMediaFailed(MediaPlayer sender, MediaPlayerFailedEventArgs args)
         {
             Logger.Current.Log(new CallerInfo(), LogLevel.Warning, "Media Player Failed With Error code {0}", args.ExtendedErrorCode.ToString());
-
         }
 
         private TrackInfo playingTrack = null;
@@ -77,12 +76,14 @@ namespace MusicMinkAppLayer.PlayQueue
         }
 
         private bool isFirstOpen = false;
+        private bool playAfterOpen = true;
+
         void HandleMediaPlayerMediaOpened(MediaPlayer sender, object args)
         {
             if (isFirstOpen)
             {
                 isFirstOpen = false;
-                double percentage = ApplicationSettings.GetSettingsValue<double>(ApplicationSettings.CURRENT_TRACK_PERCENTAGE, 0);
+                double percentage = ApplicationSettings.GetSettingsValue<double>(ApplicationSettings.CURRENT_TRACK_PERCENTAGE, 0.0);
                 ApplicationSettings.PutSettingsValue(ApplicationSettings.CURRENT_TRACK_PERCENTAGE, 0.0);
 
                 if (percentage > 0)
@@ -93,13 +94,21 @@ namespace MusicMinkAppLayer.PlayQueue
                 }
             }
 
-
             int trackId = ApplicationSettings.GetSettingsValue<int>(ApplicationSettings.CURRENT_PLAYQUEUE_POSITION, 0);
 
             Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Trying to play row {0}", trackId);
 
             playingTrack = TrackInfo.TrackInfoFromRowId(trackId);
             TrackChanged.Invoke(this, playingTrack);
+
+            if (playAfterOpen)
+            {
+                sender.Play();
+            }
+            else
+            {
+                playAfterOpen = true;
+            }
         }
 
         #endregion
@@ -134,6 +143,11 @@ namespace MusicMinkAppLayer.PlayQueue
             {
                 int nextRowId = currentPlayQueueRow.NextId;
                 ApplicationSettings.PutSettingsValue(ApplicationSettings.CURRENT_PLAYQUEUE_POSITION, nextRowId);
+
+                if (nextRowId == 0)
+                {
+                    SendMessageToForeground(PlayQueueConstantBGMessageId.PlayQueueFinished);
+                }
             }
             else
             {
@@ -173,7 +187,12 @@ namespace MusicMinkAppLayer.PlayQueue
         {
             int rowId = ApplicationSettings.GetSettingsValue<int>(ApplicationSettings.CURRENT_PLAYQUEUE_POSITION, 0);
 
-            TrackInfo trackInfo = TrackInfo.TrackInfoFromRowId(rowId);
+            TrackInfo trackInfo = null;
+
+            if (rowId > 0)
+            {
+                trackInfo = TrackInfo.TrackInfoFromRowId(rowId);
+            }
 
             // TODO: #18  Support other types
             if (trackInfo != null)
@@ -183,12 +202,31 @@ namespace MusicMinkAppLayer.PlayQueue
                 isFirstOpen = true;
                 mediaPlayer.SetFileSource(file);
                 IsActive = true;
-
-                mediaPlayer.Play();
             }
             else
             {
                 IsActive = false;
+
+                PlayQueueEntryTable head = DatabaseManager.Current.LookupPlayQueueEntryHead();
+
+                if (head != null)
+                {
+                    ApplicationSettings.PutSettingsValue(ApplicationSettings.CURRENT_PLAYQUEUE_POSITION, head.RowId);
+
+                    trackInfo = TrackInfo.TrackInfoFromRowId(head.RowId);
+
+                    if (trackInfo != null)
+                    {
+                        StorageFile file = await StorageFile.GetFileFromPathAsync(trackInfo.Path);
+
+                        playAfterOpen = false;
+                        mediaPlayer.SetFileSource(file);
+                    }
+                }
+                else
+                {
+                    ApplicationSettings.PutSettingsValue(ApplicationSettings.CURRENT_PLAYQUEUE_POSITION, 0);
+                }
             }
         }
 
@@ -229,14 +267,17 @@ namespace MusicMinkAppLayer.PlayQueue
 
         public void Disconnect()
         {
-            if (mediaPlayer.NaturalDuration.TotalSeconds > 0)
+            if (IsActive && mediaPlayer.NaturalDuration.TotalSeconds > 0)
             {
                 double percentage = mediaPlayer.Position.TotalSeconds / mediaPlayer.NaturalDuration.TotalSeconds;
                 ApplicationSettings.PutSettingsValue(ApplicationSettings.CURRENT_TRACK_PERCENTAGE, percentage);
             }
+            else
+            {
+                ApplicationSettings.PutSettingsValue(ApplicationSettings.CURRENT_TRACK_PERCENTAGE, 0.0);
+            }
 
             IsActive = false;
-
             DatabaseManager.Current.Disconnect();
         }
 
