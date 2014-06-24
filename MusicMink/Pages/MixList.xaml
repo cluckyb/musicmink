@@ -1,0 +1,56 @@
+﻿<local:BasePage
+    x:Class="MusicMink.Pages.MixList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicMink.Pages"
+    xmlns:items="using:MusicMink.ListItems"
+    xmlns:dialog="using:MusicMink.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Uid="MixListHeader"
+            Style="{ThemeResource DefaultTitleStyle}"
+            />
+
+        <Grid x:Uid="MixListRoot"
+            Grid.Row="1"
+            Margin="{StaticResource DefaultContentMargin}"
+            >            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            
+            <ListView
+                x:Name="ZoomedInListView"
+                Grid.Row="0"                      
+                ItemsSource="{Binding MixCollection}"
+                >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <items:MixListItem DataContext="{Binding}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <StackPanel
+                Grid.Row="1"
+                Orientation="Horizontal"
+                HorizontalAlignment="Center"
+                >
+                <AppBarButton x:Uid="MixListAddButton"
+                    Icon="Add"
+                    Command="{Binding AddNewMix}"                              
+                    />
+            </StackPanel>            
+        </Grid>
+    </Grid>
+</local:BasePage>

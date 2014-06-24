@@ -13,7 +13,7 @@ namespace MusicMinkAppLayer.Tables
     internal class DatabaseManager
     {
         private static string DB_PATH = Path.Combine(ApplicationData.Current.LocalFolder.Path, "MusicMinkDB.sqlite");
-        private static int DB_VERSION = 2;
+        private static int DB_VERSION = 3;
         private static string DB_VERSION_KEY = "MAIN_DATABASE_VERSION";
 
         public SQLiteConnection sqlConnection;
@@ -56,6 +56,11 @@ namespace MusicMinkAppLayer.Tables
             else if (currentDatabaseVersion < 2)
             {
                 sqlConnection.CreateTable<HistoryTable>();
+            }
+            else if (currentDatabaseVersion < 3)
+            {
+                sqlConnection.CreateTable<MixTable>();
+                sqlConnection.CreateTable<MixEntryTable>();
             }
 
             if (currentDatabaseVersion < DB_VERSION)
@@ -116,43 +121,81 @@ namespace MusicMinkAppLayer.Tables
             return sqlConnection.Table<HistoryTable>().ToList<HistoryTable>();
         }
 
+        internal List<MixTable> FetchMixes()
+        {
+            return sqlConnection.Table<MixTable>().ToList<MixTable>();
+        }
+
+        internal List<MixEntryTable> FetchMixEntriesForMix(int MixId)
+        {
+            return sqlConnection.Query<MixEntryTable>("SELECT * FROM MixEntryTable WHERE MixId = ?", MixId).ToList<MixEntryTable>();
+        }
+
         #endregion
 
         #region ADD
 
-        internal void AddSong(SongTable songTable)
+        internal int AddSong(SongTable songTable)
         {
             sqlConnection.Insert(songTable);
+
+            return songTable.SongId;
         }
 
         internal int AddArtist(ArtistTable artistTable)
         {
-            return sqlConnection.Insert(artistTable);
+            sqlConnection.Insert(artistTable);
+
+            return artistTable.ArtistId;
         }
 
         internal int AddAlbum(AlbumTable albumTable)
         {
-            return sqlConnection.Insert(albumTable);
+            sqlConnection.Insert(albumTable);
+
+            return albumTable.AlbumId;
         }
 
         internal int AddPlaylistEntry(PlaylistEntryTable newPlaylistEntry)
         {
-            return sqlConnection.Insert(newPlaylistEntry);
+            sqlConnection.Insert(newPlaylistEntry);
+
+            return newPlaylistEntry.RowId;
         }
 
         internal int AddPlaylist(PlaylistTable newPlaylist)
         {
-            return sqlConnection.Insert(newPlaylist);
+            sqlConnection.Insert(newPlaylist);
+
+            return newPlaylist.PlaylistId;
         }
 
         internal int AddPlayQueueEntry(PlayQueueEntryTable newPlayQueueEntry)
         {
-            return sqlConnection.Insert(newPlayQueueEntry);
+            sqlConnection.Insert(newPlayQueueEntry);
+
+            return newPlayQueueEntry.RowId;
         }
 
         internal int AddHistoryItem(HistoryTable newHistoryItem)
         {
-            return sqlConnection.Insert(newHistoryItem);
+            sqlConnection.Insert(newHistoryItem);
+
+            return newHistoryItem.RowId;
+        }
+
+        internal int AddMix(MixTable newMix)
+        {
+            sqlConnection.Insert(newMix);
+
+            return newMix.MixId;
+        }
+
+        internal int AddMixEntry(MixEntryTable newMixEntry)
+        {
+            sqlConnection.Insert(newMixEntry);
+
+            return newMixEntry.EntryId;
         }
 
         #endregion
@@ -228,6 +271,18 @@ namespace MusicMinkAppLayer.Tables
             sqlConnection.Query<PlaylistEntryTable>("DELETE FROM PlaylistEntryTable WHERE PlaylistId = ?", playlistId);
 
             sqlConnection.Delete<PlaylistTable>(playlistId);
+        }
+
+        internal void DeleteMix(int mixId)
+        {
+            sqlConnection.Query<MixEntryTable>("DELETE FROM MixEntryTable WHERE MixId = ?", mixId);
+
+            sqlConnection.Delete<MixTable>(mixId);
+        }
+
+        internal void DeleteAllMixEntries(int mixId)
+        {
+            sqlConnection.Query<MixEntryTable>("DELETE FROM MixEntryTable WHERE MixId = ?", mixId);
         }
 
         internal void DeleteArtist(int artistId)

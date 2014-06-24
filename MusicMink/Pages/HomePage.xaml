@@ -69,12 +69,12 @@
                     </Grid>
                 </GridViewItem>
                 <GridViewItem  x:Name="AlbumNavigationItem" Tapped="HandleAlbumNavigationItemTapped">
-                    <Grid Margin="5">
-                        <Rectangle
-                            Fill="{StaticResource PhoneAccentBrush}"
-                            Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                            Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                            />
+                    <Grid
+                        Margin="5"
+                        Background="{StaticResource PhoneAccentBrush}"
+                        Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
+                        Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
+                        >
                         
                         <SymbolIcon
                             Symbol="Library"
@@ -100,12 +100,12 @@
                     </Grid>
                 </GridViewItem>
                 <GridViewItem  x:Name="ArtistsNavigationItem" Tapped="HandleArtistsNavigationItemTapped">
-                    <Grid Margin="5">
-                        <Rectangle
-                            Fill="{StaticResource PhoneAccentBrush}"
-                            Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                            Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                            />
+                    <Grid 
+                        Margin="5"
+                        Background="{StaticResource PhoneAccentBrush}"
+                        Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
+                        Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
+                        >
 
                         <SymbolIcon
                             Symbol="Library"
@@ -131,12 +131,12 @@
                     </Grid>
                 </GridViewItem>
                 <GridViewItem x:Name="PlaylistNavigationItem" Tapped="HandlePlaylistNavigationItemTapped">
-                    <Grid Margin="5">
-                        <Rectangle
-                            Fill="{StaticResource PhoneAccentBrush}"
-                            Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                            Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                            />
+                    <Grid 
+                        Margin="5"
+                        Background="{StaticResource PhoneAccentBrush}"
+                        Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
+                        Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
+                        >
                         
                         <SymbolIcon
                             Symbol="List"
@@ -161,13 +161,75 @@
                             />
                     </Grid>
                 </GridViewItem>
-                <GridViewItem x:Name="LibraryNavigationItem" Tapped="HandleLibraryNavigationItemTapped">
-                    <Grid Margin="5">
-                        <Rectangle
-                            Fill="{StaticResource PhoneAccentBrush}"
-                            Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                            Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
+                <GridViewItem x:Name="MixesNavigationItem" Tapped="HandleMixesNavigationItemTapped">
+                    <Grid 
+                        Margin="5"
+                        Background="{StaticResource PhoneAccentBrush}"
+                        Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
+                        Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
+                        >
+
+                        <SymbolIcon
+                            Symbol="List"
+                            Foreground="White"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Width="{StaticResource DefaultSymbolSize}"
+                            Height="{StaticResource DefaultSymbolSize}"
+                            >
+                            <SymbolIcon.RenderTransform>
+                                <ScaleTransform
+                                    CenterX="{StaticResource HalfDefaultSymbolSize}"
+                                    CenterY="{StaticResource HalfDefaultSymbolSize}"
+                                    ScaleX="4"
+                                    ScaleY="4"
+                                    />
+                            </SymbolIcon.RenderTransform>
+                        </SymbolIcon>
+
+                        <TextBlock x:Uid="HomePageMixesTile"
+                            Style="{StaticResource TileTextStyle}"
                             />
+                    </Grid>
+                </GridViewItem>
+                <GridViewItem x:Name="SearchNavigationItem" Tapped="HandleSearchNavigationItemTapped">
+                    <Grid 
+                        Margin="5"
+                        Background="{StaticResource PhoneAccentBrush}"
+                        Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
+                        Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
+                        >
+
+                        <SymbolIcon
+                            Symbol="Find"
+                            Foreground="White"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Width="{StaticResource DefaultSymbolSize}"
+                            Height="{StaticResource DefaultSymbolSize}"
+                            >
+                            <SymbolIcon.RenderTransform>
+                                <ScaleTransform
+                                    CenterX="{StaticResource HalfDefaultSymbolSize}"
+                                    CenterY="{StaticResource HalfDefaultSymbolSize}"
+                                    ScaleX="4"
+                                    ScaleY="4"
+                                    />
+                            </SymbolIcon.RenderTransform>
+                        </SymbolIcon>
+
+                        <TextBlock x:Uid="HomePageSearchTile"
+                            Style="{StaticResource TileTextStyle}"
+                            />
+                    </Grid>
+                </GridViewItem>
+                <GridViewItem x:Name="LibraryNavigationItem" Tapped="HandleLibraryNavigationItemTapped">
+                    <Grid 
+                        Margin="5"
+                        Background="{StaticResource PhoneAccentBrush}"
+                        Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
+                        Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
+                        >
 
                         <SymbolIcon
                             Symbol="MusicInfo"
@@ -193,11 +255,13 @@
                     </Grid>
                 </GridViewItem>
                 <GridViewItem x:Name="SettingsNavigationItem" Tapped="HandleSettingsNavigationItemTapped">
-                    <Grid x:Name="SettingsNavigationGrid"
+                    <Grid 
                         Margin="5"
+                        Background="{StaticResource PhoneAccentBrush}"
                         Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
                         Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
                         >
+                        
                         <Rectangle
                             Fill="{StaticResource PhoneAccentBrush}"
                             />

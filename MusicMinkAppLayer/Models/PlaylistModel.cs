@@ -54,6 +54,11 @@ namespace MusicMinkAppLayer.Models
 
         #region Methods
 
+        public bool ContainsSong(int songId)
+        {
+            return SongIds.Contains(songId);
+        }
+
         public void Populate()
         {
             Songs.Clear();
@@ -67,6 +72,7 @@ namespace MusicMinkAppLayer.Models
                 PlaylistEntryModel newEntry = new PlaylistEntryModel(playlistEntry);
 
                 IndexLookupMap.Add(newEntry.RowId, newEntry);
+                SongIds.Add(playlistEntry.SongId);
 
                 if (newEntry.PrevId == 0)
                 {
@@ -131,6 +137,7 @@ namespace MusicMinkAppLayer.Models
                 nextModel.PrevId = songToRemove.PrevId;
             }
 
+            SongIds.Remove(songToRemove.SongId);
             Songs.Remove(songToRemove);
             IndexLookupMap.Remove(songToRemove.RowId);
             DatabaseManager.Current.DeletePlaylistEntry(songToRemove.RowId);
@@ -240,6 +247,7 @@ namespace MusicMinkAppLayer.Models
 
             IndexLookupMap.Add(newEntry.RowId, newEntry);
             Songs.Add(newEntry);
+            SongIds.Add(newEntry.SongId);
 
             return newEntry.RowId;
         }

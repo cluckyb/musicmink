@@ -3,6 +3,7 @@ using MusicMink.Common;
 using MusicMink.Dialogs;
 using MusicMinkAppLayer.Models;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
@@ -20,6 +21,8 @@ namespace MusicMink.ViewModels
 
             public const string IsBeingDeleted = "IsBeingDeleted";
         }
+
+        public List<MixViewModel> DependentMixes = new List<MixViewModel>();
 
         public PlaylistViewModel(PlaylistModel model)
             : base(model)
@@ -232,11 +235,26 @@ namespace MusicMink.ViewModels
         public void AddSong(SongViewModel songToAdd)
         {
             rootModel.AddSong(songToAdd.SongId);
+
+            foreach (MixViewModel mixViewModel in DependentMixes)
+            {
+                mixViewModel.ReevaulateSong(songToAdd);
+            }
         }
 
         internal void RemoveAllInstancesOfSong(SongViewModel song)
         {
             rootModel.RemoveSong(song.SongId);
+
+            foreach (MixViewModel mixViewModel in DependentMixes)
+            {
+                mixViewModel.ReevaulateSong(song);
+            }
+        }
+
+        internal bool ContainsSong(SongViewModel song)
+        {
+            return rootModel.ContainsSong(song.SongId);
         }
 
         #endregion

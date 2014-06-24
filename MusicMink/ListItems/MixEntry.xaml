@@ -1,0 +1,512 @@
+﻿<UserControl
+    x:Class="MusicMink.ListItems.MixEntry"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:MusicMink.Controls"
+    xmlns:local="using:MusicMink.ListItems"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="NestedStates">
+                <VisualState x:Name="MixIsRoot" />
+                <VisualState x:Name="MixIsChild">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="RemoveMixButton"
+                            Storyboard.TargetProperty="(Control.Visibility)"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+
+            <VisualStateGroup x:Name="SelectedStates">
+                <VisualState x:Name="UnknownSelected" />
+                <VisualState x:Name="MemberSelected">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="MemberInfoPanel"
+                            Storyboard.TargetProperty="(Control.Visibility)"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="RangeSelected">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="RangeInfoPanel"
+                            Storyboard.TargetProperty="(Control.Visibility)"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="NumberSelected">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="NumericInfoPanel"
+                            Storyboard.TargetProperty="(Control.Visibility)"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="StringSelected" >
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="StringInfoPanel"
+                            Storyboard.TargetProperty="(Control.Visibility)"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="NestedSelected">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="NestedInfoPanel"
+                            Storyboard.TargetProperty="(Control.Visibility)"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+            
+            <VisualStateGroup x:Name="NumericSelectedStates">
+                <VisualState x:Name="NumericUnknownSelected" />
+                <VisualState x:Name="NumericRatingSelected">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="NumericStarRater"
+                            Storyboard.TargetProperty="(Control.Visibility)"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="NumericPlayCountSelected">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="NumericStandardView"
+                            Storyboard.TargetProperty="(Control.Visibility)"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard> 
+                </VisualState>
+                <VisualState x:Name="NumericDurationSelected">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="NumericStandardView"
+                            Storyboard.TargetProperty="(Control.Visibility)"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="NumericDurationCaption"
+                            Storyboard.TargetProperty="(Control.Visibility)"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>                    
+                </VisualState>
+            </VisualStateGroup>
+
+            <VisualStateGroup x:Name="MemberSelectedStates">
+                <VisualState x:Name="MemberUnknownSelected" />
+                <VisualState x:Name="MemberPlaylistSelected">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="PlaylistMemberPicker"
+                            Storyboard.TargetProperty="(Control.Visibility)"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="MemberMixSelected">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="MixMemberPicker"
+                            Storyboard.TargetProperty="(Control.Visibility)"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <ComboBox x:Name="MixEntryType" SelectionChanged="MixEntryType_SelectionChanged" VerticalAlignment="Center">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Text="{Binding Name}"
+                            RequestedTheme="Dark"
+                            />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <AppBarButton
+                    Grid.Column="1"
+                    x:Name="RemoveMixButton"
+                    IsCompact="True"
+                    Icon="Remove"
+                    HorizontalAlignment="Center"
+                    Click="RemoveMixButton_Click"
+                    Visibility="Collapsed"
+                    />
+            </Grid>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="12" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Rectangle
+                    Width="1"
+                    Fill="{StaticResource PhoneAccentBrush}"
+                    HorizontalAlignment="Left"
+                    />
+
+                <StackPanel Grid.Column="1" x:Name="StringInfoPanel" Visibility="Collapsed">
+                    <ComboBox x:Name="StringPicker">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                Text="{Binding Name}"
+                                />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <TextBox x:Name="StringValue"
+                        Grid.Column="1"
+                        />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" x:Name="NumericInfoPanel" Visibility="Collapsed">
+                    <ComboBox x:Name="NumericPicker">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                Text="{Binding Name}"
+                                />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    
+                    <controls:StarRater x:Name="NumericStarRater"
+                        Grid.Column="1"
+                        Visibility="Collapsed"
+                        />
+
+                    <Grid x:Name="NumericStandardView" Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="NumericValue"
+                            Grid.Column="0"
+                            InputScope="Number"  
+                            />
+                        
+                        <TextBlock
+                            x:Name="NumericDurationCaption"
+                            Grid.Column="1"
+                            Visibility="Collapsed"
+                            Text="SecondsX"
+                            FontSize="{StaticResource TextStyleExtraLargeFontSize}"
+                            VerticalAlignment="Bottom"
+                            Margin="10,0,0,10"
+                            />
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" x:Name="NestedInfoPanel" Visibility="Collapsed">
+                    <StackPanel x:Name="NestedList"
+                        Orientation="Vertical"
+                        />
+                    
+                    <AppBarButton
+                        Label="Add"
+                        Icon="Add"
+                        HorizontalAlignment="Center"
+                        Click="AppBarButton_Click"
+                        />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" x:Name="RangeInfoPanel" Visibility="Collapsed">
+                    <Grid x:Name="RangeStandardView">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox x:Name="RangeValue"
+                            Grid.Column="0"
+                            InputScope="Number"
+                            Header="Within The Last"
+                            />
+
+                        <TextBlock
+                            x:Name="RangeDurationPostCaption"
+                            Grid.Column="1"
+                            Text="DaysX"
+                            FontSize="{StaticResource TextStyleExtraLargeFontSize}"
+                            VerticalAlignment="Bottom"
+                            Margin="10,0,0,10"
+                            />
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" x:Name="MemberInfoPanel" Visibility="Collapsed">
+                    <ComboBox x:Name="PlaylistMemberPicker" Visibility="Collapsed">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                Text="{Binding Name}"
+                                />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <ComboBox x:Name="MixMemberPicker" Visibility="Collapsed">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                Text="{Binding Name}"
+                                />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+            </Grid>
+
+
+
+            <!--
+            
+            <toolkit:ListPicker x:Name="BackingPicker"
+                Visibility="Collapsed"
+                ExpansionMode="FullScreenOnly"
+                SelectionChanged="BackingPicker_SelectionChanged"
+                Style="{StaticResource AccentContrastListPickerStyle}"                                
+                >
+                <toolkit:ListPicker.FullModeItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" />
+                    </DataTemplate>
+                </toolkit:ListPicker.FullModeItemTemplate>
+            </toolkit:ListPicker>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <HyperlinkButton x:Name="RootCategory"
+                    Click="RootCategoryButton_Click"
+                    HorizontalAlignment="Left"
+                    FontSize="{StaticResource PhoneFontSizeLarge}"  
+                    Foreground="{StaticResource AccentContrastBrush}"                                 
+                    />
+
+                <HyperlinkButton x:Name="DeleteMix"
+                    Grid.Column="1"                                 
+                    Click="DeleteMixButton_Click"
+                    Content="{Binding Path=LocalizedResources.MixEntryDelete, Source={StaticResource LocalizedStrings}}"                              
+                    HorizontalAlignment="Right"
+                    FontSize="{StaticResource PhoneFontSizeLarge}"
+                    Foreground="{StaticResource AccentContrastBrush}"                                 
+                    />
+            </Grid>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid x:Name="NumberInfoGrid"
+                    Grid.Column="1"
+                    Visibility="Collapsed"
+                    >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="10" />
+                    </Grid.ColumnDefinitions>
+
+                    <toolkit:ListPicker x:Name="NumberPicker"
+                        Visibility="Collapsed"
+                        ExpansionMode="FullScreenOnly"
+                        SelectionChanged="NumberPicker_SelectionChanged"
+                        Style="{StaticResource AccentContrastListPickerStyle}"                                        
+                        >
+                        <toolkit:ListPicker.FullModeItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" />
+                            </DataTemplate>
+                        </toolkit:ListPicker.FullModeItemTemplate>
+                    </toolkit:ListPicker>
+
+                    <HyperlinkButton x:Name="NumberCategory"
+                        Click="NumberCategory_Click"
+                        Foreground="{StaticResource AccentContrastBrush}"
+                        FontSize="{StaticResource PhoneFontSizeLarge}"
+                        />
+
+                    <controls:StarRater x:Name="StarValue"
+                        Grid.Column="1"
+                        StarColor="{StaticResource AccentContrastBrush}"                                        
+                        />
+
+                    <controls:NumericTextBox x:Name="NumberValue"                        
+                        Grid.Column="1"
+                        Style="{StaticResource AccentContrastTextBoxStyle}"
+                        Visibility="Collapsed"                             
+                        />
+
+                    <TextBlock x:Name="NumberCaption"                        
+                        Grid.Column="2"
+                        Foreground="{StaticResource AccentContrastBrush}"
+                        FontSize="{StaticResource PhoneFontSizeMedium}"       
+                        VerticalAlignment="Center"                               
+                        />
+                </Grid>
+
+                <Grid x:Name="StringInfoGrid"
+                    Grid.Column="1"
+                    Visibility="Collapsed"
+                    >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <toolkit:ListPicker x:Name="StringPicker"
+                        Visibility="Collapsed"
+                        ExpansionMode="FullScreenOnly"
+                        SelectionChanged="StringPicker_SelectionChanged" 
+                        Style="{StaticResource AccentContrastListPickerStyle}"                                        
+                        >
+                        <toolkit:ListPicker.FullModeItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" />
+                            </DataTemplate>
+                        </toolkit:ListPicker.FullModeItemTemplate>
+                    </toolkit:ListPicker>
+
+
+                    <HyperlinkButton x:Name="StringCategory"
+                        Click="StringCategory_Click"                                     
+                        Foreground="{StaticResource AccentContrastBrush}"                        
+                        />
+                    <TextBox x:Name="StringValue"
+                        Grid.Column="1"
+                        Style="{StaticResource AccentContrastTextBoxStyle}"                              
+                        />
+                </Grid>
+
+                <Grid x:Name="RangeInfoGrid"
+                    Grid.Column="1"
+                    Visibility="Collapsed"
+                    >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <controls:NumericTextBox x:Name="DateRangeValue"                        
+                        Grid.Column="1"
+                        Style="{StaticResource AccentContrastTextBoxStyle}"
+                        />
+
+                    <TextBlock x:Name="DateRangeCaption"                        
+                        Grid.Column="2"
+                        Foreground="{StaticResource AccentContrastBrush}"
+                        FontSize="{StaticResource PhoneFontSizeMedium}"      
+                        Text="{Binding Path=LocalizedResources.MixDateSubOptionRangeDay, Source={StaticResource LocalizedStrings}}"                               
+                        VerticalAlignment="Center"                               
+                        />
+                </Grid>
+
+                <Grid x:Name="MemberInfoGrid"
+                    Grid.Column="1"
+                    Visibility="Collapsed"
+                    >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <toolkit:ListPicker x:Name="MemberPicker"
+                        Visibility="Collapsed"
+                        ExpansionMode="FullScreenOnly"
+                        SelectionChanged="MemberPicker_SelectionChanged" 
+                        Style="{StaticResource AccentContrastListPickerStyle}"                                        
+                        >
+                        <toolkit:ListPicker.FullModeItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" />
+                            </DataTemplate>
+                        </toolkit:ListPicker.FullModeItemTemplate>
+                    </toolkit:ListPicker>
+
+                    <HyperlinkButton x:Name="MemberCategory"
+                        Click="MemberCategory_Click"                                     
+                        Foreground="{StaticResource AccentContrastBrush}"
+                        Content="Potato"                                     
+                        />
+                </Grid>
+
+                <Grid x:Name="NestedInfoGrid"
+                    Grid.Column="1"
+                    Visibility="Collapsed"
+                    >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel x:Name="NestedList"
+                        Grid.Row="0"
+                        Orientation="Vertical"
+                        />
+
+                    <HyperlinkButton x:Name="AddOption"
+                        Grid.Row="1"
+                        Click="AddOption_Click"                                     
+                        Foreground="{StaticResource AccentContrastBrush}"                        
+                        Content="+"
+                        />
+                </Grid>
+            </Grid>
+        -->
+        </StackPanel>
+    </Grid>
+</UserControl>

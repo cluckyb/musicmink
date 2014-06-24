@@ -93,6 +93,8 @@
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Models\LibraryModel.cs" />
+    <Compile Include="Models\MixModel.cs" />
+    <Compile Include="Models\MixEntryModel.cs" />
     <Compile Include="Models\PlaylistEntryModel.cs" />
     <Compile Include="Models\PlaylistModel.cs" />
     <Compile Include="Models\PlayQueueEntryModel.cs" />
@@ -109,7 +111,9 @@
     <Compile Include="Tables\ArtistTable.cs" />
     <Compile Include="Tables\BaseTable.cs" />
     <Compile Include="Tables\DatabaseManager.cs" />
+    <Compile Include="Tables\MixEntryTable.cs" />
     <Compile Include="Tables\PlaylistEntryTable.cs" />
+    <Compile Include="Tables\MixTable.cs" />
     <Compile Include="Tables\PlaylistTable.cs" />
     <Compile Include="Tables\PlayQueueEntryTable.cs" />
     <Compile Include="Tables\SongTable.cs" />

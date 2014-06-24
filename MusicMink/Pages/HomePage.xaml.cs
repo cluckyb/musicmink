@@ -44,5 +44,15 @@ namespace MusicMink.Pages
         {
             NavigationManager.Current.Navigate(NavigationLocation.ArtistList);
         }
+
+        private void HandleSearchNavigationItemTapped(object sender, TappedRoutedEventArgs e)
+        {
+
+        }
+
+        private void HandleMixesNavigationItemTapped(object sender, TappedRoutedEventArgs e)
+        {
+            NavigationManager.Current.Navigate(NavigationLocation.MixList);
+        }
     }
 }

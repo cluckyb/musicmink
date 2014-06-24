@@ -15,10 +15,12 @@ namespace MusicMink
         ArtistList,
         PlaylistList,
         SongList,
+        MixList,
 
         AlbumPage,
         ArtistPage,
         PlaylistPage,
+        MixPage,
 
         SettingsPage,
 
@@ -81,6 +83,10 @@ namespace MusicMink
                     return typeof(HomePage);
                 case NavigationLocation.ManageLibrary:
                     return typeof(ManageLibrary);
+                case NavigationLocation.MixList:
+                    return typeof(MixList);
+                case NavigationLocation.MixPage:
+                    return typeof(MixPage);
                 case NavigationLocation.PlaylistList:
                     return typeof(PlaylistList);
                 case NavigationLocation.PlaylistPage:

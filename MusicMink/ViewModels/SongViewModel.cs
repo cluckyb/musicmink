@@ -18,11 +18,14 @@ namespace MusicMink.ViewModels
             public const string Album = "Album";
             public const string AlbumName = "AlbumName";
 
+            public const string AlbumArtistName = "AlbumArtistName";
+
             public const string Artist = "Artist";
             public const string ArtistName = "ArtistName";
 
             public const string Duration = "Duration";
             public const string DurationText = "DurationText";
+            public const string DurationSeconds = "DurationSeconds";
             public const string ExtraInfoString = "ExtraInfoString";
             public const string LastPlayed = "LastPlayed";
             public const string Name = "Name";
@@ -59,8 +62,11 @@ namespace MusicMink.ViewModels
         {
             switch (e.PropertyName)
             {
-                case ArtistViewModel.Properties.Name:
+                case AlbumViewModel.Properties.Name:
                     NotifyPropertyChanged(Properties.AlbumName);
+                    break;
+                case AlbumViewModel.Properties.ArtistName:
+                    NotifyPropertyChanged(Properties.AlbumArtistName);
                     break;
             }
         }
@@ -70,15 +76,19 @@ namespace MusicMink.ViewModels
             switch (e.PropertyName)
             {
                 case SongModel.Properties.AlbumId:
+                    NotifyPropertyChanged(Properties.Album);
                     NotifyPropertyChanged(Properties.AlbumName);
+                    NotifyPropertyChanged(Properties.AlbumArtistName);
                     break;
                 case SongModel.Properties.ArtistId:
+                    NotifyPropertyChanged(Properties.Artist);
                     NotifyPropertyChanged(Properties.ArtistName);
                     break;
                 case SongModel.Properties.Duration:
                     Album.ResetLength();
                     NotifyPropertyChanged(Properties.Duration);
                     NotifyPropertyChanged(Properties.DurationText);
+                    NotifyPropertyChanged(Properties.DurationSeconds);
                     break;
                 case SongModel.Properties.SongId:
                     DebugHelper.Alert(new CallerInfo(), "SongId Shouldn't Change");
@@ -105,6 +115,8 @@ namespace MusicMink.ViewModels
                     NotifyPropertyChanged(Properties.ExtraInfoString);
                     break;
             }
+
+            LibraryViewModel.Current.AlertSongChanged(this, e.PropertyName);
         }
 
         #endregion
@@ -140,6 +152,14 @@ namespace MusicMink.ViewModels
                         _album.PropertyChanged += HandleAlbumPropertyChanged;
                     }
                 }
+            }
+        }
+
+        public string AlbumName
+        {
+            get
+            {
+                return Album.Name;
             }
         }
 
@@ -184,6 +204,14 @@ namespace MusicMink.ViewModels
             }
         }
 
+        public string AlbumArtistName
+        {
+            get
+            {
+                return Album.ArtistName;
+            }
+        }
+
         public string ArtistName
         {
             get
@@ -208,7 +236,6 @@ namespace MusicMink.ViewModels
             }
         }
 
-
         private TimeSpan? _duration;
         public TimeSpan Duration
         {
@@ -220,6 +247,14 @@ namespace MusicMink.ViewModels
                 }
 
                 return _duration.Value;
+            }
+        }
+
+        public long DurationSeconds
+        {
+            get
+            {
+                return (int) Duration.TotalSeconds;
             }
         }
 
@@ -393,7 +428,6 @@ namespace MusicMink.ViewModels
             return true;
         }
 
-
         private RelayCommand _queueSong;
         public RelayCommand QueueSong
         {
@@ -443,7 +477,6 @@ namespace MusicMink.ViewModels
         {
             return true;
         }
-
 
         private RelayCommand _editSong;
         public RelayCommand EditSong

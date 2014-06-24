@@ -41,6 +41,7 @@ namespace MusicMink.ViewModels
 
             LibraryModel.Current.AllSongs.CollectionChanged += HandleAllSongsCollectionChanged;
             LibraryModel.Current.Playlists.CollectionChanged += HandlePlaylistsCollectionChanged;
+            LibraryModel.Current.Mixes.CollectionChanged += HandleMixCollectionChanged;
 
             LibraryModel.Current.AlbumCreated += HandleLibraryModelAlbumCreated;
 
@@ -70,6 +71,17 @@ namespace MusicMink.ViewModels
             foreach (PlaylistModel newPlaylist in LibraryModel.Current.Playlists)
             {
                 LookupPlaylist(newPlaylist);
+            }
+
+            foreach (MixModel newMix in LibraryModel.Current.Mixes)
+            {
+                LookupMix(newMix);
+            }
+
+            // Need whole mix collection to exist in order to initalize everything
+            foreach (MixViewModel newMix in MixCollection)
+            {
+                newMix.Initalize();
             }
 
             perf.Trace("Playlists loaded");
@@ -114,6 +126,32 @@ namespace MusicMink.ViewModels
             {
                 PlaylistCollection.Clear();
                 PlaylistLookupMap.Clear();
+            }
+        }
+
+        private void HandleMixCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Remove ||
+                e.Action == NotifyCollectionChangedAction.Replace)
+            {
+                foreach (MixModel model in e.OldItems)
+                {
+                    MixCollection.Remove(MixLookupMap[model.MixId]);
+                    MixLookupMap.Remove(model.MixId);
+                }
+            }
+            if (e.Action == NotifyCollectionChangedAction.Add ||
+                e.Action == NotifyCollectionChangedAction.Replace)
+            {
+                foreach (MixModel model in e.NewItems)
+                {
+                    LookupMix(model);
+                }
+            }
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                MixCollection.Clear();
+                MixLookupMap.Clear();
             }
         }
 
@@ -185,6 +223,30 @@ namespace MusicMink.ViewModels
             return true;
         }
 
+
+        private RelayCommand _addNewMix;
+        public RelayCommand AddNewMix
+        {
+            get
+            {
+                if (_addNewMix == null) _addNewMix = new RelayCommand(CanExecuteAddNewMix, ExecuteAddNewMix);
+
+                return _addNewMix;
+            }
+        }
+
+        private async void ExecuteAddNewMix(object parameter)
+        {
+            AddMix addMixDialog = new AddMix();
+
+            await addMixDialog.ShowAsync();
+        }
+
+        private bool CanExecuteAddNewMix(object parameter)
+        {
+            return true;
+        }
+
         #endregion
 
         #region Collections
@@ -193,6 +255,7 @@ namespace MusicMink.ViewModels
         private Dictionary<int, AlbumViewModel> AlbumLookupMap = new Dictionary<int, AlbumViewModel>();
         private Dictionary<int, SongViewModel> SongLookupMap = new Dictionary<int, SongViewModel>();
         private Dictionary<int, PlaylistViewModel> PlaylistLookupMap = new Dictionary<int, PlaylistViewModel>();
+        private Dictionary<int, MixViewModel> MixLookupMap = new Dictionary<int, MixViewModel>();
 
         private AlphaGroupedObservableCollection<ArtistViewModel> _artistCollection = new AlphaGroupedObservableCollection<ArtistViewModel>();
         public AlphaGroupedObservableCollection<ArtistViewModel> ArtistCollection
@@ -236,6 +299,15 @@ namespace MusicMink.ViewModels
             get
             {
                 return _playlistCollection;
+            }
+        }
+
+        private ObservableCollection<MixViewModel> _mixCollection = new ObservableCollection<MixViewModel>();
+        public ObservableCollection<MixViewModel> MixCollection
+        {
+            get
+            {
+                return _mixCollection;
             }
         }
 
@@ -425,10 +497,32 @@ namespace MusicMink.ViewModels
             }
         }
 
-        internal bool AddSong(StorageProviderSong song)
+        internal bool AddSong(StorageProviderSong song, bool resetSongData)
         {
-            if (LibraryModel.Current.DoesSongExist(StorageProviderSourceToSongOriginSource(song.Origin), song.Source))
+            SongModel songFromSource = LibraryModel.Current.GetSongFromSource(StorageProviderSourceToSongOriginSource(song.Origin), song.Source);
+            if (songFromSource != null)
             {
+                if (resetSongData)
+                {
+                    SongViewModel songViewModel = LookupSong(songFromSource);
+
+                    songViewModel.Name = song.Name;
+
+                    songViewModel.ArtistName = song.Artist;
+
+                    string newAlbumName = song.Album;
+                    string newAlbumAristName = song.AlbumArtist;
+
+                    if (newAlbumName != songViewModel.Album.Name || newAlbumAristName != songViewModel.Album.ArtistName)
+                    {
+                        ArtistViewModel albumArtistViewModel = LibraryViewModel.Current.LookupArtistByName(newAlbumAristName);
+                        AlbumViewModel newAlbumViewModel = LibraryViewModel.Current.LookupAlbumByName(newAlbumName, albumArtistViewModel.ArtistId);
+
+                        songViewModel.UpdateAlbum(newAlbumViewModel);
+                    }
+
+                    songViewModel.TrackNumber = song.TrackNumber;
+                }
                 return false;
             }
 
@@ -501,13 +595,50 @@ namespace MusicMink.ViewModels
             }
         }
 
+
+        public MixViewModel LookupMixById(int mixId)
+        {
+            // check the cache, its probably there
+            if (MixLookupMap.ContainsKey(mixId))
+            {
+                return MixLookupMap[mixId];
+            }
+            else
+            {
+                Logger.Current.Log(new CallerInfo(), LogLevel.Warning, "Couldn't find mix {0} in cache", mixId);
+
+                return null;
+            }
+        }
+
+        public MixViewModel LookupMix(MixModel mix)
+        {
+            if (MixLookupMap.ContainsKey(mix.MixId))
+            {
+                return MixLookupMap[mix.MixId];
+            }
+            else
+            {
+                MixViewModel newViewModel = new MixViewModel(mix);
+
+                MixLookupMap.Add(newViewModel.MixId, newViewModel);
+                MixCollection.Add(newViewModel);
+                return newViewModel;
+            }
+        }
+
         #endregion
 
         #region Methods
 
-        internal void AddPlaylist(string p)
+        internal void AddPlaylist(string playlistName)
         {
-            LibraryModel.Current.AddPlaylist(p);
+            LibraryModel.Current.AddPlaylist(playlistName);
+        }
+
+        internal void AddMix(string mixName)
+        {
+            LibraryModel.Current.AddMix(mixName);
         }
 
         internal void DeletePlaylist(PlaylistViewModel playlist)
@@ -548,6 +679,14 @@ namespace MusicMink.ViewModels
             RemoveArtistIfNeeded(artist);
         }
 
+        internal void AlertSongChanged(SongViewModel songViewModel, string propertyName)
+        {
+            foreach (MixViewModel mix in MixCollection)
+            {
+                mix.OnSongPropertyChanged(songViewModel, propertyName);
+            }
+        }
+
         #endregion
 
         # region INotifyPropertyChanged
@@ -563,6 +702,5 @@ namespace MusicMink.ViewModels
         }
 
         #endregion
-
     }
 }

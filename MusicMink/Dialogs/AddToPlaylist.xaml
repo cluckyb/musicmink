@@ -16,11 +16,15 @@
         <ComboBox
             x:Uid="DialogAddToPlaylistComboBox"
             Name="AddComboBox"
-            ItemsSource="{Binding PlaylistCollection}">
+            ItemsSource="{Binding PlaylistCollection}"
+            >
 
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}" />
+                    <TextBlock                        
+                        Text="{Binding Name}"
+                        RequestedTheme="Dark"
+                        />
                 </DataTemplate>
             </ComboBox.ItemTemplate>            
         </ComboBox>

@@ -48,7 +48,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             
-            <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="-10,0,-10,0">
                 <AppBarButton x:Uid="PlaylistPagePlayButton"
                     Icon="Play"
                     IsEnabled="{Binding ReorderMode, ElementName=PlaylistListView, Converter={StaticResource NotBoolToReorderModeConverter}}"                                    

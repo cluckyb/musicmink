@@ -66,6 +66,8 @@ namespace MusicMinkAppLayer.Models
         private Dictionary<int, AlbumModel> albumLookupDictionary = new Dictionary<int, AlbumModel>();
         private Dictionary<int, ArtistModel> artistLookupDictionary = new Dictionary<int, ArtistModel>();
         private Dictionary<int, PlaylistModel> playlistLookupDictionary = new Dictionary<int, PlaylistModel>();
+        private Dictionary<int, MixModel> mixLookupDictionary = new Dictionary<int, MixModel>();
+
 
         private ObservableCollection<SongModel> _allSongs = new ObservableCollection<SongModel>();
         public ObservableCollection<SongModel> AllSongs
@@ -82,6 +84,15 @@ namespace MusicMinkAppLayer.Models
             get
             {
                 return _playlists;
+            }
+        }
+
+        private ObservableCollection<MixModel> _mixes = new ObservableCollection<MixModel>();
+        public ObservableCollection<MixModel> Mixes
+        {
+            get
+            {
+                return _mixes;
             }
         }
 
@@ -139,6 +150,18 @@ namespace MusicMinkAppLayer.Models
             }
 
             perfTracer.Trace("Playlists Added");
+
+            List<MixTable> allMixes = DatabaseManager.Current.FetchMixes();
+            foreach (MixTable mixEntry in allMixes)
+            {
+                MixModel mixModel = new MixModel(mixEntry);
+                Mixes.Add(mixModel);
+                mixLookupDictionary.Add(mixModel.MixId, mixModel);
+
+                mixModel.Populate();
+            }
+
+            perfTracer.Trace("Mixes Added");
         }
 
         #endregion
@@ -313,11 +336,11 @@ namespace MusicMinkAppLayer.Models
         #region Song
 
         // TODO: #18 actually use OriginSource: 
-        public bool DoesSongExist(SongOriginSource origin, string path)
+        public SongModel GetSongFromSource(SongOriginSource origin, string path)
         {
             SongModel currentTableEntry = LookupSongByPath(path);
 
-            return (currentTableEntry != null);
+            return currentTableEntry;
         }
 
         public SongModel AddNewSong(string artist, string album, string albumArtist, string title, string path, SongOriginSource origin, long duration, uint rating, uint trackNumber)
@@ -422,6 +445,39 @@ namespace MusicMinkAppLayer.Models
             }
 
             DatabaseManager.Current.DeletePlaylist(playlistId);
+        }
+
+        #endregion
+
+        #region Mixes
+
+        public void AddMix(string name)
+        {
+            MixTable table = new MixTable(name, false, 0, MixSortOrder.None, false);
+
+            DatabaseManager.Current.AddMix(table);
+
+            MixModel mixModel = new MixModel(table);
+            Mixes.Add(mixModel);
+            mixLookupDictionary.Add(mixModel.MixId, mixModel);
+
+            MixEntryTable entryTable = new MixEntryTable(mixModel.MixId, string.Empty, true, MixType.None);
+            DatabaseManager.Current.AddMixEntry(entryTable);
+
+            mixModel.AddEntry(entryTable);
+        }
+
+        public void DeleteMix(int mixId)
+        {
+            if (mixLookupDictionary.ContainsKey(mixId))
+            {
+                MixModel mixModel = mixLookupDictionary[mixId];
+
+                Mixes.Remove(mixModel);
+                mixLookupDictionary.Remove(mixId);
+            }
+
+            DatabaseManager.Current.DeletePlaylist(mixId);
         }
 
         #endregion

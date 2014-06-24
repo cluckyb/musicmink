@@ -94,7 +94,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Collections\AlphaGroupedObserveableCollection.cs" />
+    <Compile Include="Collections\LimitedList.cs" />
     <Compile Include="Collections\ObservableCopyCollection.cs" />
+    <Compile Include="Collections\SelectableOption.cs" />
     <Compile Include="Collections\SortedList.cs" />
     <Compile Include="Common\ListRestoreHelper.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
@@ -114,6 +116,9 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\NumericTransformConverter.cs" />
     <Compile Include="Design\SongDesignStub.cs" />
+    <Compile Include="Dialogs\AddMix.xaml.cs">
+      <DependentUpon>AddMix.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\AddPlaylist.xaml.cs">
       <DependentUpon>AddPlaylist.xaml</DependentUpon>
     </Compile>
@@ -126,6 +131,9 @@
     <Compile Include="Dialogs\EditPlaylist.xaml.cs">
       <DependentUpon>EditPlaylist.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\EditMix.xaml.cs">
+      <DependentUpon>EditMix.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\EditSong.xaml.cs">
       <DependentUpon>EditSong.xaml</DependentUpon>
     </Compile>
@@ -134,6 +142,12 @@
     </Compile>
     <Compile Include="ListItems\ArtistListItem.xaml.cs">
       <DependentUpon>ArtistListItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ListItems\MixEntry.xaml.cs">
+      <DependentUpon>MixEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ListItems\MixListItem.xaml.cs">
+      <DependentUpon>MixListItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="ListItems\PlaylistListItem.xaml.cs">
       <DependentUpon>PlaylistListItem.xaml</DependentUpon>
@@ -162,6 +176,12 @@
       <DependentUpon>AlbumList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\BasePage.cs" />
+    <Compile Include="Pages\MixList.xaml.cs">
+      <DependentUpon>MixList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MixPage.xaml.cs">
+      <DependentUpon>MixPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\PlaylistPage.xaml.cs">
       <DependentUpon>PlaylistPage.xaml</DependentUpon>
     </Compile>
@@ -189,6 +209,15 @@
     <Compile Include="ViewModels\ArtistViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\LibraryViewModel.cs" />
+    <Compile Include="ViewModels\MixEvaluators\IMixEvaluator.cs" />
+    <Compile Include="ViewModels\MixEvaluators\RangeMixEvaluator.cs" />
+    <Compile Include="ViewModels\MixEvaluators\NoneMixEvaluator.cs" />
+    <Compile Include="ViewModels\MixEvaluators\NestedMixEvaluator.cs" />
+    <Compile Include="ViewModels\MixEvaluators\MemberMixEvaluator.cs" />
+    <Compile Include="ViewModels\MixEvaluators\StringMixEvaulator.cs" />
+    <Compile Include="ViewModels\MixEvaluators\NumericMixEvaluator.cs" />
+    <Compile Include="ViewModels\MixViewModel.cs" />
+    <Compile Include="ViewModels\MixEntryViewModel.cs" />
     <Compile Include="ViewModels\PlaylistEntryViewModel.cs" />
     <Compile Include="ViewModels\PlaylistViewModel.cs" />
     <Compile Include="ViewModels\PlayQueueEntryViewModel.cs" />
@@ -223,6 +252,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialogs\AddMix.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\AddPlaylist.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -239,6 +272,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialogs\EditMix.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\EditSong.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -248,6 +285,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ListItems\ArtistListItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ListItems\MixEntry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ListItems\MixListItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -276,6 +321,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\AlbumList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MixList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MixPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

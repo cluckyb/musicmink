@@ -465,4 +465,187 @@
   <data name="SettingsLastFMStatusLoggingIn.Text" xml:space="preserve">
     <value>LastFM Status: Logging In...</value>
   </data>
+  <data name="AddMixTextBox.Header" xml:space="preserve">
+    <value>Mix Name</value>
+  </data>
+  <data name="DialogAddMix.PrimaryButtonText" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="DialogAddMix.SecondaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DialogAddMix.Title" xml:space="preserve">
+    <value>New Mix</value>
+  </data>
+  <data name="DialogAddToPlaylistComboBox.PlaceholderText" xml:space="preserve">
+    <value>Pick a Playlist</value>
+  </data>
+  <data name="DialogEditMix.PrimaryButtonText" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="DialogEditMix.SecondaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DialogEditMix.Title" xml:space="preserve">
+    <value>Edit Mix</value>
+  </data>
+  <data name="DialogEditMixDeleteCheckBox.Content" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DialogEditMixDeleteConfirmCheckBox.Content" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="DialogEditMixHiddenCheckBox.Content" xml:space="preserve">
+    <value>Keep Hidden</value>
+  </data>
+  <data name="DialogEditMixLimitSongs.Text" xml:space="preserve">
+    <value>Songs</value>
+  </data>
+  <data name="DialogEditMixLimitTextBox.Header" xml:space="preserve">
+    <value>Limit To</value>
+  </data>
+  <data name="DialogEditMixNameTextBox.Header" xml:space="preserve">
+    <value>Mix Name</value>
+  </data>
+  <data name="DialogEditMixSortOrderComboBox.Header" xml:space="preserve">
+    <value>Sort Direction</value>
+  </data>
+  <data name="DialogEditMixSortTypeComboBox.Header" xml:space="preserve">
+    <value>Sort By</value>
+  </data>
+  <data name="DialogMixSongNameTextBox.Header" xml:space="preserve">
+    <value>Mix Name</value>
+  </data>
+  <data name="EditMixEditOrderPropertyAlbum" xml:space="preserve">
+    <value>Album Name</value>
+  </data>
+  <data name="EditMixEditOrderPropertyAlbumArtist" xml:space="preserve">
+    <value>Album Artist Name</value>
+  </data>
+  <data name="EditMixEditOrderPropertyArtist" xml:space="preserve">
+    <value>Artist Name</value>
+  </data>
+  <data name="EditMixEditOrderPropertyDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="EditMixEditOrderPropertyDirectionAscending" xml:space="preserve">
+    <value>Ascending</value>
+  </data>
+  <data name="EditMixEditOrderPropertyDirectionDescending" xml:space="preserve">
+    <value>Descending</value>
+  </data>
+  <data name="EditMixEditOrderPropertyDuration" xml:space="preserve">
+    <value>Track Length</value>
+  </data>
+  <data name="EditMixEditOrderPropertyLastPlayed" xml:space="preserve">
+    <value>Last Played</value>
+  </data>
+  <data name="EditMixEditOrderPropertyPlayCount" xml:space="preserve">
+    <value>Play Count</value>
+  </data>
+  <data name="EditMixEditOrderPropertyRating" xml:space="preserve">
+    <value>Rating</value>
+  </data>
+  <data name="EditMixEditOrderPropertyTrackName" xml:space="preserve">
+    <value>Track Name</value>
+  </data>
+  <data name="HomePageMixesTile.Text" xml:space="preserve">
+    <value>Mixes</value>
+  </data>
+  <data name="HomePageSearchTile.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="MixListAddButton.Label" xml:space="preserve">
+    <value>Add Mix</value>
+  </data>
+  <data name="MixListHeader.Text" xml:space="preserve">
+    <value>Mixes</value>
+  </data>
+  <data name="MixPageCircularErrorMessage.Text" xml:space="preserve">
+    <value>This mix contains a circular reference. It either depends on itself or depends on another mix that contains a circular reference and as such cannot be used.</value>
+  </data>
+  <data name="MixPageEditButton.Label" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="MixPagePlayButton.Label" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="MixPageQueueButton.Label" xml:space="preserve">
+    <value>Queue</value>
+  </data>
+  <data name="MixPageShuffleButton.Label" xml:space="preserve">
+    <value>Shuffle</value>
+  </data>
+  <data name="UnknownMixString" xml:space="preserve">
+    <value>Unnamed Mix</value>
+  </data>
+  <data name="MixEntryMixTypeAlbum" xml:space="preserve">
+    <value>Album Name</value>
+  </data>
+  <data name="MixEntryMixTypeAlbumArtist" xml:space="preserve">
+    <value>Album Artist Name</value>
+  </data>
+  <data name="MixEntryMixTypeAll" xml:space="preserve">
+    <value>ALL of the Following</value>
+  </data>
+  <data name="MixEntryMixTypeAny" xml:space="preserve">
+    <value>ANY of the Following</value>
+  </data>
+  <data name="MixEntryMixTypeArtist" xml:space="preserve">
+    <value>Artist Name</value>
+  </data>
+  <data name="MixEntryMixTypeLastPlayed" xml:space="preserve">
+    <value>Last Played</value>
+  </data>
+  <data name="MixEntryMixTypeLength" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="MixEntryMixTypeMixMember" xml:space="preserve">
+    <value>Is in the Mix</value>
+  </data>
+  <data name="MixEntryMixTypeNone" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="MixEntryMixTypeNot" xml:space="preserve">
+    <value>NONE of the Following</value>
+  </data>
+  <data name="MixEntryMixTypePlayCount" xml:space="preserve">
+    <value>Play Count</value>
+  </data>
+  <data name="MixEntryMixTypePlaylistMember" xml:space="preserve">
+    <value>Is in the Playlist</value>
+  </data>
+  <data name="MixEntryMixTypeRating" xml:space="preserve">
+    <value>Track Rating</value>
+  </data>
+  <data name="MixEntryMixTypeTrack" xml:space="preserve">
+    <value>Song Name</value>
+  </data>
+  <data name="MixEntryNumericTypeEqual" xml:space="preserve">
+    <value>Equal To</value>
+  </data>
+  <data name="MixEntryNumericTypeLessThan" xml:space="preserve">
+    <value>Less Than or Equal To</value>
+  </data>
+  <data name="MixEntryNumericTypeMoreThan" xml:space="preserve">
+    <value>Greater Than or Equal To</value>
+  </data>
+  <data name="MixEntryNumericTypeStrictlyLessThan" xml:space="preserve">
+    <value>Less Than</value>
+  </data>
+  <data name="MixEntryNumericTypeStrictlyMoreThan" xml:space="preserve">
+    <value>Greater Than</value>
+  </data>
+  <data name="MixEntryStringTypeContains" xml:space="preserve">
+    <value>Contains</value>
+  </data>
+  <data name="MixEntryStringTypeEndsWith" xml:space="preserve">
+    <value>Ends With</value>
+  </data>
+  <data name="MixEntryStringTypeEquals" xml:space="preserve">
+    <value>Equals</value>
+  </data>
+  <data name="MixEntryStringTypeStartsWith" xml:space="preserve">
+    <value>Starts With</value>
+  </data>
 </root>
