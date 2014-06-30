@@ -3,12 +3,15 @@ using MusicMinkAppLayer.Diagnostics;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.System.Threading;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+
+using System.Reflection;
 
 /*
  * GLOBAL TODO LIST:
@@ -74,9 +77,9 @@ namespace MusicMink
             Logger.Current.Log(new CallerInfo(), LogLevel.Info, "App launched");
 
             PerfTracer pt = new PerfTracer("Startup Perf");
+            LibraryViewModel.Current.Initalize();
 
             UpdateTheme();
-            LibraryViewModel.Current.Initalize();
 
             pt.Trace("LibraryViewModelInitalized");
 
@@ -134,6 +137,10 @@ namespace MusicMink
 
             // Ensure the current window is active
             Window.Current.Activate();
+
+            // TODO: need to do this async to get load times down
+            LibraryViewModel.Current.PostInitalize();
+
 
             pt.Trace("Startup Done");
         }

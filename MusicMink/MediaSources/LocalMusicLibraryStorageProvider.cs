@@ -14,6 +14,8 @@ namespace MusicMink.MediaSources
 
         private bool isCanceled = false;
 
+        private List<string> RealMusicProperties = new List<string>(){"System.Music.Artist"};
+
         public async Task SyncStorageSolution()
         {
             await LoadFolder(KnownFolders.MusicLibrary);
@@ -56,10 +58,24 @@ namespace MusicMink.MediaSources
                 StorageItemContentProperties fileProperties = file.Properties;
 
                 MusicProperties musicProperties = await fileProperties.GetMusicPropertiesAsync();
-                
+
+                IDictionary<string, object> artistProperties = await fileProperties.RetrievePropertiesAsync(RealMusicProperties);
+
+                object artists = null;
+                artistProperties.TryGetValue("System.Music.Artist", out artists);
+
+                string[] artistsAsArray = DebugHelper.CastAndAssert<string[]>(artists);
+
+                string artistName = string.Empty;
+
+                if (artistsAsArray != null && artistsAsArray.Length > 0)
+                {
+                    artistName = artistsAsArray[0];
+                }
+
                 if (this.TrackScanned != null)
                 {
-                    this.TrackScanned(this, new TrackScannedEventArgs(new StorageProviderSong(file.Path, musicProperties)));
+                    this.TrackScanned(this, new TrackScannedEventArgs(new StorageProviderSong(file.Path, musicProperties, artistName)));
                 }
             }
         }

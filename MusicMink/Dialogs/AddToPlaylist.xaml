@@ -9,7 +9,6 @@
     mc:Ignorable="d"
     PrimaryButtonClick="HandleContentDialogPrimaryButtonClick"
     SecondaryButtonClick="HandleContentDialogSecondaryButtonClick"
-    RequestedTheme="Dark"    
     >
 
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -23,7 +22,6 @@
                 <DataTemplate>
                     <TextBlock                        
                         Text="{Binding Name}"
-                        RequestedTheme="Dark"
                         />
                 </DataTemplate>
             </ComboBox.ItemTemplate>            

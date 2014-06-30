@@ -648,4 +648,16 @@
   <data name="MixEntryStringTypeStartsWith" xml:space="preserve">
     <value>Starts With</value>
   </data>
+  <data name="MixListShowHiddenButton.Label" xml:space="preserve">
+    <value>Show Hidden</value>
+  </data>
+  <data name="MixEntryNumbericDurationCaption.Text" xml:space="preserve">
+    <value>Seconds</value>
+  </data>
+  <data name="MixEntryRangeDurationCaption.Text" xml:space="preserve">
+    <value>Days</value>
+  </data>
+  <data name="MixEntryRangeValueTextBox.Header" xml:space="preserve">
+    <value>Within The Last</value>
+  </data>
 </root>

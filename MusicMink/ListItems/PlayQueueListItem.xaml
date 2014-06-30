@@ -115,6 +115,7 @@
                     HorizontalAlignment="Center"
                     Symbol="Audio"
                     Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Foreground="{ThemeResource PlayerControlForegroundColor}"
                     />
                 
                 <TextBlock
@@ -189,36 +190,36 @@
                     <AppBarButton x:Uid="QueueItemPlayRoundButton"
                         Grid.Column="0"                             
                         Icon="Play"
-                        RequestedTheme="Light"
                         Command="{Binding PlayFromHere}"                                  
+                        Style="{StaticResource PlayerControlAppBarButtonStyle}"                                  
                         />
 
                     <AppBarButton x:Uid="QueueItemQueueRoundButton"
                         Grid.Column="1"                             
                         Icon="Clock"
-                        RequestedTheme="Light"
                         Command="{Binding Song.QueueSong}"                                  
+                        Style="{StaticResource PlayerControlAppBarButtonStyle}"                                  
                         />
 
                     <AppBarButton x:Uid="QueueItemAddRoundButton"
                         Grid.Column="2"                             
                         Icon="List"
-                        RequestedTheme="Light"  
                         Command="{Binding Song.AddSongToPlaylist}"
+                        Style="{StaticResource PlayerControlAppBarButtonStyle}"                                  
                         />
 
                     <AppBarButton x:Uid="QueueItemEditRoundButton"
                         Grid.Column="3"
                         Icon="Edit"
-                        RequestedTheme="Light"
                         Command="{Binding Song.EditSong}"
+                        Style="{StaticResource PlayerControlAppBarButtonStyle}"                                  
                         />
 
                     <AppBarButton x:Uid="QueueItemRemoveRoundButton"
                         Grid.Column="4"                             
                         Icon="Delete"
-                        RequestedTheme="Light"  
-                        Command="{Binding RemoveFromQueue}"                                  
+                        Command="{Binding RemoveFromQueue}"      
+                        Style="{StaticResource PlayerControlAppBarButtonStyle}"                                  
                         />                    
                 </Grid>
             </Grid>

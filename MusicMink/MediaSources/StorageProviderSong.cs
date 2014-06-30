@@ -21,13 +21,16 @@ namespace MusicMink.MediaSources
         public uint Rating { get; private set; }
         public string Source { get; private set; }
         public uint TrackNumber { get; private set; }
-        public StorageProviderSource Origin { get; private set; } 
+        public StorageProviderSource Origin { get; private set; }
 
-        public StorageProviderSong(string path, MusicProperties properties)
+        // TODO: this better
+        public bool IsDifferent { get; private set; } 
+
+        public StorageProviderSong(string path, MusicProperties properties, string artistName)
         {
             Album = properties.Album;
-            AlbumArtist = (properties.AlbumArtist == string.Empty ? properties.Artist : properties.AlbumArtist);
-            Artist = properties.Artist;
+            AlbumArtist = (properties.AlbumArtist == string.Empty ? artistName : properties.AlbumArtist);
+            Artist = artistName; // For some reason this is AlbumArtist instead of artist, so we need to get the artist on our own
             Duration = properties.Duration;
             Name = properties.Title;
             PlayCount = 0;
@@ -35,6 +38,7 @@ namespace MusicMink.MediaSources
             Source = path;
             TrackNumber = properties.TrackNumber;
             Origin = StorageProviderSource.Device;
+            IsDifferent = artistName != properties.Artist;
         }
     }
 }

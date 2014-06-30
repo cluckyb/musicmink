@@ -75,6 +75,197 @@
                 </Setter>
             </Style>
 
+            <SolidColorBrush x:Key="PlayerControlAppBarItemBackgroundThemeBrush" Color="Transparent" />
+            <SolidColorBrush x:Key="PlayerControlAppBarItemDisabledForegroundThemeBrush" Color="#66000000" />
+            <SolidColorBrush x:Key="PlayerControlAppBarItemForegroundThemeBrush" Color="Black" />
+            <SolidColorBrush x:Key="PlayerControlAppBarItemPressedForegroundThemeBrush" Color="White" />
+
+            <SolidColorBrush x:Key="PlayerControlAppBarToggleButtonCheckedBackgroundThemeBrush" Color="#FF000000" />
+            <SolidColorBrush x:Key="PlayerControlAppBarToggleButtonCheckedBorderThemeBrush" Color="#FF000000" />
+            <SolidColorBrush x:Key="PlayerControlAppBarToggleButtonCheckedForegroundThemeBrush" Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="PlayerControlAppBarToggleButtonCheckedDisabledBackgroundThemeBrush" Color="#66000000" />
+            <SolidColorBrush x:Key="PlayerControlAppBarToggleButtonCheckedDisabledBorderThemeBrush" Color="Transparent" />
+            <SolidColorBrush x:Key="PlayerControlAppBarToggleButtonCheckedDisabledForegroundThemeBrush" Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="PlayerControlAppBarToggleButtonCheckedPressedBackgroundThemeBrush" Color="Transparent" />
+            <SolidColorBrush x:Key="PlayerControlAppBarToggleButtonCheckedPressedBorderThemeBrush" Color="#FF000000" />
+            <SolidColorBrush x:Key="PlayerControlAppBarToggleButtonCheckedPressedForegroundThemeBrush" Color="#FF000000" />
+
+            <Style x:Key="PlayerControlAppBarButtonStyle" TargetType="AppBarButton">
+                <Setter Property="Foreground" Value="{StaticResource PlayerControlAppBarItemForegroundThemeBrush}"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="AppBarButton">
+                            <StackPanel x:Name="LayoutRoot" Background="Transparent" Width="80">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="ApplicationViewStates">
+                                        <VisualState x:Name="FullSize"/>
+                                        <VisualState x:Name="Compact">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="TextLabel">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Storyboard.TargetName="LayoutRoot">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="48"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="Pressed">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="Ellipse">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarItemForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="Ellipse">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarItemForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarItemPressedForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="Ellipse">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarItemDisabledForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarItemDisabledForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="TextLabel">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarItemDisabledForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Grid HorizontalAlignment="Center" Height="38.5" Margin="0,12,0,4" Width="38.5">
+                                    <Ellipse x:Name="Ellipse" Fill="{StaticResource PlayerControlAppBarItemBackgroundThemeBrush}" Height="38.5" Stroke="{StaticResource PlayerControlAppBarItemForegroundThemeBrush}" StrokeThickness="2.5" UseLayoutRounding="False" Width="38.5"/>
+                                    <Grid x:Name="ContentRoot" Background="Transparent">
+                                        <ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                    </Grid>
+                                </Grid>
+                                <TextBlock x:Name="TextLabel" Foreground="{StaticResource PlayerControlAppBarItemForegroundThemeBrush}" FontSize="9.5" FontFamily="{TemplateBinding FontFamily}" Margin="0,0,0,10.5" TextAlignment="Center" TextWrapping="Wrap" Text="{TemplateBinding Label}" Width="70.5"/>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="PlayerControlAppBarToggleButtonStyle" TargetType="AppBarToggleButton">
+                <Setter Property="Foreground" Value="{StaticResource PlayerControlAppBarItemForegroundThemeBrush}"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="AppBarToggleButton">
+                            <StackPanel x:Name="LayoutRoot" Background="Transparent" Width="80">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="ApplicationViewStates">
+                                        <VisualState x:Name="FullSize"/>
+                                        <VisualState x:Name="Compact">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="TextLabel">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Storyboard.TargetName="LayoutRoot">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="48"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="Pressed">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="Ellipse">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarItemForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="Ellipse">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarItemForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarItemPressedForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="Ellipse">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarItemDisabledForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarItemDisabledForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="TextLabel">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarItemDisabledForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Checked">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="Ellipse">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarToggleButtonCheckedBorderThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="Ellipse">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarToggleButtonCheckedBackgroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarToggleButtonCheckedForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="CheckedPressed">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="Ellipse">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarToggleButtonCheckedPressedBorderThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="Ellipse">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarToggleButtonCheckedPressedBackgroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarToggleButtonCheckedPressedForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="CheckedDisabled">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="Ellipse">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarToggleButtonCheckedDisabledBorderThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="Ellipse">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarToggleButtonCheckedDisabledBackgroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarToggleButtonCheckedDisabledForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="TextLabel">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PlayerControlAppBarItemDisabledForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Grid HorizontalAlignment="Center" Height="38.5" Margin="0,11,0,4" Width="38.5">
+                                    <Ellipse x:Name="Ellipse" Fill="{StaticResource PlayerControlAppBarItemBackgroundThemeBrush}" Height="38.5" Stroke="{StaticResource PlayerControlAppBarItemForegroundThemeBrush}" StrokeThickness="2.5" UseLayoutRounding="False" Width="38.5"/>
+                                    <Grid x:Name="ContentRoot" Background="Transparent">
+                                        <ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                    </Grid>
+                                </Grid>
+                                <TextBlock x:Name="TextLabel" Foreground="{StaticResource PlayerControlAppBarItemForegroundThemeBrush}" FontSize="9.5" FontFamily="{TemplateBinding FontFamily}" Margin="0,0,0,10.5" TextAlignment="Center" TextWrapping="Wrap" Text="{TemplateBinding Label}" Width="70.5"/>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <DataTemplate x:Key="StandardAlphaListHeaderTemplate">
                 <Border
                 BorderBrush="{StaticResource PhoneAccentBrush}"

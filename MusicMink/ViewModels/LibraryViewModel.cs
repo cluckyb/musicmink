@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace MusicMink.ViewModels
 {
@@ -56,10 +57,25 @@ namespace MusicMink.ViewModels
             LibraryModel.Current.AllSongs.CollectionChanged -= HandleAllSongsCollectionChanged;
         }
 
-        // Delayed constructor for once LibraryModel is loaded
         public void Initalize()
         {
+            PlayQueue.Initalize();
+        }
+
+        // Delayed constructor for once LibraryModel is loaded
+        public async Task PostInitalize()
+        {
             perf.Trace("Initalize Started");
+
+            foreach (ArtistModel newArtist in LibraryModel.Current.AllArtists)
+            {
+                LookupArtist(newArtist);
+            }
+
+            foreach (AlbumModel newAlbum in LibraryModel.Current.AllAlbums)
+            {
+                LookupAlbum(newAlbum);
+            }
 
             foreach (SongModel newSong in LibraryModel.Current.AllSongs)
             {
@@ -78,6 +94,8 @@ namespace MusicMink.ViewModels
                 LookupMix(newMix);
             }
 
+            perf.Trace("Mix Pass Done");
+
             // Need whole mix collection to exist in order to initalize everything
             foreach (MixViewModel newMix in MixCollection)
             {
@@ -85,10 +103,6 @@ namespace MusicMink.ViewModels
             }
 
             perf.Trace("Playlists loaded");
-
-            PlayQueue.Initalize();
-
-            perf.Trace("Play queue loaded");
         }
 
         # region Event Handlers
@@ -648,6 +662,12 @@ namespace MusicMink.ViewModels
             LibraryModel.Current.DeletePlaylist(playlist.PlaylistId);
         }
 
+        internal void DeleteMix(MixViewModel mix)
+        {
+            mix.IsBeingDeleted = true;
+
+            LibraryModel.Current.DeleteMix(mix.MixId);
+        }
 
         internal void AlertAlbumNameChanged(AlbumViewModel albumViewModel, string oldName)
         {

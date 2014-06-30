@@ -158,7 +158,6 @@
                     <DataTemplate>
                         <TextBlock
                             Text="{Binding Name}"
-                            RequestedTheme="Dark"
                             />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
@@ -200,6 +199,8 @@
 
                     <TextBox x:Name="StringValue"
                         Grid.Column="1"
+                        GotFocus="HandleTextBoxGotFocus"
+                        LostFocus="HandleTextBoxLostFocus"
                         />
                 </StackPanel>
 
@@ -227,13 +228,14 @@
                         <TextBox x:Name="NumericValue"
                             Grid.Column="0"
                             InputScope="Number"  
+                            GotFocus="HandleTextBoxGotFocus"
+                            LostFocus="HandleTextBoxLostFocus"                                 
                             />
                         
-                        <TextBlock
+                        <TextBlock x:Uid="MixEntryNumbericDurationCaption"
                             x:Name="NumericDurationCaption"
                             Grid.Column="1"
                             Visibility="Collapsed"
-                            Text="SecondsX"
                             FontSize="{StaticResource TextStyleExtraLargeFontSize}"
                             VerticalAlignment="Bottom"
                             Margin="10,0,0,10"
@@ -261,16 +263,17 @@
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBox x:Name="RangeValue"
+                        <TextBox x:Uid="MixEntryRangeValueTextBox"
+                            x:Name="RangeValue"
                             Grid.Column="0"
                             InputScope="Number"
-                            Header="Within The Last"
+                            GotFocus="HandleTextBoxGotFocus"
+                            LostFocus="HandleTextBoxLostFocus"
                             />
 
-                        <TextBlock
+                        <TextBlock x:Uid="MixEntryRangeDurationCaption"
                             x:Name="RangeDurationPostCaption"
                             Grid.Column="1"
-                            Text="DaysX"
                             FontSize="{StaticResource TextStyleExtraLargeFontSize}"
                             VerticalAlignment="Bottom"
                             Margin="10,0,0,10"
@@ -283,7 +286,7 @@
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock
-                                Text="{Binding Name}"
+                                    Text="{Binding Name}"
                                 />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
@@ -293,220 +296,13 @@
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock
-                                Text="{Binding Name}"
+                                    Text="{Binding Name}"
                                 />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
-
             </Grid>
-
-
-
-            <!--
-            
-            <toolkit:ListPicker x:Name="BackingPicker"
-                Visibility="Collapsed"
-                ExpansionMode="FullScreenOnly"
-                SelectionChanged="BackingPicker_SelectionChanged"
-                Style="{StaticResource AccentContrastListPickerStyle}"                                
-                >
-                <toolkit:ListPicker.FullModeItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" />
-                    </DataTemplate>
-                </toolkit:ListPicker.FullModeItemTemplate>
-            </toolkit:ListPicker>
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-
-                <HyperlinkButton x:Name="RootCategory"
-                    Click="RootCategoryButton_Click"
-                    HorizontalAlignment="Left"
-                    FontSize="{StaticResource PhoneFontSizeLarge}"  
-                    Foreground="{StaticResource AccentContrastBrush}"                                 
-                    />
-
-                <HyperlinkButton x:Name="DeleteMix"
-                    Grid.Column="1"                                 
-                    Click="DeleteMixButton_Click"
-                    Content="{Binding Path=LocalizedResources.MixEntryDelete, Source={StaticResource LocalizedStrings}}"                              
-                    HorizontalAlignment="Right"
-                    FontSize="{StaticResource PhoneFontSizeLarge}"
-                    Foreground="{StaticResource AccentContrastBrush}"                                 
-                    />
-            </Grid>
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <Grid x:Name="NumberInfoGrid"
-                    Grid.Column="1"
-                    Visibility="Collapsed"
-                    >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="10" />
-                    </Grid.ColumnDefinitions>
-
-                    <toolkit:ListPicker x:Name="NumberPicker"
-                        Visibility="Collapsed"
-                        ExpansionMode="FullScreenOnly"
-                        SelectionChanged="NumberPicker_SelectionChanged"
-                        Style="{StaticResource AccentContrastListPickerStyle}"                                        
-                        >
-                        <toolkit:ListPicker.FullModeItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" />
-                            </DataTemplate>
-                        </toolkit:ListPicker.FullModeItemTemplate>
-                    </toolkit:ListPicker>
-
-                    <HyperlinkButton x:Name="NumberCategory"
-                        Click="NumberCategory_Click"
-                        Foreground="{StaticResource AccentContrastBrush}"
-                        FontSize="{StaticResource PhoneFontSizeLarge}"
-                        />
-
-                    <controls:StarRater x:Name="StarValue"
-                        Grid.Column="1"
-                        StarColor="{StaticResource AccentContrastBrush}"                                        
-                        />
-
-                    <controls:NumericTextBox x:Name="NumberValue"                        
-                        Grid.Column="1"
-                        Style="{StaticResource AccentContrastTextBoxStyle}"
-                        Visibility="Collapsed"                             
-                        />
-
-                    <TextBlock x:Name="NumberCaption"                        
-                        Grid.Column="2"
-                        Foreground="{StaticResource AccentContrastBrush}"
-                        FontSize="{StaticResource PhoneFontSizeMedium}"       
-                        VerticalAlignment="Center"                               
-                        />
-                </Grid>
-
-                <Grid x:Name="StringInfoGrid"
-                    Grid.Column="1"
-                    Visibility="Collapsed"
-                    >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <toolkit:ListPicker x:Name="StringPicker"
-                        Visibility="Collapsed"
-                        ExpansionMode="FullScreenOnly"
-                        SelectionChanged="StringPicker_SelectionChanged" 
-                        Style="{StaticResource AccentContrastListPickerStyle}"                                        
-                        >
-                        <toolkit:ListPicker.FullModeItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" />
-                            </DataTemplate>
-                        </toolkit:ListPicker.FullModeItemTemplate>
-                    </toolkit:ListPicker>
-
-
-                    <HyperlinkButton x:Name="StringCategory"
-                        Click="StringCategory_Click"                                     
-                        Foreground="{StaticResource AccentContrastBrush}"                        
-                        />
-                    <TextBox x:Name="StringValue"
-                        Grid.Column="1"
-                        Style="{StaticResource AccentContrastTextBoxStyle}"                              
-                        />
-                </Grid>
-
-                <Grid x:Name="RangeInfoGrid"
-                    Grid.Column="1"
-                    Visibility="Collapsed"
-                    >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <controls:NumericTextBox x:Name="DateRangeValue"                        
-                        Grid.Column="1"
-                        Style="{StaticResource AccentContrastTextBoxStyle}"
-                        />
-
-                    <TextBlock x:Name="DateRangeCaption"                        
-                        Grid.Column="2"
-                        Foreground="{StaticResource AccentContrastBrush}"
-                        FontSize="{StaticResource PhoneFontSizeMedium}"      
-                        Text="{Binding Path=LocalizedResources.MixDateSubOptionRangeDay, Source={StaticResource LocalizedStrings}}"                               
-                        VerticalAlignment="Center"                               
-                        />
-                </Grid>
-
-                <Grid x:Name="MemberInfoGrid"
-                    Grid.Column="1"
-                    Visibility="Collapsed"
-                    >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <toolkit:ListPicker x:Name="MemberPicker"
-                        Visibility="Collapsed"
-                        ExpansionMode="FullScreenOnly"
-                        SelectionChanged="MemberPicker_SelectionChanged" 
-                        Style="{StaticResource AccentContrastListPickerStyle}"                                        
-                        >
-                        <toolkit:ListPicker.FullModeItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" />
-                            </DataTemplate>
-                        </toolkit:ListPicker.FullModeItemTemplate>
-                    </toolkit:ListPicker>
-
-                    <HyperlinkButton x:Name="MemberCategory"
-                        Click="MemberCategory_Click"                                     
-                        Foreground="{StaticResource AccentContrastBrush}"
-                        Content="Potato"                                     
-                        />
-                </Grid>
-
-                <Grid x:Name="NestedInfoGrid"
-                    Grid.Column="1"
-                    Visibility="Collapsed"
-                    >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-
-                    <StackPanel x:Name="NestedList"
-                        Grid.Row="0"
-                        Orientation="Vertical"
-                        />
-
-                    <HyperlinkButton x:Name="AddOption"
-                        Grid.Row="1"
-                        Click="AddOption_Click"                                     
-                        Foreground="{StaticResource AccentContrastBrush}"                        
-                        Content="+"
-                        />
-                </Grid>
-            </Grid>
-        -->
         </StackPanel>
     </Grid>
 </UserControl>

@@ -1,8 +1,10 @@
 ﻿using MusicMink.ListItems;
 using MusicMink.ViewModels;
+using MusicMinkAppLayer.Diagnostics;
 using System;
 using Windows.Graphics.Display;
 using Windows.Phone.UI.Input;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
@@ -63,6 +65,8 @@ namespace MusicMink
             NavigationManager.Current.SetRootFrame(MainContentFrame);
 
             NavigationManager.Current.Navigate(NavigationLocation.Home);
+
+            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Main page fully loaded");
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

@@ -9,7 +9,6 @@
     mc:Ignorable="d"
     PrimaryButtonClick="HandleContentDialogPrimaryButtonClick"
     SecondaryButtonClick="HandleContentDialogSecondaryButtonClick"
-    RequestedTheme="Dark"
     >
 
     <StackPanel

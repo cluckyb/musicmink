@@ -5,10 +5,33 @@
     xmlns:local="using:MusicMink.Pages"
     xmlns:items="using:MusicMink.ListItems"
     xmlns:dialog="using:MusicMink.Dialogs"
+    xmlns:converters="using:MusicMink.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    
+    <Page.Resources>
+        <Style x:Key="EmptyStyle" TargetType="ListViewItem">
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NullStyle" TargetType="ListViewItem"/>
+
+
+        <converters:MixItemStyleSelector x:Key="HideHiddenMixItemStyleSelector" EmptyStyle="{StaticResource EmptyStyle}" />
+
+        <converters:MixItemStyleSelector x:Key="ShowHiddenMixItemStyleSelector" EmptyStyle="{StaticResource NullStyle}" />
+
+        <converters:BoolToObjectConverter x:Key="ToggleStatusToStyleSelector" ValueIfFalse="{StaticResource HideHiddenMixItemStyleSelector}" ValueIfTrue="{StaticResource ShowHiddenMixItemStyleSelector}" />
+    </Page.Resources>
 
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
@@ -33,10 +56,16 @@
                 x:Name="ZoomedInListView"
                 Grid.Row="0"                      
                 ItemsSource="{Binding MixCollection}"
+                ItemContainerStyleSelector="{Binding IsChecked, ElementName=ShowHiddenMixButton, Converter={StaticResource ToggleStatusToStyleSelector}}"
+                VerticalAlignment="Top"
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <items:MixListItem DataContext="{Binding}" />
+                        <Grid>
+                            <items:MixListItem
+                                DataContext="{Binding}"
+                                />
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -49,6 +78,10 @@
                 <AppBarButton x:Uid="MixListAddButton"
                     Icon="Add"
                     Command="{Binding AddNewMix}"                              
+                    />
+                <AppBarToggleButton x:Uid="MixListShowHiddenButton"
+                    x:Name="ShowHiddenMixButton"
+                    Icon="ShowResults"
                     />
             </StackPanel>            
         </Grid>

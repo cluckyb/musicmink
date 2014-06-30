@@ -55,54 +55,55 @@ namespace MusicMink.Dialogs
             SortOrderComboBox.SelectedItem = selectedOrderEntry;
 
             RootMixEntry.LoadEvaluator(mixToEdit.RootEvaluator);
+
+            RootMixEntry.TextBotGotFocus += HandleMixLimitTextBoxGotFocus;
+            RootMixEntry.TextBotLostFocus += HandleMixLimitTextBoxLostFocus;
         }
 
         private void HandleContentDialogPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            Mix.Name = editMixName.Text;
-
-            if (mixLimitCheckBox.IsChecked.HasValue)
+            if ((deleteMix.IsChecked.HasValue && deleteMix.IsChecked.Value) &&
+                (deleteMixConfirm.IsChecked.HasValue && deleteMixConfirm.IsChecked.Value))
             {
-                Mix.HasLimit = mixLimitCheckBox.IsChecked.Value;
+                LibraryViewModel.Current.DeleteMix(Mix);
             }
-
-            uint newMixLimit;
-
-            if (uint.TryParse(mixLimitTextBox.Text, out newMixLimit))
+            else
             {
-                Mix.Limit = newMixLimit;
+                Mix.Name = editMixName.Text;
+
+                if (mixLimitCheckBox.IsChecked.HasValue)
+                {
+                    Mix.HasLimit = mixLimitCheckBox.IsChecked.Value;
+                }
+
+                uint newMixLimit;
+
+                if (uint.TryParse(mixLimitTextBox.Text, out newMixLimit))
+                {
+                    Mix.Limit = newMixLimit;
+                }
+
+                if (mixHiddenCheckBox.IsChecked.HasValue)
+                {
+                    Mix.IsHidden = mixHiddenCheckBox.IsChecked.Value;
+                }
+
+                SelectableOption<MixSortOrder> selectedType = DebugHelper.CastAndAssert<SelectableOption<MixSortOrder>>(SortTypeComboBox.SelectedItem);
+                SelectableOption<MixSortOrder> selectedOrder = DebugHelper.CastAndAssert<SelectableOption<MixSortOrder>>(SortOrderComboBox.SelectedItem);
+
+                Mix.SortType = selectedType.Type | selectedOrder.Type;
+
+                IMixEvaluator mixEval = RootMixEntry.ConvertToEvaluator();
+                Mix.SetEvaluator(mixEval);
+
+                Mix.Reset();
             }
-
-            if (mixHiddenCheckBox.IsChecked.HasValue)
-            {
-                Mix.IsHidden = mixHiddenCheckBox.IsChecked.Value;
-            }
-
-            SelectableOption<MixSortOrder> selectedType = DebugHelper.CastAndAssert<SelectableOption<MixSortOrder>>(SortTypeComboBox.SelectedItem);
-            SelectableOption<MixSortOrder> selectedOrder = DebugHelper.CastAndAssert<SelectableOption<MixSortOrder>>(SortOrderComboBox.SelectedItem);
-
-            Mix.SortType = selectedType.Type | selectedOrder.Type;
-
-            IMixEvaluator mixEval = RootMixEntry.ConvertToEvaluator();
-            Mix.SetEvaluator(mixEval);
-
-            Mix.Reset();
         }
-
 
         private void HandleContentDialogSecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-        }
 
-        private void rootGrid_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
-        {
-
-        }
-
-        private void TextBlock_GotFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
+        }        
 
         private void HandleMixLimitTextBoxGotFocus(object sender, RoutedEventArgs e)
         {
@@ -151,37 +152,15 @@ namespace MusicMink.Dialogs
             RootScrollViewer.VerticalScrollMode = ScrollMode.Enabled;
         }
 
-        /*
-        private void HandleLowerTextBoxGotFocus(object sender, RoutedEventArgs e)
+        private void HandleDeleteMixChecked(object sender, RoutedEventArgs e)
         {
-            Transform stackPanelRestore = DebugHelper.CastAndAssert<Transform>(((TextBox)sender).TransformToVisual(rootStackPanel));
-
-            TranslateTransform shiftDown = new TranslateTransform();
-            shiftDown.Y = 90;
-
-            TransformGroup group = new TransformGroup();
-
-            group.Children.Add(DebugHelper.CastAndAssert<Transform>(stackPanelRestore.Inverse));
-            group.Children.Add(shiftDown);
-
-            rootStackPanel.RenderTransform = group;
+            deleteMixConfirm.Visibility = Visibility.Visible;
         }
 
-        private void HandleLowerTextBoxLostFocus(object sender, RoutedEventArgs e)
+        private void HandleDeleteMixUnchecked(object sender, RoutedEventArgs e)
         {
-            rootStackPanel.RenderTransform = null;
+            deleteMixConfirm.IsChecked = false;
+            deleteMixConfirm.Visibility = Visibility.Collapsed;
         }
-
-        private void HandleDeleteSongChecked(object sender, RoutedEventArgs e)
-        {
-            deleteSongConfirm.Visibility = Visibility.Visible;
-        }
-
-        private void HandleDeleteSongUnchecked(object sender, RoutedEventArgs e)
-        {
-            deleteSongConfirm.IsChecked = false;
-            deleteSongConfirm.Visibility = Visibility.Collapsed;
-        }
-        */
     }
 }

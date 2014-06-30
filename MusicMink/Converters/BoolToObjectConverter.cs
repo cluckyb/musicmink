@@ -5,8 +5,8 @@ namespace MusicMink.Converters
 {
     class BoolToObjectConverter : IValueConverter
     {
-        public bool ValueIfTrue { get; set; }
-        public bool ValueIfFalse { get; set; }
+        public object ValueIfTrue { get; set; }
+        public object ValueIfFalse { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {

@@ -68,26 +68,6 @@ namespace MusicMink.ListItems
             }
         }
 
-        private void PlayButton_Click(object sender, RoutedEventArgs e)
-        {
-            LibraryViewModel.Current.PlayQueue.PlaySong(Song);
-        }
-
-        private void QueueButton_Click(object sender, RoutedEventArgs e)
-        {
-            LibraryViewModel.Current.PlayQueue.QueueSong(Song);
-        }
-
-        private void AddToPlaylistButton_Click(object sender, RoutedEventArgs e)
-        {
-            // PopupManager.Current.OpenPopup(new AddToPlaylist((SongViewModel)this.DataContext));
-        }
-
-        private void EditButton_Click(object sender, RoutedEventArgs e)
-        {
-            // PopupManager.Current.OpenPopup(new EditSong((SongViewModel)this.DataContext));
-        }
-
         internal static void CloseExpandedEntry()
         {
             if (currentExpandedEntry != null)

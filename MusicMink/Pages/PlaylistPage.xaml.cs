@@ -52,7 +52,10 @@ namespace MusicMink.Pages
             switch (e.PropertyName)
             {
                 case PlaylistViewModel.Properties.IsBeingDeleted:
-                    Frame.GoBack();
+                    if (Playlist.IsBeingDeleted)
+                    {
+                        Frame.GoBack();
+                    }
                     break;
             }
         }

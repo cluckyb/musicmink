@@ -52,7 +52,10 @@ namespace MusicMink.Pages
             switch (e.PropertyName)
             {
                 case MixViewModel.Properties.IsBeingDeleted:
-                    Frame.GoBack();
+                    if (Mix.IsBeingDeleted)
+                    {
+                        Frame.GoBack();
+                    }
                     break;
             }
         }

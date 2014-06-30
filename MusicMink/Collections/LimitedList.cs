@@ -12,20 +12,22 @@ namespace MusicMink.Collections
         private SortedList<T> fullList;
 
         private uint _limit;
+        private bool _hasLimit;
 
-        public LimitedList(Comparer<T> sortFunction, uint limit)
+        public LimitedList(Comparer<T> sortFunction, uint limit, bool hasLimit)
             : base(sortFunction)
         {
             fullList = new SortedList<T>(sortFunction);
 
             _limit = limit;
+            _hasLimit = hasLimit;
         }
 
         protected override void InsertItem(int index, T item)
         {
             fullList.Insert(index, item);
 
-            if (this.Items.Count < _limit || _limit == 0)
+            if (this.Items.Count < _limit || !_hasLimit)
             {
                 base.InsertItem(index, item);
             }
@@ -53,10 +55,8 @@ namespace MusicMink.Collections
             base.RemoveItem(index);
             fullList.RemoveAt(index);
 
-            if (this.Items.Count < _limit && this.Items.Count < fullList.Count)
+            if (this.Items.Count < _limit && this.Items.Count < fullList.Count && _hasLimit)
             {
-                // DebugHelper.Assert(new CallerInfo(), this.Items.Count == _limit, "List should've been full");
-
                 T newValue = this.fullList[this.Items.Count];
 
                 base.InsertItem(this.Items.Count, newValue);
@@ -68,11 +68,12 @@ namespace MusicMink.Collections
             return fullList.Contains(item);
         }
 
-        internal void UpdateLimit(uint Limit)
+        internal void UpdateLimit(uint Limit, bool HasLimit)
         {
             DebugHelper.Assert(new CallerInfo(), this.Count == 0, "Updated limit on non null limited list");
 
             _limit = Limit;
+            _hasLimit = HasLimit;
         }
 
         override internal void UpdateSortFunction(Comparer<T> newSortFunction)

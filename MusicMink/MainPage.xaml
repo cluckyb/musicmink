@@ -67,13 +67,13 @@
             </Setter>
         </Style>
     </Page.Resources>
-    
+
     <Grid Margin="0">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="PlayQueueExpansionStates">
                 <VisualState x:Name="PlayQueueOut">
-                <Storyboard Completed="PlayQueueOutCompleted">
-                    <DoubleAnimation
+                    <Storyboard Completed="PlayQueueOutCompleted">
+                        <DoubleAnimation
                         Storyboard.TargetName="PlayQueueHost"
                         Storyboard.TargetProperty="Height"
                         From="125"
@@ -99,7 +99,7 @@
                         BeginTime="0"
                         Duration="0:0:0.5"
                         EnableDependentAnimation="True"
-                        />                    
+                        />
                         <DoubleAnimation
                         Storyboard.TargetName="ArrowButtonRotate"
                         Storyboard.TargetProperty="Angle"
@@ -108,7 +108,7 @@
                         BeginTime="0"
                         Duration="0:0:0.5"
                         EnableDependentAnimation="True"
-                        />                    
+                        />
                     </Storyboard>
                 </VisualState>
                 <VisualState x:Name="PlayQueueHidden">
@@ -158,7 +158,7 @@
             <RowDefinition Height="125" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
+
         <Frame
             x:Name="MainContentFrame"
             Grid.Row="1"
@@ -195,21 +195,21 @@
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
                 <AppBarButton x:Uid="PlayQueueShuffleRemaining"
                     Icon="Shuffle"
-                    RequestedTheme="Light"
                     IsEnabled="{Binding ReorderMode, ElementName=PlayqueueList, Converter={StaticResource NotBoolToReorderModeConverter}}"
                     Command="{Binding ShuffleRemaining}"                              
+                    Style="{StaticResource PlayerControlAppBarButtonStyle}"
                     />
                 <AppBarToggleButton x:Uid="PlayQueueReorder"
                     Icon="Repair"
-                    RequestedTheme="Light"
                     IsChecked="{Binding ReorderMode, ElementName=PlayqueueList, Converter={StaticResource BoolToReorderModeConverter}, Mode=TwoWay}"
                     Tapped="HandlePlayQueueReorderAppBarToggleButtonTapped"
+                    Style="{StaticResource PlayerControlAppBarToggleButtonStyle}"
                     />
                 <AppBarButton x:Uid="PlayQueueClearPlayed"
                     Icon="Upload"
-                    RequestedTheme="Light"
                     IsEnabled="{Binding ReorderMode, ElementName=PlayqueueList, Converter={StaticResource NotBoolToReorderModeConverter}}"
                     Command="{Binding ClearPlayed}"
+                    Style="{StaticResource PlayerControlAppBarButtonStyle}"
                     />
             </StackPanel>
 
@@ -226,7 +226,7 @@
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                    <listitem:PlayQueueListItem
+                        <listitem:PlayQueueListItem
                         Grid.Column="1"
                         DataContext="{Binding}"
                         />
@@ -257,11 +257,11 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                
+
                 <AppBarButton x:Name="BackButton"
                     Grid.Column="1"                             
                     Icon="Previous"
-                    RequestedTheme="Light"    
+                    Style="{StaticResource PlayerControlAppBarButtonStyle}"
                     Command="{Binding PrevPlayer}"
                     IsCompact="True"                              
                     />
@@ -269,17 +269,17 @@
                 <AppBarButton x:Name="PlayButton"
                     Grid.Column="2"                      
                     Icon="Play"
+                    Style="{StaticResource PlayerControlAppBarButtonStyle}"
                     Visibility="{Binding IsPlaying, Converter={StaticResource NotBoolToVisibilityConverter}}"
-                    RequestedTheme="Light"
                     Command="{Binding PlayPausePlayer}"                              
                     IsCompact="True"                              
                     />
-                
+
                 <AppBarButton x:Name="PauseButton"
                     Grid.Column="2"                      
                     Icon="Pause"
+                    Style="{StaticResource PlayerControlAppBarButtonStyle}"
                     Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}"
-                    RequestedTheme="Light"
                     Command="{Binding PlayPausePlayer}"                              
                     IsCompact="True"                              
                     />
@@ -287,7 +287,7 @@
                 <AppBarButton x:Name="NextButton"
                     Grid.Column="3"                             
                     Icon="Next"
-                    RequestedTheme="Light"                              
+                    Style="{StaticResource PlayerControlAppBarButtonStyle}"
                     Command="{Binding SkipPlayer}"
                     IsCompact="True"                              
                     />
@@ -380,10 +380,10 @@
                     FontStyle="Italic"
                     Text="{Binding CurrentTrack.ArtistName}"
                     TextAlignment="Center"
-                />                
-            </StackPanel>            
+                />
+            </StackPanel>
         </Grid>
-                
+
         <Button
             x:Name="PullDownArrowContainer"
             Style="{StaticResource HeaderMenuButton}"
@@ -427,35 +427,5 @@
                 Foreground="{StaticResource PlayerControlForegroundColor}"
                 />
         </Button>
-
-        <!--
-	<Grid>
-	<Grid.RowDefinitions>
-		<RowDefinition Height="20"/>
-		<RowDefinition Height="auto"/>
-		<RowDefinition Height="20"/>
-		<RowDefinition Height="auto"/>
-		<RowDefinition Height="20"/>
-		<RowDefinition Height="auto"/>
-		<RowDefinition Height="20"/>
-	</Grid.RowDefinitions>
-
-	<Grid.ColumnDefinitions>
-		<ColumnDefinition Width="10"/>
-		<ColumnDefinition Width="*"/>
-		<ColumnDefinition Width="10"/>
-		<ColumnDefinition Width="*"/>
-		<ColumnDefinition Width="10"/>
-		<ColumnDefinition Width="*"/>
-		<ColumnDefinition Width="10"/>
-	</Grid.ColumnDefinitions>
-	<Rectangle Fill="Red" Grid.Row="1" Grid.Column="1" Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource self}}"/>
-	<Rectangle Fill="Red" Grid.Row="3" Grid.Column="3" Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource self}}"/>
-	<Rectangle Fill="Red" Grid.Row="5" Grid.Column="5" Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource self}}"/>
-	</Grid>
-
-
-    	<Rectangle Fill="#FF4343BB" HorizontalAlignment="Left" Height="86" Margin="0,554,0,0" Stroke="Black" VerticalAlignment="Top" Width="400"/>
-        -->
     </Grid>
 </Page>

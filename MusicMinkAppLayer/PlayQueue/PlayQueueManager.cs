@@ -197,11 +197,18 @@ namespace MusicMinkAppLayer.PlayQueue
             // TODO: #18  Support other types
             if (trackInfo != null)
             {
-                StorageFile file = await StorageFile.GetFileFromPathAsync(trackInfo.Path);
+                try
+                {
+                    StorageFile file = await StorageFile.GetFileFromPathAsync(trackInfo.Path);
 
-                isFirstOpen = true;
-                mediaPlayer.SetFileSource(file);
-                IsActive = true;
+                    isFirstOpen = true;
+                    mediaPlayer.SetFileSource(file);
+                    IsActive = true;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Current.Log(new CallerInfo(), LogLevel.Error, "Couldn't play track {0} got message {1}", trackInfo.SongId, ex.Message);
+                }
             }
             else
             {

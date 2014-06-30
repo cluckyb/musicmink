@@ -58,6 +58,9 @@ namespace MusicMink.ListItems
         private int Depth;
         private MixEntry ParentMixEntry;
 
+        public event RoutedEventHandler TextBotGotFocus;
+        public event RoutedEventHandler TextBotLostFocus;
+
         const int MAX_DEPTH = 3;
 
         public MixEntry() : this(null, 0)
@@ -140,10 +143,32 @@ namespace MusicMink.ListItems
                         MixEntry nestedEntry = new MixEntry(this, Depth + 1);
                         nestedEntry.LoadEvaluator(mixEvaluator);
                         NestedList.Children.Add(nestedEntry);
+                        nestedEntry.TextBotGotFocus += HandleTextBoxGotFocus;
+                        nestedEntry.TextBotLostFocus += HandleTextBoxLostFocus;
                     }
 
                     return;
                 case MixType.MEMBER_TYPE:
+                    MemberMixEvaluator memberEvaluator = DebugHelper.CastAndAssert<MemberMixEvaluator>(evaluator);
+
+                    if ((mixType & MixType.SUBTYPE_MASK) == MixType.PLAYLISTMEMBER_SUBTYPE)
+                    {
+                        PlaylistViewModel playlist = LibraryViewModel.Current.LookupPlaylistById(memberEvaluator.Target);
+
+                        PlaylistMemberPicker.SelectedItem = playlist;
+                    }
+                    else if ((mixType & MixType.SUBTYPE_MASK) == MixType.MIXMEMBER_SUBTYPE)
+                    {
+                        MixViewModel mix = LibraryViewModel.Current.LookupMixById(memberEvaluator.Target);
+
+                        MixMemberPicker.SelectedItem = mix;
+                    }
+                    else
+                    {
+                        DebugHelper.Alert(new CallerInfo(), "Unexpected member type: {0}", mixType);
+                        return;
+                    }
+
                     return;
                 case MixType.RANGE_TYPE:
                     RangeMixEvaluator rangeEvaluator = DebugHelper.CastAndAssert<RangeMixEvaluator>(evaluator);
@@ -337,7 +362,12 @@ namespace MusicMink.ListItems
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            NestedList.Children.Add(new MixEntry(this, Depth + 1));
+            MixEntry nestedEntry = new MixEntry(this, Depth + 1);
+
+            nestedEntry.TextBotGotFocus += HandleTextBoxGotFocus;
+            nestedEntry.TextBotLostFocus += HandleTextBoxLostFocus;
+
+            NestedList.Children.Add(nestedEntry);
         }
 
         private void RemoveMixButton_Click(object sender, RoutedEventArgs e)
@@ -351,6 +381,22 @@ namespace MusicMink.ListItems
         private void RemoveEntry(MixEntry mixEntry)
         {
             NestedList.Children.Remove(mixEntry);
-        }   
+        }
+
+        private void HandleTextBoxGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (TextBotGotFocus != null)
+            {
+                TextBotGotFocus(sender, e);
+            }
+        }
+
+        private void HandleTextBoxLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (TextBotLostFocus != null)
+            {
+                TextBotLostFocus(sender, e);
+            }
+        }
     }
 }

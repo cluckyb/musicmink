@@ -50,7 +50,10 @@ namespace MusicMink.Pages
             switch (e.PropertyName)
             {
                 case AlbumViewModel.Properties.IsBeingDeleted:
-                    Frame.GoBack();
+                    if (Album.IsBeingDeleted)
+                    {
+                        Frame.GoBack();
+                    }
                     break;
             }
         }

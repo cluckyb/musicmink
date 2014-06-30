@@ -466,11 +466,6 @@ namespace MusicMink.ViewModels
             AddToPlaylist addToPlaylistDialog = new AddToPlaylist(this);
 
             await addToPlaylistDialog.ShowAsync();
-
-            if (addToPlaylistDialog.selectedPlaylistId != -1)
-            {
-                NavigationManager.Current.Navigate(NavigationLocation.PlaylistPage, addToPlaylistDialog.selectedPlaylistId);
-            }
         }
 
         private bool CanExecuteAddSongToPlaylist(object parameter)
@@ -550,14 +545,25 @@ namespace MusicMink.ViewModels
             IComparable c1 = t1 as IComparable;
             IComparable c2 = t2 as IComparable;
 
+            int compare = 0;
+
             if (c1 == null)
             {
                 if (c2 == null) return 0;
 
-                return (invert ? -c2.CompareTo(c1) : c2.CompareTo(c1));
+                compare = (invert ? -c2.CompareTo(c1) : c2.CompareTo(c1));
             }
 
-            return (invert ? c1.CompareTo(c2) : -c1.CompareTo(c2));
+            compare = (invert ? c1.CompareTo(c2) : -c1.CompareTo(c2));
+
+            if (compare == 0)
+            {
+                return x.SongId.CompareTo(y.SongId);
+            }
+            else
+            {
+                return compare;
+            }
         }
 
 

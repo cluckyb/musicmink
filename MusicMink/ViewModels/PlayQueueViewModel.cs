@@ -45,7 +45,10 @@ namespace MusicMink.ViewModels
             LookupDictionary.Clear();
 
             PlaybackQueue = new ObservableCopyCollection<PlayQueueEntryViewModel, PlayQueueEntryModel>(rootModel.PlaybackQueue,
-                (playQueueEntryModel) => { return new PlayQueueEntryViewModel(playQueueEntryModel); });
+                (playQueueEntryModel) =>
+                {
+                    return new PlayQueueEntryViewModel(playQueueEntryModel);
+                });
 
             foreach (PlayQueueEntryViewModel model in PlaybackQueue)
             {

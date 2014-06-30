@@ -11,16 +11,11 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Reflection;
 
-// TODO: Member
-
 // TODO: Textboxen need to pop up
-// TODO: drop down menu too long, needs color swap
 
-// TODO: Cleanup
+// TODO: enable delete
 
-// TODO: Limit on/off
-
-// TODO: Hidden
+// TODO: Cleanup?
 
 namespace MusicMink.ViewModels
 {
@@ -53,7 +48,7 @@ namespace MusicMink.ViewModels
 
             RootEvaluator = MixEntryModelToMixEvaluator(mix.RootMixEntry);
 
-            _currentSongs = new LimitedList<SongViewModel>(new SongSortGenericOrder(MixSortOrderToSongProperty(mix.SortType), MixSortOrderToIsAscending(mix.SortType)), (uint)mix.Limit);
+            _currentSongs = new LimitedList<SongViewModel>(new SongSortGenericOrder(MixSortOrderToSongProperty(mix.SortType), MixSortOrderToIsAscending(mix.SortType)), mix.Limit, mix.HasLimit);
 
             CurrentSongs.CollectionChanged += HandleCurrentSongsCollectionChanged;
 
@@ -281,6 +276,23 @@ namespace MusicMink.ViewModels
             _length = TimeSpan.MinValue;
             NotifyPropertyChanged(Properties.Length);
             NotifyPropertyChanged(Properties.LengthInfo);
+        }
+
+        private bool _isBeingDeleted = false;
+        public bool IsBeingDeleted
+        {
+            get
+            {
+                return _isBeingDeleted;
+            }
+            set
+            {
+                if (_isBeingDeleted != value)
+                {
+                    _isBeingDeleted = value;
+                    NotifyPropertyChanged(Properties.IsBeingDeleted);
+                }
+            }
         }
 
         #endregion
@@ -559,7 +571,7 @@ namespace MusicMink.ViewModels
         {
             CurrentSongs.Clear();
 
-            CurrentSongs.UpdateLimit((uint)Limit);
+            CurrentSongs.UpdateLimit((uint)Limit, HasLimit);
             CurrentSongs.UpdateSortFunction(new SongSortGenericOrder(MixSortOrderToSongProperty(SortType), MixSortOrderToIsAscending(SortType)));
 
             List<MixViewModel> oldDependentMixes = new List<MixViewModel>(DependentMixes);

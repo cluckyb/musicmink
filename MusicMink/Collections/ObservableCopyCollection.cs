@@ -43,7 +43,8 @@ namespace MusicMink.Collections
         {
             foreach (U item in baseCollection)
             {
-                this.Add(create(item));
+                T newItem = create(item);
+                this.Add(newItem);
             }
 
             baseCollection.CollectionChanged += RootCollectionChanged;

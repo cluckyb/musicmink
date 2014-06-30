@@ -87,7 +87,7 @@ namespace MusicMink.MediaSources
 
         void HandleTrackScanned(object sender, TrackScannedEventArgs e)
         {
-            if (LibraryViewModel.Current.AddSong(e.ScannedTrack))
+            if (LibraryViewModel.Current.AddSong(e.ScannedTrack, e.ScannedTrack.IsDifferent))
             {
                 SongsFound++;
             }
@@ -424,7 +424,8 @@ namespace MusicMink.MediaSources
                             {
                                 song.Rating = uint.Parse(Rating);
 
-                                song.PlayCount = uint.Parse(PlayCount);
+                                // TODO: let user toggle this
+                                // song.PlayCount = uint.Parse(PlayCount);
 
                                 DateTime realLastPlayed = new DateTime(long.Parse(LastPlayed));
 

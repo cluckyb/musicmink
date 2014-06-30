@@ -78,6 +78,24 @@ namespace MusicMinkAppLayer.Models
             }
         }
 
+        private ObservableCollection<AlbumModel> _allAlbums = new ObservableCollection<AlbumModel>();
+        public ObservableCollection<AlbumModel> AllAlbums
+        {
+            get
+            {
+                return _allAlbums;
+            }
+        }
+
+        private ObservableCollection<ArtistModel> _allArtists = new ObservableCollection<ArtistModel>();
+        public ObservableCollection<ArtistModel> AllArtists
+        {
+            get
+            {
+                return _allArtists;
+            }
+        }
+
         private ObservableCollection<PlaylistModel> _playlists = new ObservableCollection<PlaylistModel>();
         public ObservableCollection<PlaylistModel> Playlists
         {
@@ -125,6 +143,7 @@ namespace MusicMinkAppLayer.Models
             foreach (AlbumTable albumEntry in allAlbums)
             {
                 AlbumModel albumModel = new AlbumModel(albumEntry);
+                _allAlbums.Add(albumModel);
                 albumLookupDictionary.Add(albumModel.AlbumId, albumModel);
             }
 
@@ -134,6 +153,7 @@ namespace MusicMinkAppLayer.Models
             foreach (ArtistTable artistEntry in allArtists)
             {
                 ArtistModel artistModel = new ArtistModel(artistEntry);
+                _allArtists.Add(artistModel);
                 artistLookupDictionary.Add(artistModel.ArtistId, artistModel);
             }
 
@@ -230,6 +250,10 @@ namespace MusicMinkAppLayer.Models
         {
             if (artistLookupDictionary.ContainsKey(artistId))
             {
+                ArtistModel modelToRemove = artistLookupDictionary[artistId];
+
+                AllArtists.Remove(modelToRemove);
+
                 artistLookupDictionary.Remove(artistId);
             }
 
@@ -309,6 +333,7 @@ namespace MusicMinkAppLayer.Models
 
                 albumToRemove.DeleteArt();
 
+                AllAlbums.Remove(albumToRemove);
                 albumLookupDictionary.Remove(albumId);
             }
 

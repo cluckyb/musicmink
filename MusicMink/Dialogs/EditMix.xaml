@@ -11,7 +11,6 @@
     mc:Ignorable="d"
     PrimaryButtonClick="HandleContentDialogPrimaryButtonClick"
     SecondaryButtonClick="HandleContentDialogSecondaryButtonClick"
-    RequestedTheme="Dark"
     FullSizeDesired="True"
     VerticalContentAlignment="Stretch"
     x:Name="EditContentDialog"    
@@ -25,7 +24,6 @@
         x:Name="rootGrid"   
         VerticalAlignment="Stretch"
         HorizontalAlignment="Stretch"
-        Tapped="rootGrid_Tapped"
         Height="{Binding ActualHeight, ElementName=EditContentDialog, Converter={StaticResource ExtraDialogHieghtRemovalConverter}}"
         Background="{StaticResource PhoneChromeBrush}"
         >
@@ -55,7 +53,6 @@
                         <DataTemplate>
                             <TextBlock
                                 Text="{Binding Name}"
-                                RequestedTheme="Dark"
                                 />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>                    
@@ -88,7 +85,6 @@
                     </CheckBox>
 
                     <TextBox x:Uid="DialogEditMixLimitTextBox"
-                        Header="Limit To"
                         Name="mixLimitTextBox"
                         Text="{Binding Limit}"
                         Width="100"
@@ -120,6 +116,8 @@
                     <CheckBox x:Uid="DialogEditMixDeleteCheckBox"
                         Grid.Column="0"
                         Name="deleteMix"
+                        Checked="HandleDeleteMixChecked"
+                        Unchecked="HandleDeleteMixUnchecked"
                         />
 
                     <CheckBox x:Uid="DialogEditMixDeleteConfirmCheckBox"
