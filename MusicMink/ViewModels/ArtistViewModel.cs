@@ -97,7 +97,7 @@ namespace MusicMink.ViewModels
             }
         }
 
-        private SortedList<SongViewModel> _songs = new SortedList<SongViewModel>(new SongSortGenericOrder(SongViewModel.Properties.Name, false));
+        private SortedList<SongViewModel> _songs = new SortedList<SongViewModel>(new SongSortGenericOrder(SongViewModel.Properties.Name, true));
         public ObservableCollection<SongViewModel> Songs
         {
             get

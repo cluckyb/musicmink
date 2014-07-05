@@ -12,7 +12,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <converters:NumericTransformConverter x:Key="AppWidthToAlbumSectionConverter" Margin="2" Sections="2" />
+        <converters:NumericTransformConverter x:Key="AppWidthToAlbumSectionConverter" Margin="2" Sections="3" />
     </Page.Resources>
 
     <Grid x:Name="LayoutRoot">
@@ -54,7 +54,14 @@
 
             <Pivot
                 x:Name="artistPivot"
-                Grid.Row="0">
+                Grid.Row="0"
+                Margin="0"
+                >
+                <Pivot.ItemContainerStyle>
+                    <Style TargetType="PivotItem">
+                        <Setter Property="Margin" Value="0" />
+                    </Style>
+                </Pivot.ItemContainerStyle>
                 <Pivot.HeaderTemplate>
                     <DataTemplate>
                         <TextBlock
@@ -76,6 +83,7 @@
                                 <items:SongListItem
                                     DataContext="{Binding}"
                                     Width="{Binding ActualWidth, ElementName=ArtistPageSongList, Converter={StaticResource ListWidthToWorkableSectionWidthConverter}}"
+                                    ViewType="ArtistPage"
                                     />
                             </DataTemplate>
                         </ListView.ItemTemplate>

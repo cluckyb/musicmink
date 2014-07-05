@@ -13,7 +13,7 @@ namespace MusicMink.ListItems
     {
         SongList,
         AlbumPage,
-        PlayQueue
+        ArtistPage
     }
 
     public sealed partial class SongListItem : UserControl
@@ -107,8 +107,8 @@ namespace MusicMink.ListItems
                 case SongListItemView.AlbumPage:
                     VisualStateManager.GoToState(this, "ViewTypeAlbumPage", false);
                     break;
-                case SongListItemView.PlayQueue:
-                    VisualStateManager.GoToState(this, "ViewTypePlayQueue", false);
+                case SongListItemView.ArtistPage:
+                    VisualStateManager.GoToState(this, "ViewTypeArtistPage", false);
                     break;
                 default:
                     DebugHelper.Alert(new CallerInfo(), "Unknown SongListItemView {0}", this.ViewType);

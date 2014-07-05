@@ -38,6 +38,19 @@
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
+                <VisualState x:Name="ViewTypeArtistPage">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="SongInfoFirstPart"
+                            Storyboard.TargetProperty="Text"
+                            >
+                            <DiscreteObjectKeyFrame
+                                KeyTime="0"
+                                Value="{Binding AlbumName}"
+                                />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
             </VisualStateGroup>
             
             <VisualStateGroup x:Name="ExpandedStates">
@@ -84,7 +97,7 @@
 
         <Grid
             x:Name="RootGrid"
-            Margin="10,3,10,3"
+            Margin="0,3,0,3"
             >
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -129,7 +142,7 @@
                     FontSize="{StaticResource TextStyleSmallFontSize}"
                     Foreground="{ThemeResource PhoneMidBrush}"
                     >
-                    <Run Text="{Binding ArtistName}" />
+                    <Run x:Name="SongInfoFirstPart" Text="{Binding ArtistName}" />
                     <Run Text="-" />
                     <Run Text="{Binding DurationText}" />
                 </TextBlock>
