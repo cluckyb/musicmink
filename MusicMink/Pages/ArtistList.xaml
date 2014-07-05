@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MusicMink.Pages"
     xmlns:items="using:MusicMink.ListItems"
+    xmlns:converters="using:MusicMink.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -27,7 +28,9 @@
             Grid.Row="1"
             Margin="{StaticResource DefaultContentMargin}"
             >
-            <SemanticZoom>
+            <SemanticZoom
+                Visibility="{Binding LibraryLoaded, Converter={StaticResource BoolToVisibilityConverter}}"
+                >
                 <SemanticZoom.ZoomedInView>
                     <ListView
                         x:Name="ZoomedInListView"
@@ -36,7 +39,10 @@
                         >
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <items:ArtistListItem DataContext="{Binding}" />
+                                <items:ArtistListItem
+                                    DataContext="{Binding}"
+                                    Width="{Binding ActualWidth, ElementName=ZoomedInListView, Converter={StaticResource ListWidthToWorkableSectionWidthConverter}}"
+                                    />
                             </DataTemplate>
                         </ListView.ItemTemplate>
                         <ListView.GroupStyle>
@@ -54,6 +60,11 @@
                         />
                 </SemanticZoom.ZoomedOutView>
             </SemanticZoom>
+
+            <ProgressRing
+                IsActive="True"
+                Visibility="{Binding LibraryLoaded, Converter={StaticResource NotBoolToVisibilityConverter}}"
+                />
         </Grid>
     </Grid>
 </local:BasePage>

@@ -42,10 +42,5 @@ namespace MusicMink.Pages
 
             listRestoreHelper.SaveState(e.PageState);
         }
-
-        private void SongListItem_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-
-        }
     }
 }

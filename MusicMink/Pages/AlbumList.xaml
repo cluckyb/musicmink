@@ -30,7 +30,9 @@
             Grid.Row="1"
             Margin="{StaticResource DefaultContentMargin}"
             >
-            <SemanticZoom>
+            <SemanticZoom
+                Visibility="{Binding LibraryLoaded, Converter={StaticResource BoolToVisibilityConverter}}"
+                >
                 <SemanticZoom.ZoomedInView>
                     <GridView   
                         x:Name="ZoomedInView"
@@ -62,6 +64,11 @@
                         />
                 </SemanticZoom.ZoomedOutView>
             </SemanticZoom>
+
+            <ProgressRing
+                IsActive="True"
+                Visibility="{Binding LibraryLoaded, Converter={StaticResource NotBoolToVisibilityConverter}}"
+                />
         </Grid>
     </Grid>
 </local:BasePage>

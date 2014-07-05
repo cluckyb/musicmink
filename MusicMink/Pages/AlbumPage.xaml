@@ -78,14 +78,18 @@
                     />
             </StackPanel>
             
-            <ListView
+            <ListView x:Name="AlbumPageSongList"
                 Grid.Row="0"
                 Style="{StaticResource StandardAlphaListZoomedInListStyle}"                              
                 ItemsSource="{Binding Songs}"
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <items:SongListItem DataContext="{Binding}" ViewType="AlbumPage" />
+                        <items:SongListItem
+                            DataContext="{Binding}"
+                            ViewType="AlbumPage"
+                            Width="{Binding ActualWidth, ElementName=AlbumPageSongList, Converter={StaticResource ListWidthToWorkableSectionWidthConverter}}"
+                            />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

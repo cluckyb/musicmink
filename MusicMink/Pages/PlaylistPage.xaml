@@ -88,7 +88,10 @@
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <items:SongListItem DataContext="{Binding Song}" />
+                        <items:SongListItem
+                            DataContext="{Binding Song}"
+                            Width="{Binding ActualWidth, ElementName=PlaylistListView, Converter={StaticResource ListWidthToWorkableSectionWidthConverter}}"
+                            />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

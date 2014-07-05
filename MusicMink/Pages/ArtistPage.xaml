@@ -67,12 +67,16 @@
                     Header="{Binding ContentInfoSongs}"
                     >
                     <ListView
+                        x:Name="ArtistPageSongList"
                         Style="{StaticResource StandardAlphaListZoomedInListStyle}"                              
                         ItemsSource="{Binding Songs}"
                         >
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <items:SongListItem DataContext="{Binding}" />
+                                <items:SongListItem
+                                    DataContext="{Binding}"
+                                    Width="{Binding ActualWidth, ElementName=ArtistPageSongList, Converter={StaticResource ListWidthToWorkableSectionWidthConverter}}"
+                                    />
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

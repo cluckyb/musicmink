@@ -53,14 +53,17 @@
                 Visibility="{Binding IsCircular, Converter={StaticResource BoolToVisibilityConverter}}"                      
                 />
             
-            <ListView x:Name="MixPAgeSongList"
+            <ListView x:Name="MixPageSongList"
                 Grid.Row="0"
                 ItemsSource="{Binding CurrentSongs}"
                 Visibility="{Binding IsCircular, Converter={StaticResource NotBoolToVisibilityConverter}}"                      
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <items:SongListItem DataContext="{Binding}" />
+                        <items:SongListItem
+                            DataContext="{Binding}"
+                            Width="{Binding ActualWidth, ElementName=MixPageSongList, Converter={StaticResource ListWidthToWorkableSectionWidthConverter}}"
+                            />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
