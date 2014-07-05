@@ -11,6 +11,9 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Windows.Foundation;
+using Windows.System.Threading;
+using Windows.UI.Core;
 
 namespace MusicMink.ViewModels
 {
@@ -57,55 +60,125 @@ namespace MusicMink.ViewModels
             LibraryModel.Current.AllSongs.CollectionChanged -= HandleAllSongsCollectionChanged;
         }
 
-        public void Initalize()
+        public void PreInitalize()
         {
             PlayQueue.Initalize();
         }
 
         // Delayed constructor for once LibraryModel is loaded
-        public async Task PostInitalize()
+        public void InitalizeLibrary(CoreDispatcher uiDispatcher)
         {
-            perf.Trace("Initalize Started");
+            LibraryLoaded = false;
 
-            foreach (ArtistModel newArtist in LibraryModel.Current.AllArtists)
+            IAsyncAction initalizeLibraryallback = ThreadPool.RunAsync(new WorkItemHandler((IAsyncAction) =>
             {
-                LookupArtist(newArtist);
-            }
+                foreach (ArtistModel newArtist in LibraryModel.Current.AllArtists)
+                {
+                    LookupArtist(newArtist);
+                }
 
-            foreach (AlbumModel newAlbum in LibraryModel.Current.AllAlbums)
+                foreach (AlbumModel newAlbum in LibraryModel.Current.AllAlbums)
+                {
+                    LookupAlbum(newAlbum);
+                }
+
+                foreach (SongModel newSong in LibraryModel.Current.AllSongs)
+                {
+                    LookupSong(newSong);
+                }
+
+                foreach (PlaylistModel newPlaylist in LibraryModel.Current.Playlists)
+                {
+                    LookupPlaylist(newPlaylist);
+                }
+
+                foreach (MixModel newMix in LibraryModel.Current.Mixes)
+                {
+                    LookupMix(newMix);
+                }
+            }));
+
+            initalizeLibraryallback.Completed += (IAsyncAction asyncInfo, AsyncStatus asyncStatus) =>
             {
-                LookupAlbum(newAlbum);
-            }
+                uiDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    LibraryLoaded = true;
 
-            foreach (SongModel newSong in LibraryModel.Current.AllSongs)
-            {
-                LookupSong(newSong);
-            }
+                    InitalizeMixes(uiDispatcher);
+                });
 
-            perf.Trace("Songs loaded");
-
-            foreach (PlaylistModel newPlaylist in LibraryModel.Current.Playlists)
-            {
-                LookupPlaylist(newPlaylist);
-            }
-
-            foreach (MixModel newMix in LibraryModel.Current.Mixes)
-            {
-                LookupMix(newMix);
-            }
-
-            perf.Trace("Mix Pass Done");
-
-            // Need whole mix collection to exist in order to initalize everything
-            foreach (MixViewModel newMix in MixCollection)
-            {
-                newMix.Initalize();
-            }
-
-            perf.Trace("Playlists loaded");
+            };
         }
 
-        # region Event Handlers
+        private void InitalizeMixes(CoreDispatcher uiDispatcher)
+        {
+            MixesLoaded = false;
+
+            // Doing this on the background thread seems to work. Might cause issues but haven't notced any
+            IAsyncAction initalizeMixesCallback = ThreadPool.RunAsync(new WorkItemHandler((IAsyncAction) =>
+            {
+                foreach (MixViewModel newMix in MixCollection)
+                {
+                    newMix.Initalize();
+                }
+            }));
+
+            initalizeMixesCallback.Completed += (IAsyncAction asyncInfo, AsyncStatus asyncStatus) =>
+            {
+                uiDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    MixesLoaded = true;
+                });
+            };
+        }
+
+        #region Properties
+
+        public static class Properties
+        {
+            public const string LibraryLoaded = "LibraryLoaded";
+            public const string MixesLoaded = "MixesLoaded";
+        }
+
+        private bool _libraryLoaded = false;
+        public bool LibraryLoaded
+        {
+            get
+            {
+                return _libraryLoaded;
+            }
+            set
+            {
+                if (_libraryLoaded != value)
+                {
+                    _libraryLoaded = value;
+                    NotifyPropertyChanged(Properties.LibraryLoaded);
+                    AddNewPlaylist.RaiseExecuteChanged();
+                }
+            }
+        }
+
+        private bool _mixesLoaded = false;
+        public bool MixesLoaded
+        {
+            get
+            {
+                return _mixesLoaded;
+            }
+            set
+            {
+                if (_mixesLoaded != value)
+                {
+                    _mixesLoaded = value;
+                    NotifyPropertyChanged(Properties.MixesLoaded);
+                    AddNewMix.RaiseExecuteChanged();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Event Handlers
 
         private async void HandleLibraryModelAlbumCreated(object sender, AlbumCreatedEventArgs e)
         {
@@ -234,7 +307,7 @@ namespace MusicMink.ViewModels
 
         private bool CanExecuteAddNewPlaylist(object parameter)
         {
-            return true;
+            return LibraryLoaded;
         }
 
 
@@ -258,7 +331,7 @@ namespace MusicMink.ViewModels
 
         private bool CanExecuteAddNewMix(object parameter)
         {
-            return true;
+            return MixesLoaded;
         }
 
         #endregion
@@ -498,7 +571,6 @@ namespace MusicMink.ViewModels
             else
             {
                 ArtistViewModel artist = LookupArtistById(song.ArtistId);
-
                 AlbumViewModel album = LookupAlbumById(song.AlbumId);
 
                 SongViewModel newSongViewModel = new SongViewModel(song, artist, album);

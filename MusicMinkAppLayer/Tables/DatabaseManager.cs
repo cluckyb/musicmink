@@ -81,19 +81,19 @@ namespace MusicMinkAppLayer.Tables
 
         #region FETCH
 
-        internal List<SongTable> FetchSongs()
+        internal IEnumerable<SongTable> FetchSongs()
         {
-            return sqlConnection.Table<SongTable>().ToList<SongTable>();
+            return sqlConnection.Table<SongTable>();
         }
 
-        internal List<AlbumTable> FetchAlbums()
+        internal IEnumerable<AlbumTable> FetchAlbums()
         {
-            return sqlConnection.Table<AlbumTable>().ToList<AlbumTable>();
+            return sqlConnection.Table<AlbumTable>();
         }
 
-        internal List<ArtistTable> FetchArtists()
+        internal IEnumerable<ArtistTable> FetchArtists()
         {
-            return sqlConnection.Table<ArtistTable>().ToList<ArtistTable>();
+            return sqlConnection.Table<ArtistTable>();
         }
 
         internal List<PlayQueueEntryTable> FetchPlayQueueEntries()
@@ -101,7 +101,7 @@ namespace MusicMinkAppLayer.Tables
             return sqlConnection.Table<PlayQueueEntryTable>().ToList<PlayQueueEntryTable>();
         }
 
-        internal List<PlaylistTable> FetchPlaylists()
+        internal IEnumerable<PlaylistTable> FetchPlaylists()
         {
             return sqlConnection.Table<PlaylistTable>().ToList<PlaylistTable>();
         }
@@ -121,7 +121,7 @@ namespace MusicMinkAppLayer.Tables
             return sqlConnection.Table<HistoryTable>().ToList<HistoryTable>();
         }
 
-        internal List<MixTable> FetchMixes()
+        internal IEnumerable<MixTable> FetchMixes()
         {
             return sqlConnection.Table<MixTable>().ToList<MixTable>();
         }

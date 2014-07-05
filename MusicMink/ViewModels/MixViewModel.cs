@@ -10,12 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Reflection;
-
-// TODO: Textboxen need to pop up
-
-// TODO: enable delete
-
-// TODO: Cleanup?
+using Windows.ApplicationModel.Core;
 
 namespace MusicMink.ViewModels
 {
@@ -49,8 +44,6 @@ namespace MusicMink.ViewModels
             RootEvaluator = MixEntryModelToMixEvaluator(mix.RootMixEntry);
 
             _currentSongs = new LimitedList<SongViewModel>(new SongSortGenericOrder(MixSortOrderToSongProperty(mix.SortType), MixSortOrderToIsAscending(mix.SortType)), mix.Limit, mix.HasLimit);
-
-            CurrentSongs.CollectionChanged += HandleCurrentSongsCollectionChanged;
 
             ResetLength();
         }
@@ -564,12 +557,18 @@ namespace MusicMink.ViewModels
                 ReevaulateSong(song);
             }
 
+            CurrentSongs.CollectionChanged += HandleCurrentSongsCollectionChanged;
+
             LibraryViewModel.Current.FlatSongCollection.CollectionChanged += HandleFlatSongCollectionChanged;
+
+            ResetLength();
         }
 
         public void Reset()
         {
             CurrentSongs.Clear();
+
+            CurrentSongs.CollectionChanged -= HandleCurrentSongsCollectionChanged;
 
             CurrentSongs.UpdateLimit((uint)Limit, HasLimit);
             CurrentSongs.UpdateSortFunction(new SongSortGenericOrder(MixSortOrderToSongProperty(SortType), MixSortOrderToIsAscending(SortType)));
@@ -608,6 +607,10 @@ namespace MusicMink.ViewModels
                     mixViewModel.Reset();
                 }
             }
+
+            CurrentSongs.CollectionChanged += HandleCurrentSongsCollectionChanged;
+
+            ResetLength();
         }
 
         public void ReevaulateSong(SongViewModel song)

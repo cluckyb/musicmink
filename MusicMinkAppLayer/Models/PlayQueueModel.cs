@@ -12,6 +12,7 @@ using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Playback;
+using Windows.System.Threading;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 
@@ -360,6 +361,14 @@ namespace MusicMinkAppLayer.Models
         bool isUpdatingHistory = false;
         private async void UpdateHistory()
         {
+            ThreadPool.RunAsync(new WorkItemHandler((IAsyncAction) =>
+            {
+                UpdateHistoryOnThreadPool();
+            }));
+        }
+
+        private async void UpdateHistoryOnThreadPool()
+        {
             bool canRun = false;
 
             lock (historyLock)
@@ -384,12 +393,15 @@ namespace MusicMinkAppLayer.Models
                 {
                     if (!historyItem.Processed)
                     {
-                        song.PlayCount++;
-
-                        if (song.LastPlayed < historyItem.DatePlayed)
+                        await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                         {
-                            song.LastPlayed = historyItem.DatePlayed;
-                        }
+                            song.PlayCount++;
+
+                            if (song.LastPlayed < historyItem.DatePlayed)
+                            {
+                                song.LastPlayed = historyItem.DatePlayed;
+                            }
+                        });
 
                         historyItem.Processed = true;
                     }

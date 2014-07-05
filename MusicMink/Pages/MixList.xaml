@@ -25,7 +25,6 @@
 
         <Style x:Key="NullStyle" TargetType="ListViewItem"/>
 
-
         <converters:MixItemStyleSelector x:Key="HideHiddenMixItemStyleSelector" EmptyStyle="{StaticResource EmptyStyle}" />
 
         <converters:MixItemStyleSelector x:Key="ShowHiddenMixItemStyleSelector" EmptyStyle="{StaticResource NullStyle}" />
@@ -58,6 +57,7 @@
                 ItemsSource="{Binding MixCollection}"
                 ItemContainerStyleSelector="{Binding IsChecked, ElementName=ShowHiddenMixButton, Converter={StaticResource ToggleStatusToStyleSelector}}"
                 VerticalAlignment="Top"
+                Visibility="{Binding MixesLoaded, Converter={StaticResource BoolToVisibilityConverter}}"
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -69,6 +69,11 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+
+            <ProgressRing
+                IsActive="True"
+                Visibility="{Binding MixesLoaded, Converter={StaticResource NotBoolToVisibilityConverter}}"
+                />
 
             <StackPanel
                 Grid.Row="1"

@@ -77,7 +77,7 @@ namespace MusicMink
             Logger.Current.Log(new CallerInfo(), LogLevel.Info, "App launched");
 
             PerfTracer pt = new PerfTracer("Startup Perf");
-            LibraryViewModel.Current.Initalize();
+            LibraryViewModel.Current.PreInitalize();
 
             UpdateTheme();
 
@@ -139,8 +139,7 @@ namespace MusicMink
             Window.Current.Activate();
 
             // TODO: need to do this async to get load times down
-            LibraryViewModel.Current.PostInitalize();
-
+            LibraryViewModel.Current.InitalizeLibrary(Window.Current.Dispatcher);
 
             pt.Trace("Startup Done");
         }

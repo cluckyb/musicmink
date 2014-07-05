@@ -85,8 +85,11 @@ namespace MusicMink.ViewModels
 
         private void HandleSongCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            NotifyPropertyChanged(Properties.SongCount);
-            ResetLength();
+            if (LibraryViewModel.Current.LibraryLoaded)
+            {
+                NotifyPropertyChanged(Properties.SongCount);
+                ResetLength();
+            }
         }
 
         #endregion

@@ -44,6 +44,8 @@ namespace MusicMink.Common
 
         internal void SaveState(Dictionary<string, object> pageState)
         {
+            if (Root.ItemsPanelRoot == null) return;
+
             ItemsStackPanel stackPanel = Root.ItemsPanelRoot as ItemsStackPanel;
 
             if (stackPanel != null)

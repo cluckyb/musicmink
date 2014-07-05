@@ -65,15 +65,6 @@ namespace MusicMink.ViewModels
             PlaybackQueue.CollectionChanged += HandlePlaybackQueueCollectionChanged;
 
             CurrentTrack = LibraryViewModel.Current.LookupSongById(rootModel.NowPlaying);
-
-            /*
-            rootModel.PropertyChanged += PlayQueueModelPropertyChanged;
-            PlaybackQueue.CollectionChanged += PlaybackQueue_CollectionChanged;
-
-            UpdateFullTime();
-            UpdateCurrentTime();
-            UpdateNowPlaying();
-             * */
         }
 
         #region Event Handlers

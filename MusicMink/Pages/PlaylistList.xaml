@@ -33,6 +33,7 @@
                 x:Name="ZoomedInListView"
                 Grid.Row="0"                      
                 ItemsSource="{Binding PlaylistCollection}"
+                Visibility="{Binding LibraryLoaded, Converter={StaticResource BoolToVisibilityConverter}}"                
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -40,6 +41,11 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+
+            <ProgressRing
+                IsActive="True"
+                Visibility="{Binding LibraryLoaded, Converter={StaticResource NotBoolToVisibilityConverter}}"
+                />
 
             <StackPanel
                 Grid.Row="1"

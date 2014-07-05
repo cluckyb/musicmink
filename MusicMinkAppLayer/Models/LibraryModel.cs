@@ -26,11 +26,19 @@ namespace MusicMinkAppLayer.Models
             }
         }
 
+        private PerfTracer libraryTracer = new PerfTracer("LibraryModel");
+
         private LibraryModel()
         {
+            libraryTracer.Restart();
+
             DatabaseManager.Current.Connect();
 
+            libraryTracer.Trace("Database Connected");
+
             _playQueue = new PlayQueueModel();
+
+            libraryTracer.Trace("PlayQueueModel Created");
         }
 
         private PlayQueueModel _playQueue;
@@ -120,16 +128,22 @@ namespace MusicMinkAppLayer.Models
 
         public void Start()
         {
+            libraryTracer.Trace("Starting");
+
             LoadCollection();
 
+            libraryTracer.Trace("Collection loaded");
+
             PlayQueue.Start();
+
+            libraryTracer.Trace("Play Queue Loaded");
         }
 
         private void LoadCollection()
         {
             PerfTracer perfTracer = new PerfTracer("LibraryModel Loading");
 
-            List<SongTable> allSongs = DatabaseManager.Current.FetchSongs();
+            IEnumerable<SongTable> allSongs = DatabaseManager.Current.FetchSongs();
             foreach (SongTable songEntry in allSongs)
             {
                 SongModel songModel = new SongModel(songEntry);
@@ -139,7 +153,7 @@ namespace MusicMinkAppLayer.Models
 
             perfTracer.Trace("Songs Added");
 
-            List<AlbumTable> allAlbums = DatabaseManager.Current.FetchAlbums();
+            IEnumerable<AlbumTable> allAlbums = DatabaseManager.Current.FetchAlbums();
             foreach (AlbumTable albumEntry in allAlbums)
             {
                 AlbumModel albumModel = new AlbumModel(albumEntry);
@@ -149,7 +163,7 @@ namespace MusicMinkAppLayer.Models
 
             perfTracer.Trace("Albums Added");
 
-            List<ArtistTable> allArtists = DatabaseManager.Current.FetchArtists();
+            IEnumerable<ArtistTable> allArtists = DatabaseManager.Current.FetchArtists();
             foreach (ArtistTable artistEntry in allArtists)
             {
                 ArtistModel artistModel = new ArtistModel(artistEntry);
@@ -159,7 +173,7 @@ namespace MusicMinkAppLayer.Models
 
             perfTracer.Trace("Artists Added");
 
-            List<PlaylistTable> allPlaylists = DatabaseManager.Current.FetchPlaylists();
+            IEnumerable<PlaylistTable> allPlaylists = DatabaseManager.Current.FetchPlaylists();
             foreach (PlaylistTable playlistEntry in allPlaylists)
             {
                 PlaylistModel playlistModel = new PlaylistModel(playlistEntry);
@@ -171,7 +185,7 @@ namespace MusicMinkAppLayer.Models
 
             perfTracer.Trace("Playlists Added");
 
-            List<MixTable> allMixes = DatabaseManager.Current.FetchMixes();
+            IEnumerable<MixTable> allMixes = DatabaseManager.Current.FetchMixes();
             foreach (MixTable mixEntry in allMixes)
             {
                 MixModel mixModel = new MixModel(mixEntry);
