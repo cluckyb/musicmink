@@ -47,7 +47,7 @@ namespace MusicMink.Pages
 
         private void HandleSearchNavigationItemTapped(object sender, TappedRoutedEventArgs e)
         {
-
+            NavigationManager.Current.Navigate(NavigationLocation.SearchPage);
         }
 
         private void HandleMixesNavigationItemTapped(object sender, TappedRoutedEventArgs e)

@@ -565,7 +565,5 @@ namespace MusicMink.ViewModels
                 return compare;
             }
         }
-
-
     }
 }

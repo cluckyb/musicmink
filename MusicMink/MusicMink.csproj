@@ -98,6 +98,7 @@
     <Compile Include="Collections\ObservableCopyCollection.cs" />
     <Compile Include="Collections\SelectableOption.cs" />
     <Compile Include="Collections\SortedList.cs" />
+    <Compile Include="Common\GenericComparer.cs" />
     <Compile Include="Common\ListRestoreHelper.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Controls\StarRater.xaml.cs">
       <DependentUpon>StarRater.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BoolToNotBoolConverter.cs" />
     <Compile Include="Converters\IntegerToVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToObjectConverter.cs" />
     <Compile Include="Converters\MixItemStyleSelector.cs" />
@@ -167,6 +169,9 @@
     <Compile Include="MediaSources\MediaImportManager.cs" />
     <Compile Include="MediaSources\StorageProviderSong.cs" />
     <Compile Include="NavigationManager.cs" />
+    <Compile Include="Pages\SearchPage.xaml.cs">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ArtistPage.xaml.cs">
       <DependentUpon>ArtistPage.xaml</DependentUpon>
     </Compile>
@@ -223,6 +228,7 @@
     <Compile Include="ViewModels\PlaylistViewModel.cs" />
     <Compile Include="ViewModels\PlayQueueEntryViewModel.cs" />
     <Compile Include="ViewModels\PlayQueueViewModel.cs" />
+    <Compile Include="ViewModels\SearchManagerViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\SongViewModel.cs" />
   </ItemGroup>
@@ -312,6 +318,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\SearchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ArtistPage.xaml">
       <SubType>Designer</SubType>

@@ -663,4 +663,22 @@
   <data name="FormatNone" xml:space="preserve">
     <value>None</value>
   </data>
+  <data name="FormatArtistsPlural" xml:space="preserve">
+    <value>Artists</value>
+  </data>
+  <data name="FormatArtistsSingular" xml:space="preserve">
+    <value>Artist</value>
+  </data>
+  <data name="SearchPageHeader.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchPageSearchedForText.Text" xml:space="preserve">
+    <value>Searched for</value>
+  </data>
+  <data name="SearchPageSearchingForText.Text" xml:space="preserve">
+    <value>Searching for</value>
+  </data>
+  <data name="SearchPageSearchTermBox.PlaceholderText" xml:space="preserve">
+    <value>Search Query</value>
+  </data>
 </root>

@@ -99,6 +99,7 @@
     <Compile Include="Models\PlaylistModel.cs" />
     <Compile Include="Models\PlayQueueEntryModel.cs" />
     <Compile Include="Models\PlayQueueModel.cs" />
+    <Compile Include="Models\SearchManagerModel.cs" />
     <Compile Include="Models\SongModel.cs" />
     <Compile Include="PlayQueue\PlayQueueConstants.cs" />
     <Compile Include="PlayQueue\PlayQueueManager.cs" />

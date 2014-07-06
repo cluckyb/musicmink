@@ -14,7 +14,9 @@
 
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converters:BoolToVisibilityConverter x:Key="NotBoolToVisibilityConverter" Invert="True" />
-            
+            <converters:BoolToNotBoolConverter x:Key="InvertBoolConverter" />
+
+
             <!-- Scroll bar causes weird jumpy issues if we don't take a ~10 margin off all list items -->
             <converters:NumericTransformConverter x:Key="ListWidthToWorkableSectionWidthConverter" Margin="10" Sections="1" />
 

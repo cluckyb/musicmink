@@ -22,8 +22,8 @@ namespace MusicMink
         PlaylistPage,
         MixPage,
 
+        SearchPage,
         SettingsPage,
-
         ManageLibrary,
     }
 
@@ -91,6 +91,8 @@ namespace MusicMink
                     return typeof(PlaylistList);
                 case NavigationLocation.PlaylistPage:
                     return typeof(PlaylistPage);
+                case NavigationLocation.SearchPage:
+                    return typeof(SearchPage);
                 case NavigationLocation.SettingsPage:
                     return typeof(Settings);
                 case NavigationLocation.SongList:

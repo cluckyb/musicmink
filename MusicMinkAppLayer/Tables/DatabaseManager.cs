@@ -200,6 +200,26 @@ namespace MusicMinkAppLayer.Tables
 
         #endregion
 
+        internal IEnumerable<SongTable> SearchSongs(string query)
+        {
+            return sqlConnection.Query<SongTable>("SELECT SongId FROM SongTable WHERE Name LIKE ?", PrepareStringForLike(query));
+        }
+
+        internal IEnumerable<AlbumTable> SearchAlbums(string query)
+        {
+            return sqlConnection.Query<AlbumTable>("SELECT AlbumId FROM AlbumTable WHERE Name LIKE ?", PrepareStringForLike(query));
+        }
+
+        internal IEnumerable<ArtistTable> SearchArtists(string query)
+        {
+            return sqlConnection.Query<ArtistTable>("SELECT ArtistId FROM ArtistTable WHERE LOWER(Name) LIKE ?", PrepareStringForLike(query));
+        }
+
+        private string PrepareStringForLike(string query)
+        {
+            return '%' + query.ToLower() + '%';
+        }
+
         #region LOOKUP
 
         internal SongTable LookupSong(string name, int artistId)
@@ -251,6 +271,10 @@ namespace MusicMinkAppLayer.Tables
         {
             return sqlConnection.Query<PlayQueueEntryTable>("SELECT * FROM PlayQueueEntryTable WHERE SongId = ?", songId);
         }
+
+        #endregion
+
+        #region SEARCH
 
         #endregion
 
