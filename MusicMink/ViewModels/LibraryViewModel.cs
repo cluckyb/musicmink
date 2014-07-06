@@ -101,6 +101,8 @@ namespace MusicMink.ViewModels
                 uiDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     LibraryLoaded = true;
+
+                    NotifyPropertyChanged(Properties.IsEmpty);
                 });
 
                 foreach (MixViewModel newMix in MixCollection)
@@ -121,6 +123,7 @@ namespace MusicMink.ViewModels
         {
             public const string LibraryLoaded = "LibraryLoaded";
             public const string MixesLoaded = "MixesLoaded";
+            public const string IsEmpty = "IsEmpty";
         }
 
         private bool _libraryLoaded = false;
@@ -156,6 +159,14 @@ namespace MusicMink.ViewModels
                     NotifyPropertyChanged(Properties.MixesLoaded);
                     AddNewMix.RaiseExecuteChanged();
                 }
+            }
+        }
+
+        public bool IsEmpty
+        {
+            get
+            {
+                return FlatSongCollection.Count == 0;
             }
         }
 
@@ -263,6 +274,11 @@ namespace MusicMink.ViewModels
                         LookupSong(newSong);
                     }
                 }
+            }
+
+            if (LibraryLoaded)
+            {
+                NotifyPropertyChanged(Properties.IsEmpty);
             }
         }
 
@@ -561,6 +577,11 @@ namespace MusicMink.ViewModels
                 SongLookupMap.Add(newSongViewModel.SongId, newSongViewModel);
                 SongCollection.Add(newSongViewModel, newSongViewModel.SortName);
                 FlatSongCollection.Add(newSongViewModel);
+
+                if (LibraryLoaded)
+                {
+                    NotifyPropertyChanged(Properties.IsEmpty);
+                }
 
                 return newSongViewModel;
             }

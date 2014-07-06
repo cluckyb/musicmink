@@ -669,6 +669,9 @@
   <data name="FormatArtistsSingular" xml:space="preserve">
     <value>Artist</value>
   </data>
+  <data name="LibraryPagesEmptyLibraryMessage.Text" xml:space="preserve">
+    <value>Your music collection is either empty or you haven't imported it yet. To import your music collection, use the "Manage Library" tile.</value>
+  </data>
   <data name="SearchPageHeader.Text" xml:space="preserve">
     <value>Search</value>
   </data>

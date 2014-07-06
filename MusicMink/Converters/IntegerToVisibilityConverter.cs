@@ -4,15 +4,33 @@ using Windows.UI.Xaml.Data;
 
 namespace MusicMink.Converters
 {
+    public enum ComparisionMode
+    {
+        Greater,
+        Equal
+    }
+
     class IntegerToVisibilityConverter : IValueConverter
     {
         public int PivotPoint { get; set; }
 
+        public ComparisionMode CompareMode { get; set; } 
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value != null && ((int)value > PivotPoint))
+            if (CompareMode == ComparisionMode.Greater)
             {
-                return Visibility.Visible;
+                if (value != null && ((int)value > PivotPoint))
+                {
+                    return Visibility.Visible;
+                }
+            }
+            else if (CompareMode == ComparisionMode.Equal)
+            {
+                if (value != null && ((int)value == PivotPoint))
+                {
+                    return Visibility.Visible;
+                }
             }
 
             return Visibility.Collapsed;

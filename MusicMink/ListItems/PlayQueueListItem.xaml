@@ -11,10 +11,6 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     
-    <UserControl.Resources>
-        <converters:IntegerToVisibilityConverter x:Key="GreaterThanZeroToVisibilityConverter" PivotPoint="0" />
-    </UserControl.Resources>
-
     <Grid x:Name="LayoutRoot">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="ExpandedStates">

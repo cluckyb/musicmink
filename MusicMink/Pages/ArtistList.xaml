@@ -28,38 +28,53 @@
             Grid.Row="1"
             Margin="{StaticResource DefaultContentMargin}"
             >
-            <SemanticZoom
+
+            <Grid
                 Visibility="{Binding LibraryLoaded, Converter={StaticResource BoolToVisibilityConverter}}"
                 >
-                <SemanticZoom.ZoomedInView>
-                    <ListView
-                        x:Name="ZoomedInListView"
-                        SelectionMode="None"
-                        ItemsSource="{Binding Source={StaticResource ArtistGroupInfo}}"
-                        >
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <items:ArtistListItem
-                                    DataContext="{Binding}"
-                                    Width="{Binding ActualWidth, ElementName=ZoomedInListView, Converter={StaticResource ListWidthToWorkableSectionWidthConverter}}"
+
+                <TextBlock x:Uid="LibraryPagesEmptyLibraryMessage"
+                    Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"                           
+                    FontSize="{StaticResource TextStyleSmallFontSize}"
+                    TextWrapping="WrapWholeWords"
+                    TextAlignment="Justify"
+                    FontStyle="Italic"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    />
+
+                <SemanticZoom
+                    Visibility="{Binding IsEmpty, Converter={StaticResource NotBoolToVisibilityConverter}}"
+                    >
+                    <SemanticZoom.ZoomedInView>
+                        <ListView
+                            x:Name="ZoomedInListView"
+                            SelectionMode="None"
+                            ItemsSource="{Binding Source={StaticResource ArtistGroupInfo}}"
+                            >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <items:ArtistListItem
+                                        DataContext="{Binding}"
+                                        Width="{Binding ActualWidth, ElementName=ZoomedInListView, Converter={StaticResource ListWidthToWorkableSectionWidthConverter}}"
+                                        />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <ListView.GroupStyle>
+                                <GroupStyle
+                                    HidesIfEmpty="True"
+                                    HeaderTemplate="{StaticResource StandardAlphaListHeaderTemplate}"
                                     />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                        <ListView.GroupStyle>
-                            <GroupStyle
-                                HidesIfEmpty="True"
-                                HeaderTemplate="{StaticResource StandardAlphaListHeaderTemplate}"
-                                />
-                        </ListView.GroupStyle>
-                    </ListView>
-                </SemanticZoom.ZoomedInView>
-                <SemanticZoom.ZoomedOutView>
-                    <GridView
-                        Style="{StaticResource StandardAlphaListZoomedOutListStyle}"                                                                              
-                        ItemsSource="{Binding Source={StaticResource ArtistGroupInfo}, Path=CollectionGroups}"
-                        />
-                </SemanticZoom.ZoomedOutView>
-            </SemanticZoom>
+                            </ListView.GroupStyle>
+                        </ListView>
+                    </SemanticZoom.ZoomedInView>
+                    <SemanticZoom.ZoomedOutView>
+                        <GridView
+                            Style="{StaticResource StandardAlphaListZoomedOutListStyle}"                                                                              
+                            ItemsSource="{Binding Source={StaticResource ArtistGroupInfo}, Path=CollectionGroups}"
+                            />
+                    </SemanticZoom.ZoomedOutView>
+                </SemanticZoom>
+            </Grid>
 
             <ProgressRing
                 IsActive="True"

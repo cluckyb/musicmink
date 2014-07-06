@@ -30,40 +30,55 @@
             Grid.Row="1"
             Margin="{StaticResource DefaultContentMargin}"
             >
-            <SemanticZoom
+
+            <Grid
                 Visibility="{Binding LibraryLoaded, Converter={StaticResource BoolToVisibilityConverter}}"
                 >
-                <SemanticZoom.ZoomedInView>
-                    <GridView   
-                        x:Name="ZoomedInView"
-                        SelectionMode="None"
-                        ItemsSource="{Binding Source={StaticResource AlbumGroupInfo}}"
-                        Margin="0"
-                        >
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <items:AlbumListItem
-                                    DataContext="{Binding}"
-                                    Height="{Binding ActualWidth, ElementName=ZoomedInView, Converter={StaticResource AppWidthToAlbumSectionConverter}}"
-                                    Width="{Binding ActualWidth, ElementName=ZoomedInView, Converter={StaticResource AppWidthToAlbumSectionConverter}}"                                    
+
+                <TextBlock x:Uid="LibraryPagesEmptyLibraryMessage"
+                    Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"                           
+                    FontSize="{StaticResource TextStyleSmallFontSize}"
+                    TextWrapping="WrapWholeWords"
+                    TextAlignment="Justify"
+                    FontStyle="Italic"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    />
+
+                <SemanticZoom
+                    Visibility="{Binding IsEmpty, Converter={StaticResource NotBoolToVisibilityConverter}}"
+                    >
+                    <SemanticZoom.ZoomedInView>
+                        <GridView   
+                            x:Name="ZoomedInView"
+                            SelectionMode="None"
+                            ItemsSource="{Binding Source={StaticResource AlbumGroupInfo}}"
+                            Margin="0"
+                            >
+                            <GridView.ItemTemplate>
+                                <DataTemplate>
+                                    <items:AlbumListItem
+                                        DataContext="{Binding}"
+                                        Height="{Binding ActualWidth, ElementName=ZoomedInView, Converter={StaticResource AppWidthToAlbumSectionConverter}}"
+                                        Width="{Binding ActualWidth, ElementName=ZoomedInView, Converter={StaticResource AppWidthToAlbumSectionConverter}}"                                    
+                                        />
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                            <GridView.GroupStyle>
+                                <GroupStyle
+                                    HidesIfEmpty="True"
+                                    HeaderTemplate="{StaticResource StandardAlphaListHeaderTemplate}"
                                     />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-                        <GridView.GroupStyle>
-                            <GroupStyle
-                                HidesIfEmpty="True"
-                                HeaderTemplate="{StaticResource StandardAlphaListHeaderTemplate}"
-                                />
-                        </GridView.GroupStyle>
-                    </GridView>
-                </SemanticZoom.ZoomedInView>
-                <SemanticZoom.ZoomedOutView>
-                    <GridView
-                        Style="{StaticResource StandardAlphaListZoomedOutListStyle}"                                                                              
-                        ItemsSource="{Binding Source={StaticResource AlbumGroupInfo}, Path=CollectionGroups}"
-                        />
-                </SemanticZoom.ZoomedOutView>
-            </SemanticZoom>
+                            </GridView.GroupStyle>
+                        </GridView>
+                    </SemanticZoom.ZoomedInView>
+                    <SemanticZoom.ZoomedOutView>
+                        <GridView
+                            Style="{StaticResource StandardAlphaListZoomedOutListStyle}"                                                                              
+                            ItemsSource="{Binding Source={StaticResource AlbumGroupInfo}, Path=CollectionGroups}"
+                            />
+                    </SemanticZoom.ZoomedOutView>
+                </SemanticZoom>
+            </Grid>
 
             <ProgressRing
                 IsActive="True"
