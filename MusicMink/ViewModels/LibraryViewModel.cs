@@ -66,11 +66,12 @@ namespace MusicMink.ViewModels
         }
 
         // Delayed constructor for once LibraryModel is loaded
-        public void InitalizeLibrary(CoreDispatcher uiDispatcher)
+        public Task InitalizeLibrary(CoreDispatcher uiDispatcher)
         {
             LibraryLoaded = false;
+            MixesLoaded = false;
 
-            IAsyncAction initalizeLibraryallback = ThreadPool.RunAsync(new WorkItemHandler((IAsyncAction) =>
+            return Task.Factory.StartNew(() =>
             {
                 foreach (ArtistModel newArtist in LibraryModel.Current.AllArtists)
                 {
@@ -96,40 +97,22 @@ namespace MusicMink.ViewModels
                 {
                     LookupMix(newMix);
                 }
-            }));
 
-            initalizeLibraryallback.Completed += (IAsyncAction asyncInfo, AsyncStatus asyncStatus) =>
-            {
                 uiDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     LibraryLoaded = true;
-
-                    InitalizeMixes(uiDispatcher);
                 });
 
-            };
-        }
-
-        private void InitalizeMixes(CoreDispatcher uiDispatcher)
-        {
-            MixesLoaded = false;
-
-            // Doing this on the background thread seems to work. Might cause issues but haven't notced any
-            IAsyncAction initalizeMixesCallback = ThreadPool.RunAsync(new WorkItemHandler((IAsyncAction) =>
-            {
                 foreach (MixViewModel newMix in MixCollection)
                 {
                     newMix.Initalize();
                 }
-            }));
 
-            initalizeMixesCallback.Completed += (IAsyncAction asyncInfo, AsyncStatus asyncStatus) =>
-            {
                 uiDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     MixesLoaded = true;
                 });
-            };
+            });            
         }
 
         #region Properties

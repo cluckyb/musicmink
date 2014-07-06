@@ -359,15 +359,16 @@ namespace MusicMinkAppLayer.Models
 
         object historyLock = new object();
         bool isUpdatingHistory = false;
-        private async void UpdateHistory()
+        private Task UpdateHistory()
         {
-            ThreadPool.RunAsync(new WorkItemHandler((IAsyncAction) =>
+            return Task.Factory.StartNew(() =>
             {
-                UpdateHistoryOnThreadPool();
-            }));
+                UpdateHistoryInternal();
+            });
         }
 
-        private async void UpdateHistoryOnThreadPool()
+        // async due to await calls so can't be inside the above lambda expression without farmimg it out to a seperate function
+        private async void UpdateHistoryInternal()
         {
             bool canRun = false;
 
