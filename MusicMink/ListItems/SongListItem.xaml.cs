@@ -70,10 +70,21 @@ namespace MusicMink.ListItems
             }
         }
 
-
         public SongListItem()
         {
             this.InitializeComponent();
+
+            this.DataContextChanged += HandleSongListItemDataContextChanged;
+        }
+
+        void HandleSongListItemDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            UpdateView();
+
+            if (this == currentExpandedEntry)
+            {
+                CloseExpandedEntry();
+            }
         }
 
         private void HandleStackPanelTapped(object sender, TappedRoutedEventArgs e)
