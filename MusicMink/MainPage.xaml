@@ -227,9 +227,9 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <listitem:PlayQueueListItem
-                        Grid.Column="1"
-                        DataContext="{Binding}"
-                        />
+                            DataContext="{Binding}"
+                            Width="{Binding ActualWidth, ElementName=PlayqueueList, Converter={StaticResource ListWidthToWorkableSectionWidthConverter}}"                            
+                            />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

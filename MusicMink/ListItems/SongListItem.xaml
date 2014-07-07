@@ -126,14 +126,14 @@
                     Grid.Column="1"
                     >
                     <TextBlock x:Name="NameEntry"
-                    Text="{Binding Name}"
-                    FontSize="{StaticResource TextStyleExtraLargeFontSize}"
-                    Foreground="{ThemeResource PhoneForegroundBrush}"
-                    TextWrapping="NoWrap"
-                    TextTrimming="None"
-                    ManipulationMode="TranslateX,TranslateRailsX"
-                    ManipulationDelta="HandleNameTextBlockManipulationDelta"
-                    />
+                        Text="{Binding Name}"
+                        FontSize="{StaticResource TextStyleExtraLargeFontSize}"
+                        Foreground="{ThemeResource PhoneForegroundBrush}"
+                        TextWrapping="NoWrap"
+                        TextTrimming="None"
+                        ManipulationMode="TranslateX,TranslateRailsX,System"
+                        ManipulationDelta="HandleNameTextBlockManipulationDelta"
+                        />
                 </ScrollViewer>
 
                 <TextBlock
