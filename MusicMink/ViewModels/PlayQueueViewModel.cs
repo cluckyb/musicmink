@@ -176,7 +176,7 @@ namespace MusicMink.ViewModels
             }
             NotifyPropertyChanged(Properties.CurrentTrackPosition);
             ClearPlayed.RaiseExecuteChanged();
-
+            ClearAll.RaiseExecuteChanged();
         }
 
         #endregion
@@ -411,6 +411,27 @@ namespace MusicMink.ViewModels
         private bool CanExecuteClearPlayed(object parameter)
         {
             return CurrentTrackPosition > 1;
+        }
+
+        private RelayCommand _clearAll;
+        public RelayCommand ClearAll
+        {
+            get
+            {
+                if (_clearAll == null) _clearAll = new RelayCommand(CanExecuteClearAll, ExecuteClearAll);
+
+                return _clearAll;
+            }
+        }
+
+        private void ExecuteClearAll(object parameter)
+        {
+            rootModel.ClearQueue();
+        }
+
+        private bool CanExecuteClearAll(object parameter)
+        {
+            return PlaybackQueue.Count > 0;
         }
 
         #endregion

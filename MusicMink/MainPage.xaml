@@ -211,6 +211,12 @@
                     Command="{Binding ClearPlayed}"
                     Style="{StaticResource PlayerControlAppBarButtonStyle}"
                     />
+                <AppBarButton x:Uid="PlayQueueClearAll"
+                    Icon="Clear"
+                    IsEnabled="{Binding ReorderMode, ElementName=PlayqueueList, Converter={StaticResource NotBoolToReorderModeConverter}}"
+                    Command="{Binding ClearAll}"
+                    Style="{StaticResource PlayerControlAppBarButtonStyle}"
+                    />                
             </StackPanel>
 
             <ListView x:Name="PlayqueueList"

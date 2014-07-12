@@ -684,4 +684,7 @@
   <data name="SearchPageSearchTermBox.PlaceholderText" xml:space="preserve">
     <value>Search Query</value>
   </data>
+  <data name="PlayQueueClearAll.Label" xml:space="preserve">
+    <value>Clear Queue</value>
+  </data>
 </root>
