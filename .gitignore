@@ -1,1 +1,8 @@
-MusicMinkAppLayer/Helpers/ApiKeys.cs
+MusicMink/obj/**
+MusicMink/bin/**
+MusicMinkAppLayer/bin/**
+MusicMinkAppLayer/obj/**
+MusicMinkBackgroundAudioPlayer/bin/**
+MusicMinkBackgroundAudioPlayer/obj/**
+packages/**
+MusicMink.v12.suo
