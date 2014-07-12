@@ -176,7 +176,7 @@
             >
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="140"/>
+                <RowDefinition Height="125"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -188,7 +188,7 @@
                 Margin="0,-15,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                Opacity="0.2"
+                Opacity="0.15"
                 Grid.RowSpan="3"
                 />
 

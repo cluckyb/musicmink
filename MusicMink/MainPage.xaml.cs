@@ -80,6 +80,13 @@ namespace MusicMink
         {
             if (!isPlayqueueExpanded)
             {
+                if (LibraryViewModel.Current.PlayQueue.CurrentTrackPosition > 3)
+                {
+                    PlayQueueEntryViewModel pqeVM = LibraryViewModel.Current.PlayQueue.PlaybackQueue[LibraryViewModel.Current.PlayQueue.CurrentTrackPosition - 3];
+
+                    PlayqueueList.ScrollIntoView(pqeVM, ScrollIntoViewAlignment.Leading);
+                }
+
                 VisualStateManager.GoToState(this, "PlayQueueOut", true);
                 isPlayqueueExpanded = true;
                 MainContentFrame.IsEnabled = false;
