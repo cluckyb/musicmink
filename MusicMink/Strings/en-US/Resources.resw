@@ -229,7 +229,7 @@
     <value>Remove</value>
   </data>
   <data name="AddContentHeader.Text" xml:space="preserve">
-    <value>Add Content</value>
+    <value>Manage Library</value>
   </data>
   <data name="SongExtraInfoDate" xml:space="preserve">
     <value>{0}, last played {1}</value>
