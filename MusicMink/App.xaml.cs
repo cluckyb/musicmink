@@ -1,6 +1,7 @@
 ﻿using MusicMink.ViewModels;
 using MusicMinkAppLayer.Diagnostics;
 using System;
+using System.Reflection;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.System.Threading;
@@ -10,24 +11,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-
-using System.Reflection;
-
-/*
- * GLOBAL TODO LIST:
- * 
- * Settings: Add option to auto pull album art from last.FM - #1
- * 
- * Scrobbling: Do better job of getting artist name (put it in the scrobble row database) - #2
- * Scrobbling: Batch scrobbles - #3
- * Scrobbling: Ensure it doesn't block startup - #3
- * 
- * Alerts: Basic alert prototyping/work - #6
- * Alerts: Show alert if song changes locations
- * 
- * Cleanup: Move buttons to commands   -#8
- * Cleanup: Remove and Sort from UI project
- */
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
