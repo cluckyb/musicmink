@@ -208,6 +208,10 @@ namespace MusicMinkAppLayer.PlayQueue
                 catch (Exception ex)
                 {
                     Logger.Current.Log(new CallerInfo(), LogLevel.Error, "Couldn't play track {0} got message {1}", trackInfo.SongId, ex.Message);
+
+                    IsActive = false;
+
+                    PlayNext();
                 }
             }
             else

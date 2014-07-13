@@ -687,6 +687,24 @@
   <data name="PlayQueueClearAll.Label" xml:space="preserve">
     <value>Clear Queue</value>
   </data>
+  <data name="CleanLibraryContentButton.Content" xml:space="preserve">
+    <value>Delete Orphaned Tracks</value>
+  </data>
+  <data name="CleanLibraryContentCancelButton.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CleanLibraryInProgressMessage.Text" xml:space="preserve">
+    <value>Cleaning...</value>
+  </data>
+  <data name="CleanLibraryNotInProgressMessage.Text" xml:space="preserve">
+    <value>Results:</value>
+  </data>
+  <data name="CleanSongsLeft.Text" xml:space="preserve">
+    <value>Songs Left To Scan:</value>
+  </data>
+  <data name="CleanSongsToRemove.Text" xml:space="preserve">
+    <value>Oraphed Songs Found:</value>
+  </data>
   <data name="ExportStatsContentButton.Content" xml:space="preserve">
     <value>Export Stat File</value>
   </data>

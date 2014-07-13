@@ -45,6 +45,10 @@ namespace MusicMink.MediaSources
 
             public const string StatImportSongsFound = "StatImportSongsFound";
             public const string StatImportSongsSkipped = "StatImportSongsSkipped";
+
+            public const string CleanLibraryInProgress = "CleanLibraryInProgress";
+            public const string CleanLibrarySongsLeft = "CleanLibrarySongsLeft";
+            public const string CleanLibraryBadSongsFound = "CleanLibraryBadSongsFound";
         }
 
         private LocalMusicLibraryStorageProvider localLibraryStorageProvider;
@@ -84,7 +88,11 @@ namespace MusicMink.MediaSources
                     NotifyPropertyChanged(Properties.IsNoSyncInProgress);
                     break;
                 case Properties.IsArtSyncInProgress:
-                    ScanLastFMForArt.RaiseExecuteChanged();
+                    ScanLastFMForArt.RaiseExecuteChanged();               
+                    break;
+                case Properties.CleanLibraryInProgress:
+                    CleanLibrary.RaiseExecuteChanged();
+                    CancelCleanLibrary.RaiseExecuteChanged();
                     break;
             }
         }
@@ -104,6 +112,57 @@ namespace MusicMink.MediaSources
         #endregion
 
         #region Properties
+
+        private int _cleanLibrarySongsLeft;
+        public int CleanLibrarySongsLeft
+        {
+            get
+            {
+                return _cleanLibrarySongsLeft;
+            }
+            set
+            {
+                if (_cleanLibrarySongsLeft != value)
+                {
+                    _cleanLibrarySongsLeft = value;
+                    NotifyPropertyChanged(Properties.CleanLibrarySongsLeft);
+                }
+            }
+        }
+
+        private int _cleanLibraryBadSongsFound;
+        public int CleanLibraryBadSongsFound
+        {
+            get
+            {
+                return _cleanLibraryBadSongsFound;
+            }
+            set
+            {
+                if (_cleanLibraryBadSongsFound != value)
+                {
+                    _cleanLibraryBadSongsFound = value;
+                    NotifyPropertyChanged(Properties.CleanLibraryBadSongsFound);
+                }
+            }
+        }
+
+        private bool _cleanLibraryInProgress = false;
+        public bool CleanLibraryInProgress
+        {
+            get
+            {
+                return _cleanLibraryInProgress;
+            }
+            set
+            {
+                if (_cleanLibraryInProgress != value)
+                {
+                    _cleanLibraryInProgress = value;
+                    NotifyPropertyChanged(Properties.CleanLibraryInProgress);
+                }
+            }
+        }
 
         private int _artSyncAlbumsLeft;
         public int ArtSyncAlbumsLeft
@@ -241,6 +300,7 @@ namespace MusicMink.MediaSources
             }
         }
 
+
         #endregion
 
         #region Commands
@@ -355,6 +415,47 @@ namespace MusicMink.MediaSources
             return !IsArtSyncInProgress;
         }
 
+        private RelayCommand _cleanLibrary;
+        public RelayCommand CleanLibrary
+        {
+            get
+            {
+                if (_cleanLibrary == null) _cleanLibrary = new RelayCommand(CanExecuteCleanLibrary, ExecuteCleanLibrary);
+
+                return _cleanLibrary;
+            }
+        }
+
+        private void ExecuteCleanLibrary(object parameter)
+        {
+            CleanLibraryInternal();
+        }
+
+        private bool CanExecuteCleanLibrary(object parameter)
+        {
+            return !CleanLibraryInProgress;
+        }
+
+        private RelayCommand _cancelCleanLibrary;
+        public RelayCommand CancelCleanLibrary
+        {
+            get
+            {
+                if (_cancelCleanLibrary == null) _cancelCleanLibrary = new RelayCommand(CanExecuteCancelCleanLibrary, ExecuteCancelCleanLibrary);
+
+                return _cancelCleanLibrary;
+            }
+        }
+
+        private void ExecuteCancelCleanLibrary(object parameter)
+        {
+            CancelCleanLibraryInternal();
+        }
+
+        private bool CanExecuteCancelCleanLibrary(object parameter)
+        {
+            return CleanLibraryInProgress;
+        }
 
         private RelayCommand _scanLocalLibrary;
         public RelayCommand ScanLocalLibrary
@@ -421,6 +522,56 @@ namespace MusicMink.MediaSources
             DebugHelper.Assert(new CallerInfo(), ActiveSyncSource == ActiveSyncSourceType.LocalLibrary);
 
             localLibraryStorageProvider.Cancel();
+        }
+
+        private bool stopCleanLibraryFlag = false;
+        private async void CleanLibraryInternal()
+        {
+            CleanLibraryInProgress = true;
+
+            stopCleanLibraryFlag = false;
+
+            List<SongViewModel> songsToClean = new List<SongViewModel>();
+
+            CleanLibrarySongsLeft = LibraryViewModel.Current.FlatSongCollection.Count;
+            CleanLibraryBadSongsFound = 0;
+
+            foreach (SongViewModel song in LibraryViewModel.Current.FlatSongCollection)
+            {
+                if (stopCleanLibraryFlag)
+                {
+                    CleanLibrarySongsLeft = 0;
+                    CleanLibraryBadSongsFound = 0;
+                    break;
+                }
+
+                if (song.Origin == MusicMinkAppLayer.Enums.SongOriginSource.Device)
+                {
+                    try
+                    {
+                        var t = await StorageFile.GetFileFromPathAsync(song.Source);
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        songsToClean.Add(song);
+                        CleanLibraryBadSongsFound++;
+                    }
+                }
+
+                CleanLibrarySongsLeft--;
+            }
+
+            foreach (SongViewModel songToRemove in songsToClean)
+            {
+                LibraryViewModel.Current.DeleteSong(songToRemove);
+            }
+
+            CleanLibraryInProgress = false;
+        }
+
+        private void CancelCleanLibraryInternal()
+        {
+            stopCleanLibraryFlag = true;
         }
 
         private async Task ScanLastmForArtInternal()

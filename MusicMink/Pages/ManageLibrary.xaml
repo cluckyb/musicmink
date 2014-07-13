@@ -18,102 +18,151 @@
         <TextBlock x:Uid="AddContentHeader"
             Style="{ThemeResource DefaultTitleStyle}"
             />
-                       
-        <StackPanel
+
+        <ScrollViewer
             Grid.Row="1"
             x:Name="ContentRoot"
             Margin="{StaticResource DefaultContentMargin}"
             >
-            <StackPanel HorizontalAlignment="Center">                
-                <Button x:Uid="SyncPhoneContentButton"
-                    Command="{Binding ScanLocalLibrary}"
+            <StackPanel>
+                <StackPanel HorizontalAlignment="Center">
+                    <Button x:Uid="SyncPhoneContentButton"
+                        Command="{Binding ScanLocalLibrary}"
+                        HorizontalAlignment="Center"                        
+                        />
+                    <Button x:Uid="SyncPhoneContentCancelButton"
+                        Command="{Binding CancelScanLocalLibrary}"
+                        Visibility="{Binding IsLocalSyncInProgress, Converter={StaticResource BoolToVisibilityConverter}}"
+                        HorizontalAlignment="Center"
+                        />
+                </StackPanel>
+
+                <TextBlock x:Uid="ScanInProgressMessage"
+                    FontSize="{StaticResource TextStyleLargeFontSize}"
+                    FontStyle="Italic"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    Visibility="{Binding IsNoSyncInProgress, Converter={StaticResource NotBoolToVisibilityConverter}}"
                     />
-                <Button x:Uid="SyncPhoneContentCancelButton"
-                    Command="{Binding CancelScanLocalLibrary}"
-                    Visibility="{Binding IsLocalSyncInProgress, Converter={StaticResource BoolToVisibilityConverter}}"
+
+                <TextBlock x:Uid="ScanNotInProgressMessage"
+                    FontSize="{StaticResource TextStyleLargeFontSize}"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    Visibility="{Binding IsNoSyncInProgress, Converter={StaticResource BoolToVisibilityConverter}}"
                     />
+
+                <TextBlock
+                    FontSize="{StaticResource TextStyleLargeFontSize}"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    >
+                    <Run x:Uid="ScanNewSongsFoundCount"
+                        FontWeight="Bold"                    
+                        />
+                    <Run Text="{Binding SongsFound}" />
+                </TextBlock>
+
+                <TextBlock
+                    FontSize="{StaticResource TextStyleLargeFontSize}"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    >
+                    <Run x:Uid="ScanSongsSkippedCount"
+                        FontWeight="Bold"
+                        />
+                    <Run Text="{Binding SongsSkipped}" />
+                </TextBlock>
+
+                <Button x:Uid="UpdateLastFMArtButton"                
+                    Command="{Binding ScanLastFMForArt}"
+                    HorizontalAlignment="Center"                    
+                    />
+                <TextBlock
+                    FontSize="{StaticResource TextStyleLargeFontSize}"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    >                
+                    <Run x:Uid="UpdateLastFMArtAlbumsLeft"
+                        FontWeight="Bold"
+                        />
+                    <Run Text="{Binding ArtSyncAlbumsLeft}" />
+                </TextBlock>
+                <TextBlock x:Uid="UpdateLastFMArtHelpMessage"
+                    FontSize="{StaticResource TextStyleSmallFontSize}"
+                    FontStyle="Italic"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    />
+
+                <Button x:Uid="ImportStatsContentButton"        
+                    Command="{Binding ImportStatFile}"
+                    HorizontalAlignment="Center"                    
+                    />
+                <TextBlock
+                    FontSize="{StaticResource TextStyleLargeFontSize}"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    >   
+                    <Run x:Uid="ImportStatsSongsFoundCount"
+                        FontWeight="Bold"                    
+                        />
+                    <Run Text="{Binding StatImportSongsFound}" />
+                </TextBlock>
+
+                <TextBlock
+                    FontSize="{StaticResource TextStyleLargeFontSize}"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    >
+                    <Run x:Uid="ImportStatsSongsSkippedCount"
+                        FontWeight="Bold"
+                        />
+                    <Run Text="{Binding StatImportSongsSkipped}" />
+                </TextBlock>
+
+                <Button x:Uid="ExportStatsContentButton"        
+                    Command="{Binding ExportStatFile}"
+                    HorizontalAlignment="Center"        
+                    />
+
+                <StackPanel HorizontalAlignment="Center">
+                    <Button x:Uid="CleanLibraryContentButton"
+                        Command="{Binding CleanLibrary}"
+                        HorizontalAlignment="Center"  
+                        />
+                    <Button x:Uid="CleanLibraryContentCancelButton"
+                        Command="{Binding CancelCleanLibrary}"
+                        Visibility="{Binding CleanLibraryInProgress, Converter={StaticResource BoolToVisibilityConverter}}"
+                        HorizontalAlignment="Center"
+                        />
+                </StackPanel>
+
+                <TextBlock x:Uid="CleanLibraryNotInProgressMessage"
+                    FontSize="{StaticResource TextStyleLargeFontSize}"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    Visibility="{Binding CleanLibraryInProgress, Converter={StaticResource NotBoolToVisibilityConverter}}"
+                    />
+
+                <TextBlock x:Uid="CleanLibraryInProgressMessage"
+                    FontSize="{StaticResource TextStyleLargeFontSize}"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    Visibility="{Binding CleanLibraryInProgress, Converter={StaticResource BoolToVisibilityConverter}}"
+                    FontStyle="Italic"
+                    />
+
+                <TextBlock
+                    FontSize="{StaticResource TextStyleLargeFontSize}"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    >
+                    <Run x:Uid="CleanSongsLeft"
+                        FontWeight="Bold"                    
+                        />
+                    <Run Text="{Binding CleanLibrarySongsLeft}" />
+                </TextBlock>
+
+                <TextBlock
+                    FontSize="{StaticResource TextStyleLargeFontSize}"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    >
+                    <Run x:Uid="CleanSongsToRemove"
+                        FontWeight="Bold"
+                        />
+                    <Run Text="{Binding CleanLibraryBadSongsFound}" />
+                </TextBlock>
             </StackPanel>
-            
-            <TextBlock x:Uid="ScanInProgressMessage"
-                FontSize="{StaticResource TextStyleLargeFontSize}"
-                FontStyle="Italic"
-                Foreground="{StaticResource PhoneForegroundBrush}"
-                Visibility="{Binding IsNoSyncInProgress, Converter={StaticResource NotBoolToVisibilityConverter}}"
-                />
-
-            <TextBlock x:Uid="ScanNotInProgressMessage"
-                FontSize="{StaticResource TextStyleLargeFontSize}"
-                Foreground="{StaticResource PhoneForegroundBrush}"
-                Visibility="{Binding IsNoSyncInProgress, Converter={StaticResource BoolToVisibilityConverter}}"
-                />
-
-            <TextBlock
-                FontSize="{StaticResource TextStyleLargeFontSize}"
-                Foreground="{StaticResource PhoneForegroundBrush}"
-                >
-                <Run x:Uid="ScanNewSongsFoundCount"
-                    FontWeight="Bold"                    
-                    />
-                <Run Text="{Binding SongsFound}" />
-            </TextBlock>
-
-            <TextBlock
-                FontSize="{StaticResource TextStyleLargeFontSize}"
-                Foreground="{StaticResource PhoneForegroundBrush}"
-                >
-                <Run x:Uid="ScanSongsSkippedCount"
-                    FontWeight="Bold"
-                    />
-                <Run Text="{Binding SongsSkipped}" />
-            </TextBlock>           
-
-            <Button x:Uid="UpdateLastFMArtButton"                
-                Command="{Binding ScanLastFMForArt}"
-                HorizontalAlignment="Center"                    
-                />
-            <TextBlock
-                FontSize="{StaticResource TextStyleLargeFontSize}"
-                Foreground="{StaticResource PhoneForegroundBrush}"
-                >                
-                <Run x:Uid="UpdateLastFMArtAlbumsLeft"
-                    FontWeight="Bold"
-                    />
-                <Run Text="{Binding ArtSyncAlbumsLeft}" />
-            </TextBlock>
-            <TextBlock x:Uid="UpdateLastFMArtHelpMessage"
-                FontSize="{StaticResource TextStyleSmallFontSize}"
-                FontStyle="Italic"
-                Foreground="{StaticResource PhoneForegroundBrush}"
-                />
-
-            <Button x:Uid="ImportStatsContentButton"        
-                Command="{Binding ImportStatFile}"
-                HorizontalAlignment="Center"                    
-                />
-            <TextBlock
-                FontSize="{StaticResource TextStyleLargeFontSize}"
-                Foreground="{StaticResource PhoneForegroundBrush}"
-                >
-                <Run x:Uid="ImportStatsSongsFoundCount"
-                    FontWeight="Bold"                    
-                    />
-                <Run Text="{Binding StatImportSongsFound}" />
-            </TextBlock>
-
-            <TextBlock
-                FontSize="{StaticResource TextStyleLargeFontSize}"
-                Foreground="{StaticResource PhoneForegroundBrush}"
-                >
-                <Run x:Uid="ImportStatsSongsSkippedCount"
-                    FontWeight="Bold"
-                    />
-                <Run Text="{Binding StatImportSongsSkipped}" />
-            </TextBlock>
-
-            <Button x:Uid="ExportStatsContentButton"        
-                Command="{Binding ExportStatFile}"
-                HorizontalAlignment="Center"        
-                />
-        </StackPanel>
+        </ScrollViewer>
     </Grid>
 </local:BasePage>
