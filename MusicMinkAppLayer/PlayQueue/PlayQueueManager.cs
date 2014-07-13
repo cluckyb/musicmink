@@ -273,11 +273,15 @@ namespace MusicMinkAppLayer.PlayQueue
 
         public void Connect()
         {
+            Logger.Current.Log(new CallerInfo(), LogLevel.Warning, "Connecting DB");
+
             DatabaseManager.Current.Connect();
         }
 
         public void Disconnect()
         {
+            Logger.Current.Log(new CallerInfo(), LogLevel.Warning, "Disconnect DB");
+
             if (IsActive && mediaPlayer.NaturalDuration.TotalSeconds > 0)
             {
                 double percentage = mediaPlayer.Position.TotalSeconds / mediaPlayer.NaturalDuration.TotalSeconds;
