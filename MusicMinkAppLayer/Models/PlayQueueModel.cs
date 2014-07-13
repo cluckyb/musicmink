@@ -856,8 +856,12 @@ namespace MusicMinkAppLayer.Models
 
             var backgroundtaskinitializationresult = CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                bool result = BackgroundInitialized.WaitOne(20000);
-                if (result == true)
+                bool result = IsBackgroundAudioTaskRunning;
+                if (!result)
+                {
+                    result = BackgroundInitialized.WaitOne(20000);
+                }
+                if (result)
                 {
                     IsBackgroundStarted = true;
 
@@ -865,6 +869,8 @@ namespace MusicMinkAppLayer.Models
                 }
                 else
                 {
+                    Logger.Current.Log(new CallerInfo(), LogLevel.Warning, "Background task didn't start in time");
+
                     throw new Exception("Background Audio Task didn't start in expected time");
                 }
             }

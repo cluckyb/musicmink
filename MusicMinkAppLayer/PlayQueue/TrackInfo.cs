@@ -62,17 +62,17 @@ namespace MusicMinkAppLayer.PlayQueue
                         }
                         else
                         {
-                            Logger.Current.Log(new CallerInfo(), LogLevel.Warning, "Couldn't play row {0}, no artistEntry matches!", rowId);
+                            Logger.Current.Log(new CallerInfo(), LogLevel.Warning, "Couldn't play row {0}, no artistEntry {1} matches!", rowId, albumTable.ArtistId);
                         }
                     }
                     else
                     {
-                        Logger.Current.Log(new CallerInfo(), LogLevel.Warning, "Couldn't play row {0}, no albumEntry matches!", rowId);
+                        Logger.Current.Log(new CallerInfo(), LogLevel.Warning, "Couldn't play row {0}, no albumEntry {1} or artistEntry {2} matches ({3} {4})!", rowId, songTable.AlbumId, songTable.ArtistId, albumTable != null, artistTable != null);
                     }
                 }
                 else
                 {
-                    Logger.Current.Log(new CallerInfo(), LogLevel.Warning, "Couldn't play row {0}, no songEntry matches!", rowId);
+                    Logger.Current.Log(new CallerInfo(), LogLevel.Warning, "Couldn't play row {0}, no songEntry for {1} matches!", rowId, playQueueEntry.SongId);
                 }
             }
             else
