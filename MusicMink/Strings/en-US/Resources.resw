@@ -687,4 +687,10 @@
   <data name="PlayQueueClearAll.Label" xml:space="preserve">
     <value>Clear Queue</value>
   </data>
+  <data name="ExportStatsContentButton.Content" xml:space="preserve">
+    <value>Export Stat File</value>
+  </data>
+  <data name="ExportStatsFileTitle" xml:space="preserve">
+    <value>Music Mink Data Export</value>
+  </data>
 </root>

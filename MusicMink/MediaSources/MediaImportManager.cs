@@ -2,11 +2,13 @@
 using MusicMink.ViewModels;
 using MusicMinkAppLayer.Diagnostics;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
@@ -27,6 +29,8 @@ namespace MusicMink.MediaSources
 
     public class MediaImportManager : INotifyPropertyChanged
     {
+        private const string UPLOAD_STATS_FILE_NAME = "MusicMinkDataExport.txt";
+
         public static class Properties
         {
             public const string SongsFound = "SongsFound";
@@ -240,6 +244,61 @@ namespace MusicMink.MediaSources
         #endregion
 
         #region Commands
+
+        private RelayCommand _exportStatFile;
+        public RelayCommand ExportStatFile
+        {
+            get
+            {
+                if (_exportStatFile == null) _exportStatFile = new RelayCommand(CanExecuteExportStatFile, ExecuteExportStatFile);
+
+                return _exportStatFile;
+            }
+        }
+
+        DataTransferManager transferManager = null;
+        private void ExecuteExportStatFile(object parameter)
+        {
+            if (transferManager == null)
+            {
+                transferManager = DataTransferManager.GetForCurrentView();
+                transferManager.DataRequested += HandleTransferManagerDataRequested;
+            }
+
+            DataTransferManager.ShowShareUI();
+        }
+
+        private async void HandleTransferManagerDataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            DataRequest request = args.Request;
+
+            DataRequestDeferral defferal = request.GetDeferral();
+
+            request.Data.Properties.Title = Strings.GetResource("ExportStatsFileTitle");
+
+            StorageFolder folder = ApplicationData.Current.LocalFolder;
+            using (Stream fileStream = await folder.OpenStreamForWriteAsync(UPLOAD_STATS_FILE_NAME, CreationCollisionOption.ReplaceExisting))
+            {
+                using (StreamWriter writer = new StreamWriter(fileStream))
+                {
+                    foreach (SongViewModel song in LibraryViewModel.Current.FlatSongCollection)
+                    {
+                        writer.WriteLine(String.Join("|", new string[] { song.Name, song.AlbumName, song.ArtistName, song.Rating.ToString(), song.PlayCount.ToString(), song.LastPlayed.Ticks.ToString() }));
+                    }
+                }
+            }
+
+            StorageFile file = await folder.GetFileAsync(UPLOAD_STATS_FILE_NAME);
+
+            request.Data.SetData(StandardDataFormats.StorageItems, new List<StorageFile>() { file });
+            defferal.Complete();
+        }
+
+        private bool CanExecuteExportStatFile(object parameter)
+        {
+            return true;
+        }
+
 
         private RelayCommand _importStatFile;
         public RelayCommand ImportStatFile

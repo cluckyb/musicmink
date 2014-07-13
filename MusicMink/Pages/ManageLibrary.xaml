@@ -109,6 +109,11 @@
                     />
                 <Run Text="{Binding StatImportSongsSkipped}" />
             </TextBlock>
+
+            <Button x:Uid="ExportStatsContentButton"        
+                Command="{Binding ExportStatFile}"
+                HorizontalAlignment="Center"        
+                />
         </StackPanel>
     </Grid>
 </local:BasePage>
