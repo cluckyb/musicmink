@@ -383,13 +383,13 @@ namespace MusicMink.ViewModels
             switch (type & MixType.SUBTYPE_MASK)
             {
                 case MixType.ALBUM_SUBTYPE:
-                    info = typeof(SongViewModel).GetRuntimeProperty(SongViewModel.Properties.AlbumName);
+                    info = typeof(SongViewModel).GetRuntimeProperty(SongViewModel.Properties.AlbumSortName);
                     break;
                 case MixType.ALBUMARTIST_SUBTYPE:
-                    info = typeof(SongViewModel).GetRuntimeProperty(SongViewModel.Properties.AlbumArtistName);
+                    info = typeof(SongViewModel).GetRuntimeProperty(SongViewModel.Properties.AlbumArtistSortName);
                     break;
                 case MixType.ARTIST_SUBTYPE:
-                    info = typeof(SongViewModel).GetRuntimeProperty(SongViewModel.Properties.ArtistName);
+                    info = typeof(SongViewModel).GetRuntimeProperty(SongViewModel.Properties.AlbumSortName);
                     break;
                 case MixType.TRACK_SUBTYPE:
                     info = typeof(SongViewModel).GetRuntimeProperty(SongViewModel.Properties.Name);
@@ -527,11 +527,11 @@ namespace MusicMink.ViewModels
             switch (mixSortOrder & MixSortOrder.PROPERTY_MASK)
             {
                 case MixSortOrder.ALBUMARTISTNAMESORT:
-                    return SongViewModel.Properties.AlbumArtistName;
+                    return SongViewModel.Properties.AlbumArtistSortName;
                 case MixSortOrder.ALBUMNAMESORT:
-                    return SongViewModel.Properties.AlbumName;
+                    return SongViewModel.Properties.AlbumSortName;
                 case MixSortOrder.ARTISTNAMESORT:
-                    return SongViewModel.Properties.ArtistName;
+                    return SongViewModel.Properties.ArtistSortName;
                 case MixSortOrder.DURATIONSORT:
                     return SongViewModel.Properties.Duration;
                 case MixSortOrder.LASTPLAYEDSORT:
@@ -541,7 +541,7 @@ namespace MusicMink.ViewModels
                 case MixSortOrder.RATINGSORT:
                     return SongViewModel.Properties.Rating;
                 case MixSortOrder.TRACKNAMESORT:
-                    return SongViewModel.Properties.Name;
+                    return SongViewModel.Properties.SortName;
                 default:
                     DebugHelper.Assert(new CallerInfo(), mixSortOrder == MixSortOrder.None, "Unexpected mix sort order");
                     return SongViewModel.Properties.SongId;

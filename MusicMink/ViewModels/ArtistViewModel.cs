@@ -97,7 +97,7 @@ namespace MusicMink.ViewModels
             }
         }
 
-        private SortedList<SongViewModel> _songs = new SortedList<SongViewModel>(new SongSortGenericOrder(SongViewModel.Properties.Name, true));
+        private SortedList<SongViewModel> _songs = new SortedList<SongViewModel>(new SongSortGenericOrder(SongViewModel.Properties.SortName, true));
         public ObservableCollection<SongViewModel> Songs
         {
             get
@@ -269,7 +269,7 @@ namespace MusicMink.ViewModels
             ArtistViewModel otherArtist = obj as ArtistViewModel;
             if (otherArtist != null)
             {
-                return this.Name.CompareTo(otherArtist.Name);
+                return this.SortName.CompareTo(otherArtist.SortName);
             }
             else
             {

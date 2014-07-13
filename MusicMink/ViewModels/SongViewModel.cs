@@ -1,6 +1,7 @@
 ﻿using MusicMink.Common;
 using MusicMink.Dialogs;
 using MusicMinkAppLayer.Diagnostics;
+using MusicMinkAppLayer.Enums;
 using MusicMinkAppLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,14 @@ namespace MusicMink.ViewModels
 
             public const string Album = "Album";
             public const string AlbumName = "AlbumName";
+            public const string AlbumSortName = "AlbumSortName";
 
             public const string AlbumArtistName = "AlbumArtistName";
+            public const string AlbumArtistSortName = "AlbumArtistSortName";
 
             public const string Artist = "Artist";
             public const string ArtistName = "ArtistName";
+            public const string ArtistSortName = "ArtistSortName";
 
             public const string Duration = "Duration";
             public const string DurationText = "DurationText";
@@ -29,6 +33,7 @@ namespace MusicMink.ViewModels
             public const string ExtraInfoString = "ExtraInfoString";
             public const string LastPlayed = "LastPlayed";
             public const string Name = "Name";
+            public const string Origin = "Origin";
             public const string PlayCount = "PlayCount";
             public const string Rating = "Rating";
             public const string SortName = "SortName";
@@ -54,6 +59,7 @@ namespace MusicMink.ViewModels
             {
                 case ArtistViewModel.Properties.Name:
                     NotifyPropertyChanged(Properties.ArtistName);
+                    NotifyPropertyChanged(Properties.ArtistSortName);
                     break;
             }
         }
@@ -64,9 +70,11 @@ namespace MusicMink.ViewModels
             {
                 case AlbumViewModel.Properties.Name:
                     NotifyPropertyChanged(Properties.AlbumName);
+                    NotifyPropertyChanged(Properties.AlbumSortName);
                     break;
                 case AlbumViewModel.Properties.ArtistName:
                     NotifyPropertyChanged(Properties.AlbumArtistName);
+                    NotifyPropertyChanged(Properties.AlbumArtistSortName);
                     break;
             }
         }
@@ -79,10 +87,13 @@ namespace MusicMink.ViewModels
                     NotifyPropertyChanged(Properties.Album);
                     NotifyPropertyChanged(Properties.AlbumName);
                     NotifyPropertyChanged(Properties.AlbumArtistName);
+                    NotifyPropertyChanged(Properties.AlbumSortName);
+                    NotifyPropertyChanged(Properties.AlbumArtistSortName);
                     break;
                 case SongModel.Properties.ArtistId:
                     NotifyPropertyChanged(Properties.Artist);
                     NotifyPropertyChanged(Properties.ArtistName);
+                    NotifyPropertyChanged(Properties.ArtistSortName);
                     break;
                 case SongModel.Properties.Duration:
                     Album.ResetLength();
@@ -163,6 +174,14 @@ namespace MusicMink.ViewModels
             }
         }
 
+        public string AlbumSortName
+        {
+            get
+            {
+                return Album.SortName;
+            }
+        }
+
         public void UpdateAlbum(AlbumViewModel newAlbum)
         {
             // Set the root AlbumId so we can remove the old Album
@@ -209,6 +228,22 @@ namespace MusicMink.ViewModels
             get
             {
                 return Album.ArtistName;
+            }
+        }
+
+        public string AlbumArtistSortName
+        {
+            get
+            {
+                return Album.Artist.SortName; ;
+            }
+        }
+
+        public string ArtistSortName
+        {
+            get
+            {
+                return Artist.SortName;
             }
         }
 
@@ -319,6 +354,14 @@ namespace MusicMink.ViewModels
                 {
                     rootModel.LastPlayed = value.Ticks;
                 }
+            }
+        }
+
+        public SongOriginSource Origin
+        {
+            get
+            {
+                return rootModel.Origin;
             }
         }
 

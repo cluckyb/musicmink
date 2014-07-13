@@ -478,11 +478,11 @@ namespace MusicMink.ViewModels
             AlbumViewModel otherAlbum = obj as AlbumViewModel;
             if (otherAlbum != null)
             {
-                if (otherAlbum.Name == this.Name)
+                if (otherAlbum.SortName == this.SortName)
                 {
-                    return this.Artist.Name.CompareTo(otherAlbum.Artist.Name);
+                    return this.Artist.SortName.CompareTo(otherAlbum.Artist.SortName);
                 }
-                return this.Name.CompareTo(otherAlbum.Name);
+                return this.SortName.CompareTo(otherAlbum.SortName);
             }
             else
             {
