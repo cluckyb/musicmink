@@ -339,13 +339,13 @@ namespace MusicMinkAppLayer.Models
             }
         }
 
-        public void DeleteAlbum(int albumId)
+        public async void DeleteAlbum(int albumId)
         {
             if (albumLookupDictionary.ContainsKey(albumId))
             {
                 AlbumModel albumToRemove = albumLookupDictionary[albumId];
 
-                albumToRemove.DeleteArt();
+                await albumToRemove.DeleteArt();
 
                 AllAlbums.Remove(albumToRemove);
                 albumLookupDictionary.Remove(albumId);
@@ -516,7 +516,7 @@ namespace MusicMinkAppLayer.Models
                 mixLookupDictionary.Remove(mixId);
             }
 
-            DatabaseManager.Current.DeletePlaylist(mixId);
+            DatabaseManager.Current.DeleteMix(mixId);
         }
 
         #endregion

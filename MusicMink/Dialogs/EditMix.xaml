@@ -42,10 +42,6 @@
 
                 <listitems:MixEntry x:Name="RootMixEntry"/>
 
-                <!-- For reasons I can't figure out, sometimes ComboBox uses a full screen mode and sometimes it uses just the drop down.
-                     In full screen mode, background is dark so need light text for the items. In dropdown mode, need dark. Doesn't seem
-                     to be a good way to auto figure out which one it is gonna be though so gotta assume the longer ones will always be
-                     full screen mode and the shorter ones will never be -->
                 <ComboBox x:Uid="DialogEditMixSortTypeComboBox"
                     x:Name="SortTypeComboBox"
                     >

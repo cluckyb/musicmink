@@ -82,6 +82,12 @@ namespace MusicMink.Controls
             InitializeComponent();
 
             this.Loaded += StarRater_Loaded;
+            this.DataContextChanged += StarRater_DataContextChanged;
+        }
+
+        void StarRater_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            this.UpdateStars();
         }
 
         void StarRater_Loaded(object sender, RoutedEventArgs e)

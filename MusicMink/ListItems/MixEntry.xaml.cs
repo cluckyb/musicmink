@@ -91,7 +91,10 @@ namespace MusicMink.ListItems
             NumericPicker.SelectedIndex = 0;
 
             PlaylistMemberPicker.ItemsSource = LibraryViewModel.Current.PlaylistCollection;
-            PlaylistMemberPicker.SelectedIndex = 0;
+            if (LibraryViewModel.Current.PlaylistCollection.Count > 0)
+            {
+                PlaylistMemberPicker.SelectedIndex = 0;
+            }
 
             MixMemberPicker.ItemsSource = LibraryViewModel.Current.MixCollection;
             MixMemberPicker.SelectedIndex = 0;
