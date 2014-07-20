@@ -345,7 +345,7 @@ namespace MusicMinkAppLayer.Models
             {
                 AlbumModel albumToRemove = albumLookupDictionary[albumId];
 
-                await albumToRemove.DeleteArt();
+                albumToRemove.DeleteArt();
 
                 AllAlbums.Remove(albumToRemove);
                 albumLookupDictionary.Remove(albumId);

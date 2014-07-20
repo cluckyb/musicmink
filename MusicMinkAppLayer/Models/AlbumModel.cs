@@ -85,7 +85,8 @@ namespace MusicMinkAppLayer.Models
         {
             if (!string.IsNullOrEmpty(AlbumArt))
             {
-                StorageFile file = await StorageFile.GetFileFromPathAsync(AlbumArt);
+                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(AlbumArt);
+
                 await file.DeleteAsync();
             }
         }
