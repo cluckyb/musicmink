@@ -79,7 +79,7 @@
                         From="125"
                         To="590"
                         BeginTime="0"
-                        Duration="0:0:0.5"
+                        Duration="0:0:0.2"
                         EnableDependentAnimation="True"
                         />
                         <DoubleAnimation
@@ -88,7 +88,7 @@
                         From="0"
                         To="465"
                         BeginTime="0"
-                        Duration="0:0:0.5"
+                        Duration="0:0:0.2"
                         EnableDependentAnimation="True"
                         />
                         <DoubleAnimation
@@ -97,7 +97,7 @@
                         From="0"
                         To="465"
                         BeginTime="0"
-                        Duration="0:0:0.5"
+                        Duration="0:0:0.2"
                         EnableDependentAnimation="True"
                         />
                         <DoubleAnimation
@@ -106,7 +106,7 @@
                         From="90"
                         To="270"
                         BeginTime="0"
-                        Duration="0:0:0.5"
+                        Duration="0:0:0.2"
                         EnableDependentAnimation="True"
                         />
                     </Storyboard>
@@ -119,7 +119,7 @@
                         From="590"
                         To="125"
                         BeginTime="0"
-                        Duration="0:0:0.5"
+                        Duration="0:0:0.2"
                         EnableDependentAnimation="True"
                         />
                         <DoubleAnimation
@@ -128,7 +128,7 @@
                         From="465"
                         To="0"
                         BeginTime="0"
-                        Duration="0:0:0.5"
+                        Duration="0:0:0.2"
                         EnableDependentAnimation="True"
                         />
                         <DoubleAnimation
@@ -137,7 +137,7 @@
                         From="465"
                         To="0"
                         BeginTime="0"
-                        Duration="0:0:0.5"
+                        Duration="0:0:0.2"
                         EnableDependentAnimation="True"
                         />
                         <DoubleAnimation
@@ -146,7 +146,7 @@
                         From="270"
                         To="450"
                         BeginTime="0"
-                        Duration="0:0:0.5"
+                        Duration="0:0:0.2"
                         EnableDependentAnimation="True"
                         />
                     </Storyboard>
