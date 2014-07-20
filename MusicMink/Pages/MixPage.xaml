@@ -76,17 +76,50 @@
                 <AppBarButton x:Uid="MixPagePlayButton"
                     Icon="Play"
                     Command="{Binding PlayAllSongs}"
-                    />
+                    CommandParameter="0"
+                    Holding="OpenContextMenu"
+                    >
+                    <FlyoutBase.AttachedFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem x:Uid="PlaySongsCount10" Command="{Binding PlayAllSongs}" CommandParameter="10"/>
+                            <MenuFlyoutItem x:Uid="PlaySongsCount25" Command="{Binding PlayAllSongs}" CommandParameter="25"/>
+                            <MenuFlyoutItem x:Uid="PlaySongsCount50" Command="{Binding PlayAllSongs}" CommandParameter="50"/>
+                            <MenuFlyoutItem x:Uid="PlaySongsCountAll" Command="{Binding PlayAllSongs}" CommandParameter="0"/>
+                        </MenuFlyout>
+                    </FlyoutBase.AttachedFlyout>
+                </AppBarButton>
 
                 <AppBarButton x:Uid="MixPageQueueButton"
                     Icon="Clock"
                     Command="{Binding QueueAllSongs}"
-                    />
+                    CommandParameter="0"
+                    Holding="OpenContextMenu"
+                    >
+                    <FlyoutBase.AttachedFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem x:Uid="QueueSongsCount10" Command="{Binding QueueAllSongs}" CommandParameter="10"/>
+                            <MenuFlyoutItem x:Uid="QueueSongsCount25" Command="{Binding QueueAllSongs}" CommandParameter="25"/>
+                            <MenuFlyoutItem x:Uid="QueueSongsCount50" Command="{Binding QueueAllSongs}" CommandParameter="50"/>
+                            <MenuFlyoutItem x:Uid="QueueSongsCountAll" Command="{Binding QueueAllSongs}" CommandParameter="0"/>
+                        </MenuFlyout>
+                    </FlyoutBase.AttachedFlyout>
+                </AppBarButton>
 
                 <AppBarButton x:Uid="MixPageShuffleButton"
                     Icon="Shuffle"
                     Command="{Binding ShuffleAllSongs}"
-                    />
+                    CommandParameter="0"
+                    Holding="OpenContextMenu"
+                    >
+                    <FlyoutBase.AttachedFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem x:Uid="ShuffleSongsCount10" Command="{Binding ShuffleAllSongs}" CommandParameter="10"/>
+                            <MenuFlyoutItem x:Uid="ShuffleSongsCount25" Command="{Binding ShuffleAllSongs}" CommandParameter="25"/>
+                            <MenuFlyoutItem x:Uid="ShuffleSongsCount50" Command="{Binding ShuffleAllSongs}" CommandParameter="50"/>
+                            <MenuFlyoutItem x:Uid="ShuffleSongsCountAll" Command="{Binding ShuffleAllSongs}" CommandParameter="0"/>
+                        </MenuFlyout>
+                    </FlyoutBase.AttachedFlyout>
+                </AppBarButton>
 
                 <AppBarButton x:Uid="MixPageEditButton"
                     Icon="Edit"

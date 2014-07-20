@@ -260,7 +260,7 @@ namespace MusicMink.ViewModels
             get
             {
                 return Strings.HandlePlural(CurrentSongs.Count, Strings.GetResource("FormatSongsPlural"), Strings.GetResource("FormatSongsSingular")) +
-                    " (" + Strings.HandlePlural((int)Length.TotalMinutes, Strings.GetResource("FormatMinutesPlural"), Strings.GetResource("FormatMinutesSingular")) + ")";
+                    " (" + Strings.FormatTimeSpanLong((int)Length.TotalMinutes) + ")";
             }
         }
 
@@ -756,12 +756,16 @@ namespace MusicMink.ViewModels
 
         private void ExecutePlayAllSongs(object parameter)
         {
-            LibraryViewModel.Current.PlayQueue.PlaySongList(CurrentSongs, true);
+            int limit = int.Parse(DebugHelper.CastAndAssert<string>(parameter));
+
+            LibraryViewModel.Current.PlayQueue.PlaySongList(CurrentSongs, true, limit);
         }
 
         private bool CanExecutePlayAllSongs(object parameter)
         {
-            return CurrentSongs.Count > 0;
+            int limit = int.Parse(DebugHelper.CastAndAssert<string>(parameter));
+
+            return CurrentSongs.Count > limit;
         }
 
 
@@ -778,12 +782,16 @@ namespace MusicMink.ViewModels
 
         private void ExecuteQueueAllSongs(object parameter)
         {
-            LibraryViewModel.Current.PlayQueue.PlaySongList(CurrentSongs, false);
+            int limit = int.Parse(DebugHelper.CastAndAssert<string>(parameter));
+
+            LibraryViewModel.Current.PlayQueue.PlaySongList(CurrentSongs, false, limit);
         }
 
         private bool CanExecuteQueueAllSongs(object parameter)
         {
-            return CurrentSongs.Count > 0;
+            int limit = int.Parse(DebugHelper.CastAndAssert<string>(parameter));
+
+            return CurrentSongs.Count > limit;
         }
 
 
@@ -800,12 +808,16 @@ namespace MusicMink.ViewModels
 
         private void ExecuteShuffleAllSongs(object parameter)
         {
-            LibraryViewModel.Current.PlayQueue.ShuffleSongList(CurrentSongs, true);
+            int limit = int.Parse(DebugHelper.CastAndAssert<string>(parameter));
+
+            LibraryViewModel.Current.PlayQueue.ShuffleSongList(CurrentSongs, true, limit);
         }
 
         private bool CanExecuteShuffleAllSongs(object parameter)
         {
-            return CurrentSongs.Count > 0;
+            int limit = int.Parse(DebugHelper.CastAndAssert<string>(parameter));
+
+            return CurrentSongs.Count > limit;
         }
 
 

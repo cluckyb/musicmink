@@ -23,7 +23,7 @@ namespace MusicMinkAppLayer.Models
     /// </summary>
     public class PlayQueueModel : RootModel
     {
-        private const int MAX_QUEUE_SIZE = 100;
+        public const int MAX_QUEUE_SIZE = 100;
         private AutoResetEvent BackgroundInitialized;
         private DispatcherTimer progressUpdateTimer;
 

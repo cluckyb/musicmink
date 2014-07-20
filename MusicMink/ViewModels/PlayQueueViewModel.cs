@@ -448,13 +448,22 @@ namespace MusicMink.ViewModels
             rootModel.QueueSong(s.SongId);
         }
 
-        public void PlaySongList(IList<SongViewModel> Songs, bool startPlay)
+        public void PlaySongList(IList<SongViewModel> Songs, bool startPlay, int cap = 0)
         {
-            PlaySongList<SongViewModel>(Songs, (song) => { return song; }, startPlay);
+            PlaySongList<SongViewModel>(Songs, (song) => { return song; }, startPlay, cap);
         }
 
-        public void PlaySongList<T>(IList<T> Songs, Func<T, SongViewModel> ItemToSong, bool startPlay)
+        public void PlaySongList<T>(IList<T> Songs, Func<T, SongViewModel> ItemToSong, bool startPlay, int cap = 0)
         {
+            int actualCap = cap;
+
+            if (cap == 0)
+            {
+                actualCap = PlayQueueModel.MAX_QUEUE_SIZE;
+            }
+
+            actualCap = Math.Min(actualCap, PlayQueueModel.MAX_QUEUE_SIZE);
+
             if (Songs.Count > 0)
             {
                 if (startPlay)
@@ -466,23 +475,32 @@ namespace MusicMink.ViewModels
                     this.QueueSong(ItemToSong(Songs[0]));
                 }
 
-                for (int i = 1; i < Songs.Count; i++)
+                for (int i = 1; i < Songs.Count && i < actualCap; i++)
                 {
                     this.QueueSong(ItemToSong(Songs[i]));
                 }
             }
         }
 
-        public void ShuffleSongList(IList<SongViewModel> Songs, bool startPlay)
+        public void ShuffleSongList(IList<SongViewModel> Songs, bool startPlay, int cap = 0)
         {
-            ShuffleSongList(Songs, (song) => { return song; }, startPlay);
+            ShuffleSongList(Songs, (song) => { return song; }, startPlay, cap);
         }
 
-        public void ShuffleSongList<T>(IList<T> Songs, Func<T, SongViewModel> ItemToSong, bool startPlay)
+        public void ShuffleSongList<T>(IList<T> Songs, Func<T, SongViewModel> ItemToSong, bool startPlay, int cap = 0)
         {
+            int actualCap = cap;
+
+            if (cap == 0)
+            {
+                actualCap = PlayQueueModel.MAX_QUEUE_SIZE;
+            }
+
+            actualCap = Math.Min(actualCap, PlayQueueModel.MAX_QUEUE_SIZE);
+
             List<T> copy = Songs.ToList<T>();
 
-            for (int n = copy.Count - 1; n >= 0; n--)
+            for (int n = copy.Count - 1; n >= 0 && (copy.Count - 1 - n) < actualCap; n--)
             {
                 int next = seed.Next(n);
 

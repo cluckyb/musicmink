@@ -703,12 +703,48 @@
     <value>Songs Left To Scan:</value>
   </data>
   <data name="CleanSongsToRemove.Text" xml:space="preserve">
-    <value>Oraphed Songs Found:</value>
+    <value>Orphaned Songs Found:</value>
   </data>
   <data name="ExportStatsContentButton.Content" xml:space="preserve">
     <value>Export Stat File</value>
   </data>
   <data name="ExportStatsFileTitle" xml:space="preserve">
     <value>Music Mink Data Export</value>
+  </data>
+  <data name="PlaySongsCount10.Text" xml:space="preserve">
+    <value>Play 10</value>
+  </data>
+  <data name="PlaySongsCount25.Text" xml:space="preserve">
+    <value>Play 25</value>
+  </data>
+  <data name="PlaySongsCount50.Text" xml:space="preserve">
+    <value>Play 50</value>
+  </data>
+  <data name="PlaySongsCountAll.Text" xml:space="preserve">
+    <value>Play All</value>
+  </data>
+  <data name="QueueSongsCount10.Text" xml:space="preserve">
+    <value>Queue 10</value>
+  </data>
+  <data name="QueueSongsCount25.Text" xml:space="preserve">
+    <value>Queue 25</value>
+  </data>
+  <data name="QueueSongsCount50.Text" xml:space="preserve">
+    <value>Queue 50</value>
+  </data>
+  <data name="QueueSongsCountAll.Text" xml:space="preserve">
+    <value>Queue All</value>
+  </data>
+  <data name="ShuffleSongsCount10.Text" xml:space="preserve">
+    <value>Shuffle 10</value>
+  </data>
+  <data name="ShuffleSongsCount25.Text" xml:space="preserve">
+    <value>Shuffle 25</value>
+  </data>
+  <data name="ShuffleSongsCount50.Text" xml:space="preserve">
+    <value>Shuffle 50</value>
+  </data>
+  <data name="ShuffleSongsCountAll.Text" xml:space="preserve">
+    <value>Shuffle All</value>
   </data>
 </root>
