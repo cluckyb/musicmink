@@ -8,6 +8,4 @@ MusicMinkBackgroundAudioPlayer/bin/**
 MusicMinkBackgroundAudioPlayer/obj/**
 packages/**
 MusicMink.v12.suo
-MusicMink/Package.appxmanifest
 MusicMink/Package.StoreAssociation.xml
-MusicMink/MusicMink.csproj.user
