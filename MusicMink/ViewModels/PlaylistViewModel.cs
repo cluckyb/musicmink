@@ -1,6 +1,7 @@
 ﻿using MusicMink.Collections;
 using MusicMink.Common;
 using MusicMink.Dialogs;
+using MusicMinkAppLayer.Diagnostics;
 using MusicMinkAppLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -153,12 +154,16 @@ namespace MusicMink.ViewModels
 
         private void ExecutePlayAllSongs(object parameter)
         {
-            LibraryViewModel.Current.PlayQueue.PlaySongList(Songs, (playlistEntry) => { return playlistEntry.Song; }, true);
+            int limit = int.Parse(DebugHelper.CastAndAssert<string>(parameter));
+
+            LibraryViewModel.Current.PlayQueue.PlaySongList(Songs, (playlistEntry) => { return playlistEntry.Song; }, true, limit);
         }
 
         private bool CanExecutePlayAllSongs(object parameter)
         {
-            return Songs.Count > 0;
+            int limit = int.Parse(DebugHelper.CastAndAssert<string>(parameter));
+
+            return Songs.Count > limit;
         }
 
 
@@ -175,12 +180,16 @@ namespace MusicMink.ViewModels
 
         private void ExecuteQueueAllSongs(object parameter)
         {
-            LibraryViewModel.Current.PlayQueue.PlaySongList(Songs, (playlistEntry) => { return playlistEntry.Song; }, false);
+            int limit = int.Parse(DebugHelper.CastAndAssert<string>(parameter));
+
+            LibraryViewModel.Current.PlayQueue.PlaySongList(Songs, (playlistEntry) => { return playlistEntry.Song; }, false, limit);
         }
 
         private bool CanExecuteQueueAllSongs(object parameter)
         {
-            return Songs.Count > 0;
+            int limit = int.Parse(DebugHelper.CastAndAssert<string>(parameter));
+
+            return Songs.Count > limit;
         }
 
 
@@ -197,12 +206,16 @@ namespace MusicMink.ViewModels
 
         private void ExecuteShuffleAllSongs(object parameter)
         {
-            LibraryViewModel.Current.PlayQueue.ShuffleSongList(Songs, (playlistEntry) => { return playlistEntry.Song; }, true);
+            int limit = int.Parse(DebugHelper.CastAndAssert<string>(parameter));
+
+            LibraryViewModel.Current.PlayQueue.ShuffleSongList(Songs, (playlistEntry) => { return playlistEntry.Song; }, true, limit);
         }
 
         private bool CanExecuteShuffleAllSongs(object parameter)
         {
-            return Songs.Count > 0;
+            int limit = int.Parse(DebugHelper.CastAndAssert<string>(parameter));
+
+            return Songs.Count > limit;
         }
 
 

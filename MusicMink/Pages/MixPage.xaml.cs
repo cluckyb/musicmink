@@ -6,8 +6,6 @@ using System;
 using System.ComponentModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
 namespace MusicMink.Pages
@@ -62,10 +60,5 @@ namespace MusicMink.Pages
         }
         
         #endregion
-
-        private void OpenContextMenu(object sender, HoldingRoutedEventArgs e)
-        {
-            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender); 
-        }
     }
 }
