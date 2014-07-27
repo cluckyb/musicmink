@@ -2,8 +2,10 @@
 using MusicMink.Pages;
 using MusicMinkAppLayer.Diagnostics;
 using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml.Controls;
+using Windows.Storage;
 
 namespace MusicMink
 {
@@ -111,20 +113,34 @@ namespace MusicMink
 
         internal void HandleContinuation(IContinuationActivatedEventArgs continuationEventArgs)
         {
-            if (mainNavigationFrame != null && mainNavigationFrame.Content is AlbumPage && continuationEventArgs is FileOpenPickerContinuationEventArgs)
+            if (mainNavigationFrame != null && mainNavigationFrame.Content is AlbumPage)
             {
-                AlbumPage currentAlbumPage = DebugHelper.CastAndAssert<AlbumPage>(mainNavigationFrame.Content);
-                FileOpenPickerContinuationEventArgs filePickerOpenArgs = DebugHelper.CastAndAssert<FileOpenPickerContinuationEventArgs>(continuationEventArgs);
+                if (continuationEventArgs is FileOpenPickerContinuationEventArgs)
+                {
+                    AlbumPage currentAlbumPage = DebugHelper.CastAndAssert<AlbumPage>(mainNavigationFrame.Content);
+                    FileOpenPickerContinuationEventArgs filePickerOpenArgs = DebugHelper.CastAndAssert<FileOpenPickerContinuationEventArgs>(continuationEventArgs);
 
-                currentAlbumPage.HandleFilePickerLaunch(filePickerOpenArgs);
+                    currentAlbumPage.HandleFilePickerLaunch(filePickerOpenArgs);
+                }
             }
-            else if (mainNavigationFrame != null && mainNavigationFrame.Content is ManageLibrary && continuationEventArgs is FileOpenPickerContinuationEventArgs)
+            else if (mainNavigationFrame != null && mainNavigationFrame.Content is ManageLibrary)
             {
-                ManageLibrary scanPhonePage = DebugHelper.CastAndAssert<ManageLibrary>(mainNavigationFrame.Content);
-                FileOpenPickerContinuationEventArgs filePickerOpenArgs = DebugHelper.CastAndAssert<FileOpenPickerContinuationEventArgs>(continuationEventArgs);
+                if (continuationEventArgs is FileOpenPickerContinuationEventArgs)
+                {
+                    FileOpenPickerContinuationEventArgs filePickerOpenArgs = DebugHelper.CastAndAssert<FileOpenPickerContinuationEventArgs>(continuationEventArgs);
 
-                // TODO: #12 Figure out why this hangs on "resuming" 
-                MediaImportManager.Current.HandleFilePickerLaunch(filePickerOpenArgs);
+                    DebugHelper.Assert(new CallerInfo(), filePickerOpenArgs.Files.Count == 1);
+
+                    IStorageFile pickedFile = filePickerOpenArgs.Files[0];
+
+                    MediaImportManager.Current.HandleFilePickerLaunch(pickedFile);
+                }
+                else if (continuationEventArgs is FolderPickerContinuationEventArgs)
+                {
+                    FolderPickerContinuationEventArgs folderOpenArgs = DebugHelper.CastAndAssert<FolderPickerContinuationEventArgs>(continuationEventArgs);
+
+                    MediaImportManager.Current.HandleSyncFolderLaunch(folderOpenArgs.Folder);
+                }
             }
         }
     }

@@ -18,7 +18,12 @@ namespace MusicMink.MediaSources
 
         public async Task SyncStorageSolution()
         {
-            await LoadFolder(KnownFolders.MusicLibrary);
+            await SyncStorageSolution(KnownFolders.MusicLibrary);
+        }
+
+        public async Task SyncStorageSolution(StorageFolder target)
+        {
+            await LoadFolder(target);
         }
 
         public void Cancel()

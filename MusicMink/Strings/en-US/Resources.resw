@@ -411,7 +411,7 @@
   <data name="ScanSongsSkippedCount.Text" xml:space="preserve">
     <value>Songs Skipped:</value>
   </data>
-  <data name="SyncPhoneContentButton.Content" xml:space="preserve">
+  <data name="DefaultSyncPhoneContentButton.Content" xml:space="preserve">
     <value>Sync Phone Content</value>
   </data>
   <data name="SyncPhoneContentCancelButton.Content" xml:space="preserve">
@@ -746,5 +746,8 @@
   </data>
   <data name="ShuffleSongsCountAll.Text" xml:space="preserve">
     <value>Shuffle All</value>
+  </data>
+  <data name="CustomSyncPhoneContentButton.Content" xml:space="preserve">
+    <value>Pick Sync Folder</value>
   </data>
 </root>

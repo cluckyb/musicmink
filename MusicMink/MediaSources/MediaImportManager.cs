@@ -21,6 +21,13 @@ namespace MusicMink.MediaSources
         }
     }
 
+    class CustomFolderSyncContinuationInfo : ContinuationInfo
+    {
+        public CustomFolderSyncContinuationInfo()
+        {
+        }
+    }
+
     public enum ActiveSyncSourceType
     {
         None,
@@ -83,6 +90,7 @@ namespace MusicMink.MediaSources
             {
                 case Properties.ActiveSyncSource:
                     ScanLocalLibrary.RaiseExecuteChanged();
+                    ScanLocalLibraryPickFolder.RaiseExecuteChanged();
                     CancelScanLocalLibrary.RaiseExecuteChanged();
                     NotifyPropertyChanged(Properties.IsLocalSyncInProgress);
                     NotifyPropertyChanged(Properties.IsNoSyncInProgress);
@@ -383,11 +391,6 @@ namespace MusicMink.MediaSources
             openPicker.PickSingleFileAndContinue();
         }
 
-        internal async void HandleFilePickerLaunch(FileOpenPickerContinuationEventArgs filePickerOpenArgs)
-        {
-            await HandleFilePickerLaunchInternal(filePickerOpenArgs);            
-        }
-
         private bool _canExecuteImportStatFile = true;
         private bool CanExecuteImportStatFile(object parameter)
         {
@@ -478,6 +481,31 @@ namespace MusicMink.MediaSources
             return ActiveSyncSource == ActiveSyncSourceType.None;
         }
 
+        private RelayCommand _scanLocalLibraryPickFolder;
+        public RelayCommand ScanLocalLibraryPickFolder
+        {
+            get
+            {
+                if (_scanLocalLibraryPickFolder == null) _scanLocalLibraryPickFolder = new RelayCommand(CanExecuteScanLocalLibraryPickFolder, ExecuteScanLocalLibraryPickFolder);
+
+                return _scanLocalLibraryPickFolder;
+            }
+        }
+
+        private void ExecuteScanLocalLibraryPickFolder(object parameter)
+        {
+            FolderPicker openPicker = new FolderPicker();
+
+            NavigationManager.Current.ContinuationInfo = new CustomFolderSyncContinuationInfo();
+
+            openPicker.PickFolderAndContinue();
+        }
+
+        private bool CanExecuteScanLocalLibraryPickFolder(object parameter)
+        {
+            return ActiveSyncSource == ActiveSyncSourceType.None;
+        }
+
         private RelayCommand _cancelScanLocalLibrary;
         public RelayCommand CancelScanLocalLibrary
         {
@@ -502,6 +530,78 @@ namespace MusicMink.MediaSources
         #endregion
 
         #region Helper Methods
+
+        internal async void HandleFilePickerLaunch(IStorageFile pickedFile)
+        {
+            _canExecuteImportStatFile = false;
+            ImportStatFile.RaiseExecuteChanged();
+
+            StatImportSongsFound = 0;
+            StatImportSongsSkipped = 0;
+
+            using (Stream stream = await pickedFile.OpenStreamForReadAsync())
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        string line = reader.ReadLine();
+
+                        string[] parts = line.Split(new char[] { '|' });
+
+                        if (parts.Count() == 6)
+                        {
+                            string TrackName = parts[0];
+                            string AlbumName = parts[1];
+                            string ArtistName = parts[2];
+                            string Rating = parts[3];
+                            string PlayCount = parts[4];
+                            string LastPlayed = parts[5];
+
+                            SongViewModel song = LibraryViewModel.Current.LookupSongByName(TrackName, ArtistName);
+
+                            if (song != null)
+                            {
+                                song.Rating = uint.Parse(Rating);
+
+                                // TODO: let user toggle this
+                                // song.PlayCount = uint.Parse(PlayCount);
+
+                                DateTime realLastPlayed = new DateTime(long.Parse(LastPlayed));
+
+                                if (song.LastPlayed < realLastPlayed)
+                                {
+                                    song.LastPlayed = realLastPlayed;
+                                }
+
+                                StatImportSongsFound++;
+                            }
+                            else
+                            {
+                                StatImportSongsSkipped++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            _canExecuteImportStatFile = true;
+            ImportStatFile.RaiseExecuteChanged();
+        }
+
+        internal async void HandleSyncFolderLaunch(StorageFolder storageFolder)
+        {
+            if (ActiveSyncSource != ActiveSyncSourceType.None) return;
+
+            ActiveSyncSource = ActiveSyncSourceType.LocalLibrary;
+
+            SongsFound = 0;
+            SongsSkipped = 0;
+
+            await localLibraryStorageProvider.SyncStorageSolution(storageFolder);
+
+            ActiveSyncSource = ActiveSyncSourceType.None;
+        }
 
         private async void ScanLocalLibraryInternal()
         {
@@ -596,68 +696,6 @@ namespace MusicMink.MediaSources
 
             IsArtSyncInProgress = false;
         }
-
-        private async Task HandleFilePickerLaunchInternal(FileOpenPickerContinuationEventArgs filePickerOpenArgs)
-        {
-            _canExecuteImportStatFile = false;
-            ImportStatFile.RaiseExecuteChanged();
-
-            StatImportSongsFound = 0;
-            StatImportSongsSkipped = 0;
-
-            DebugHelper.Assert(new CallerInfo(), filePickerOpenArgs.Files.Count == 1);
-
-            IStorageFile pickedFile = filePickerOpenArgs.Files[0];
-
-            using (Stream stream = await pickedFile.OpenStreamForReadAsync())
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    while (!reader.EndOfStream)
-                    {
-                        string line = reader.ReadLine();
-
-                        string[] parts = line.Split(new char[] { '|' });
-
-                        if (parts.Count() == 6)
-                        {
-                            string TrackName = parts[0];
-                            string AlbumName = parts[1];
-                            string ArtistName = parts[2];
-                            string Rating = parts[3];
-                            string PlayCount = parts[4];
-                            string LastPlayed = parts[5];
-
-                            SongViewModel song = LibraryViewModel.Current.LookupSongByName(TrackName, ArtistName);
-
-                            if (song != null)
-                            {
-                                song.Rating = uint.Parse(Rating);
-
-                                // TODO: let user toggle this
-                                // song.PlayCount = uint.Parse(PlayCount);
-
-                                DateTime realLastPlayed = new DateTime(long.Parse(LastPlayed));
-
-                                if (song.LastPlayed < realLastPlayed)
-                                {
-                                    song.LastPlayed = realLastPlayed;
-                                }
-
-                                StatImportSongsFound++;
-                            }
-                            else
-                            {
-                                StatImportSongsSkipped++;
-                            }
-                        }
-                    }
-                }
-            }
-
-            _canExecuteImportStatFile = true;
-            ImportStatFile.RaiseExecuteChanged();
-    }
 
         #endregion
 
