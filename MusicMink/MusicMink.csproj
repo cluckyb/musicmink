@@ -113,7 +113,11 @@
     <Compile Include="Controls\StarRater.xaml.cs">
       <DependentUpon>StarRater.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SymbolTile.xaml.cs">
+      <DependentUpon>SymbolTile.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BoolToNotBoolConverter.cs" />
+    <Compile Include="Converters\EnumToVisibilityConverter.cs" />
     <Compile Include="Converters\IntegerToVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToObjectConverter.cs" />
     <Compile Include="Converters\MixItemStyleSelector.cs" />
@@ -260,6 +264,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\StarRater.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SymbolTile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -4,6 +4,7 @@ using MusicMinkAppLayer.Diagnostics;
 using System;
 using Windows.Graphics.Display;
 using Windows.Phone.UI.Input;
+using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

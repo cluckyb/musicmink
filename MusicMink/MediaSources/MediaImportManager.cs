@@ -1,6 +1,7 @@
 ﻿using MusicMink.Common;
 using MusicMink.ViewModels;
 using MusicMinkAppLayer.Diagnostics;
+using MusicMinkAppLayer.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,10 +29,15 @@ namespace MusicMink.MediaSources
         }
     }
 
-    public enum ActiveSyncSourceType
+    // Order matters for converters in ManageLibrary.xaml
+    public enum ActionType
     {
         None,
-        LocalLibrary
+        FolderSync,
+        DeleteSongs,
+        ImportStats,
+        ExportStats,
+        UpdateArt
     }
 
     public class MediaImportManager : INotifyPropertyChanged
@@ -40,9 +46,15 @@ namespace MusicMink.MediaSources
 
         public static class Properties
         {
+            public const string CurrentAction = "CurrentAction";
+
+            public const string LastSuccesfulLibrarySync = "LastSuccesfulLibrarySync";
+            public const string LastLibraryFolderUpdate = "LastLibraryFolderUpdate";
+            public const string DoesLocalLibraryNeedUpdate = "DoesLocalLibraryNeedUpdate";
+            public const string SyncMessage = "SyncMessage";
+
             public const string SongsFound = "SongsFound";
             public const string SongsSkipped = "SongsSkipped";
-            public const string ActiveSyncSource = "ActiveSyncSource";
 
             public const string IsNoSyncInProgress = "IsNoSyncInProgress";
             public const string IsLocalSyncInProgress = "IsLocalSyncInProgress";
@@ -53,7 +65,6 @@ namespace MusicMink.MediaSources
             public const string StatImportSongsFound = "StatImportSongsFound";
             public const string StatImportSongsSkipped = "StatImportSongsSkipped";
 
-            public const string CleanLibraryInProgress = "CleanLibraryInProgress";
             public const string CleanLibrarySongsLeft = "CleanLibrarySongsLeft";
             public const string CleanLibraryBadSongsFound = "CleanLibraryBadSongsFound";
         }
@@ -82,25 +93,38 @@ namespace MusicMink.MediaSources
             this.PropertyChanged += HandleMediaImportManagerPropertyChanged;
         }
 
+        public void Initalize()
+        {
+            UpdateLastLibraryFolder();
+        }
+
         #region EventHandlers
 
         void HandleMediaImportManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
-                case Properties.ActiveSyncSource:
+                case Properties.CurrentAction:
+                    ExportStatFile.RaiseExecuteChanged();
                     ScanLocalLibrary.RaiseExecuteChanged();
                     ScanLocalLibraryPickFolder.RaiseExecuteChanged();
                     CancelScanLocalLibrary.RaiseExecuteChanged();
+                    ImportStatFile.RaiseExecuteChanged();
+                    ScanLastFMForArt.RaiseExecuteChanged();
+                    CleanLibrary.RaiseExecuteChanged();
+                    CancelScanLastmForArt.RaiseExecuteChanged();
+                    CancelCleanLibrary.RaiseExecuteChanged();
+
                     NotifyPropertyChanged(Properties.IsLocalSyncInProgress);
                     NotifyPropertyChanged(Properties.IsNoSyncInProgress);
                     break;
                 case Properties.IsArtSyncInProgress:
                     ScanLastFMForArt.RaiseExecuteChanged();               
                     break;
-                case Properties.CleanLibraryInProgress:
-                    CleanLibrary.RaiseExecuteChanged();
-                    CancelCleanLibrary.RaiseExecuteChanged();
+                case Properties.LastSuccesfulLibrarySync:
+                case Properties.LastLibraryFolderUpdate:
+                    NotifyPropertyChanged(Properties.DoesLocalLibraryNeedUpdate);
+                    NotifyPropertyChanged(Properties.SyncMessage);
                     break;
             }
         }
@@ -155,23 +179,6 @@ namespace MusicMink.MediaSources
             }
         }
 
-        private bool _cleanLibraryInProgress = false;
-        public bool CleanLibraryInProgress
-        {
-            get
-            {
-                return _cleanLibraryInProgress;
-            }
-            set
-            {
-                if (_cleanLibraryInProgress != value)
-                {
-                    _cleanLibraryInProgress = value;
-                    NotifyPropertyChanged(Properties.CleanLibraryInProgress);
-                }
-            }
-        }
-
         private int _artSyncAlbumsLeft;
         public int ArtSyncAlbumsLeft
         {
@@ -188,7 +195,6 @@ namespace MusicMink.MediaSources
                 }
             }
         }
-
 
         private bool _isArtSyncInProgress = false;
         public bool IsArtSyncInProgress
@@ -275,19 +281,19 @@ namespace MusicMink.MediaSources
             }
         }
 
-        private ActiveSyncSourceType _activeSyncSource;
-        public ActiveSyncSourceType ActiveSyncSource
+        private ActionType _currentAction;
+        public ActionType CurrentAction
         {
             get
             {
-                return _activeSyncSource;
+                return _currentAction;
             }
             set
             {
-                if (_activeSyncSource != value)
+                if (_currentAction != value)
                 {
-                    _activeSyncSource = value;
-                    NotifyPropertyChanged(Properties.ActiveSyncSource);
+                    _currentAction = value;
+                    NotifyPropertyChanged(Properties.CurrentAction);
                 }
             }
         }
@@ -296,7 +302,7 @@ namespace MusicMink.MediaSources
         {
             get
             {
-                return ActiveSyncSource == ActiveSyncSourceType.None;
+                return CurrentAction == ActionType.None;
             }
         }
 
@@ -304,10 +310,95 @@ namespace MusicMink.MediaSources
         {
             get
             {
-                return ActiveSyncSource == ActiveSyncSourceType.LocalLibrary;
+                return CurrentAction == ActionType.FolderSync;
             }
         }
 
+        private DateTime? _lastSuccesfulLibrarySync;
+        public DateTime LastSuccesfulLibrarySync
+        {
+            get
+            {
+                if (!_lastSuccesfulLibrarySync.HasValue)
+                {
+                    _lastSuccesfulLibrarySync = new DateTime(ApplicationSettings.GetSettingsValue<long>(ApplicationSettings.LIBRARY_LAST_SUCCESFUL_SYNC_DATE, DateTime.MinValue.Ticks));
+                }
+
+                return _lastSuccesfulLibrarySync.Value;
+            }
+            set
+            {
+                long currentValue = ApplicationSettings.GetSettingsValue<long>(ApplicationSettings.LIBRARY_LAST_SUCCESFUL_SYNC_DATE, DateTime.MinValue.Ticks);
+
+                if (currentValue != value.Ticks)
+                {
+                    _lastSuccesfulLibrarySync = null;
+
+                    ApplicationSettings.PutSettingsValue(ApplicationSettings.LIBRARY_LAST_SUCCESFUL_SYNC_DATE, value.Ticks);
+                    NotifyPropertyChanged(Properties.LastSuccesfulLibrarySync);
+                }
+            }
+        }
+
+        private DateTime _lastLibraryFolderUpdate = DateTime.MinValue;
+        public DateTime LastLibraryFolderUpdate
+        {
+            get
+            {
+                return _lastLibraryFolderUpdate;
+            }
+            private set
+            {
+                if (_lastLibraryFolderUpdate != value)
+                {
+                    _lastLibraryFolderUpdate = value;
+                    NotifyPropertyChanged(Properties.LastLibraryFolderUpdate);
+                }
+            }
+        }
+
+        public bool DoesLocalLibraryNeedUpdate
+        {
+            get
+            {
+                return LastLibraryFolderUpdate > LastSuccesfulLibrarySync;
+            }
+        }
+
+        public string SyncMessage
+        {
+            get
+            {
+                if (DoesLocalLibraryNeedUpdate)
+                {
+                    if (LastSuccesfulLibrarySync == DateTime.MinValue)
+                    {
+                        return "Records show you haven't synced your music content yet. Tap the icon to start a sync now!";
+                    }
+                    else
+                    {
+                        return string.Format("Records show you last performed a sync on {0} and your music library was updated on {1}. Tap the icon start a sync and add the new content!", LastSuccesfulLibrarySync.ToLocalTime().ToString("d"), LastLibraryFolderUpdate.ToLocalTime().ToString("d"));
+                    }
+                }
+                else
+                {
+                    if (LastLibraryFolderUpdate == DateTime.MinValue)
+                    {
+                        return "Updating records... one moment...";
+                    }
+                    else
+                    {
+                        return "Records show your local library is up to date. If needed, you can force a full sync below.";
+                    }
+                        
+                }
+            }
+        }
+
+        private async void UpdateLastLibraryFolder()
+        {
+            LastLibraryFolderUpdate = await localLibraryStorageProvider.LastUpdate();
+        }
 
         #endregion
 
@@ -364,8 +455,9 @@ namespace MusicMink.MediaSources
 
         private bool CanExecuteExportStatFile(object parameter)
         {
-            return true;
+            return CurrentAction == ActionType.None;
         }
+
 
 
         private RelayCommand _importStatFile;
@@ -391,11 +483,12 @@ namespace MusicMink.MediaSources
             openPicker.PickSingleFileAndContinue();
         }
 
-        private bool _canExecuteImportStatFile = true;
         private bool CanExecuteImportStatFile(object parameter)
         {
-            return _canExecuteImportStatFile;
+            return CurrentAction == ActionType.None;
         }
+
+
 
         private RelayCommand _scanLastFMForArt;
         public RelayCommand ScanLastFMForArt
@@ -415,8 +508,9 @@ namespace MusicMink.MediaSources
 
         private bool CanExecuteScanLastFMForArt(object parameter)
         {
-            return !IsArtSyncInProgress;
+            return CurrentAction == ActionType.None;
         }
+
 
         private RelayCommand _cleanLibrary;
         public RelayCommand CleanLibrary
@@ -436,7 +530,7 @@ namespace MusicMink.MediaSources
 
         private bool CanExecuteCleanLibrary(object parameter)
         {
-            return !CleanLibraryInProgress;
+            return CurrentAction == ActionType.None;
         }
 
         private RelayCommand _cancelCleanLibrary;
@@ -457,7 +551,7 @@ namespace MusicMink.MediaSources
 
         private bool CanExecuteCancelCleanLibrary(object parameter)
         {
-            return CleanLibraryInProgress;
+            return CurrentAction == ActionType.DeleteSongs;
         }
 
         private RelayCommand _scanLocalLibrary;
@@ -473,12 +567,19 @@ namespace MusicMink.MediaSources
 
         private void ExecuteScanLocalLibrary(object parameter)
         {
-            ScanLocalLibraryInternal();
+            bool fullSync = false;
+           
+            if (parameter is string)
+            {
+                fullSync = Boolean.Parse((string) parameter);
+            }
+
+            ScanLocalLibraryInternal(fullSync);
         }
 
         private bool CanExecuteScanLocalLibrary(object parameter)
         {
-            return ActiveSyncSource == ActiveSyncSourceType.None;
+            return CurrentAction == ActionType.None;
         }
 
         private RelayCommand _scanLocalLibraryPickFolder;
@@ -503,7 +604,7 @@ namespace MusicMink.MediaSources
 
         private bool CanExecuteScanLocalLibraryPickFolder(object parameter)
         {
-            return ActiveSyncSource == ActiveSyncSourceType.None;
+            return CurrentAction == ActionType.None;
         }
 
         private RelayCommand _cancelScanLocalLibrary;
@@ -524,17 +625,41 @@ namespace MusicMink.MediaSources
 
         private bool CanExecuteCancelScanLocalLibrary(object parameter)
         {
-            return ActiveSyncSource == ActiveSyncSourceType.LocalLibrary;
+            return CurrentAction == ActionType.FolderSync;
         }
 
+
+        private RelayCommand _cancelScanLastmForArt;
+        public RelayCommand CancelScanLastmForArt
+        {
+            get
+            {
+                if (_cancelScanLastmForArt == null) _cancelScanLastmForArt = new RelayCommand(CanExecuteCancelScanLastmForArt, ExecuteCancelScanLastmForArt);
+
+                return _cancelScanLastmForArt;
+            }
+        }
+
+        private void ExecuteCancelScanLastmForArt(object parameter)
+        {
+            CancelScanLastmForArtInternal();
+        }
+
+        private bool CanExecuteCancelScanLastmForArt(object parameter)
+        {
+            return CurrentAction == ActionType.UpdateArt;
+        }
+
+        
         #endregion
 
         #region Helper Methods
 
         internal async void HandleFilePickerLaunch(IStorageFile pickedFile)
         {
-            _canExecuteImportStatFile = false;
-            ImportStatFile.RaiseExecuteChanged();
+            if (!IsNoSyncInProgress) return;
+
+            CurrentAction = ActionType.ImportStats;
 
             StatImportSongsFound = 0;
             StatImportSongsSkipped = 0;
@@ -585,41 +710,49 @@ namespace MusicMink.MediaSources
                 }
             }
 
-            _canExecuteImportStatFile = true;
-            ImportStatFile.RaiseExecuteChanged();
+            CurrentAction = ActionType.None;
         }
 
         internal async void HandleSyncFolderLaunch(StorageFolder storageFolder)
         {
-            if (ActiveSyncSource != ActiveSyncSourceType.None) return;
+            if (!IsNoSyncInProgress) return;
 
-            ActiveSyncSource = ActiveSyncSourceType.LocalLibrary;
+            CurrentAction = ActionType.FolderSync;
 
             SongsFound = 0;
             SongsSkipped = 0;
 
-            await localLibraryStorageProvider.SyncStorageSolution(storageFolder);
+            await localLibraryStorageProvider.SyncStorageSolution(storageFolder, DateTime.MinValue);
 
-            ActiveSyncSource = ActiveSyncSourceType.None;
+            CurrentAction = ActionType.None;
         }
 
-        private async void ScanLocalLibraryInternal()
+        private bool wasScanLocalCanceled;
+        private async void ScanLocalLibraryInternal(bool fullSync)
         {
-            if (ActiveSyncSource != ActiveSyncSourceType.None) return;
+            if (!IsNoSyncInProgress) return;
 
-            ActiveSyncSource = ActiveSyncSourceType.LocalLibrary;
+            CurrentAction = ActionType.FolderSync;
 
             SongsFound = 0;
             SongsSkipped = 0;
 
-            await localLibraryStorageProvider.SyncStorageSolution();
+            DateTime syncTime = fullSync ? DateTime.MinValue : LastSuccesfulLibrarySync;
+            wasScanLocalCanceled = false;
 
-            ActiveSyncSource = ActiveSyncSourceType.None;
+            await localLibraryStorageProvider.SyncStorageSolution(syncTime);
+
+            if (!wasScanLocalCanceled)
+            {
+                LastSuccesfulLibrarySync = DateTime.UtcNow;
+            }
+
+            CurrentAction = ActionType.None;
         }
 
         private void CancelLocalLibraryScanInternal()
         {
-            DebugHelper.Assert(new CallerInfo(), ActiveSyncSource == ActiveSyncSourceType.LocalLibrary);
+            wasScanLocalCanceled = true;
 
             localLibraryStorageProvider.Cancel();
         }
@@ -627,7 +760,9 @@ namespace MusicMink.MediaSources
         private bool stopCleanLibraryFlag = false;
         private async void CleanLibraryInternal()
         {
-            CleanLibraryInProgress = true;
+            if (!IsNoSyncInProgress) return;
+
+            CurrentAction = ActionType.DeleteSongs;
 
             stopCleanLibraryFlag = false;
 
@@ -666,7 +801,7 @@ namespace MusicMink.MediaSources
                 LibraryViewModel.Current.DeleteSong(songToRemove);
             }
 
-            CleanLibraryInProgress = false;
+            CurrentAction = ActionType.None;
         }
 
         private void CancelCleanLibraryInternal()
@@ -674,11 +809,14 @@ namespace MusicMink.MediaSources
             stopCleanLibraryFlag = true;
         }
 
+        bool stopLastFMScanFlag;
         private async Task ScanLastmForArtInternal()
         {
-            if (IsArtSyncInProgress) return;
+            if (!IsNoSyncInProgress) return;
 
-            IsArtSyncInProgress = true;
+            CurrentAction = ActionType.UpdateArt;
+
+            stopLastFMScanFlag = false;
 
             foreach (var albumCollection in LibraryViewModel.Current.AlbumCollection.Root)
             {
@@ -689,12 +827,27 @@ namespace MusicMink.MediaSources
             {
                 foreach (AlbumViewModel album in albumCollection)
                 {
+                    if (stopLastFMScanFlag)
+                    {
+                        break;
+                    }
+
                     await album.SetArtToLastFM(false);
                     ArtSyncAlbumsLeft--;
                 }
+
+                if (stopLastFMScanFlag)
+                {
+                    break;
+                }
             }
 
-            IsArtSyncInProgress = false;
+            CurrentAction = ActionType.None;
+        }
+
+        private void CancelScanLastmForArtInternal()
+        {
+            stopLastFMScanFlag = true;
         }
 
         #endregion

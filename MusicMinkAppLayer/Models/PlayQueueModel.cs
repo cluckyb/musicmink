@@ -52,6 +52,8 @@ namespace MusicMinkAppLayer.Models
 
         public void Start()
         {
+            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Calling Popuplate");
+
             Populate();
            
             Init();
@@ -383,6 +385,8 @@ namespace MusicMinkAppLayer.Models
 
             if (!canRun) return;
 
+            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Updating history items");
+
             List<HistoryTable> historyItems = DatabaseManager.Current.FetchHistoryItems();
 
             // Process everything first so we don't have to wait for scrobbles to see those updates
@@ -405,9 +409,12 @@ namespace MusicMinkAppLayer.Models
                         });
 
                         historyItem.Processed = true;
+                        DatabaseManager.Current.Update(historyItem);
                     }
                 }
             }
+
+            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Scrobbling history items");
 
             // TODO: #3 can batch scrobbles
             foreach (HistoryTable historyItem in historyItems)
@@ -436,6 +443,8 @@ namespace MusicMinkAppLayer.Models
                 }
             }
 
+            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Done updating history items");
+
             lock (historyLock)
             {
                 isUpdatingHistory = false;
@@ -444,6 +453,8 @@ namespace MusicMinkAppLayer.Models
 
         public void Populate()
         {
+            Logger.Current.Log(new CallerInfo(), LogLevel.Info, "Calling Popuplate");
+
             List<PlayQueueEntryTable> allEntries = DatabaseManager.Current.FetchPlayQueueEntries();
 
             PlayQueueEntryModel head = null;
@@ -513,6 +524,7 @@ namespace MusicMinkAppLayer.Models
             CurrentPlaybackQueueEntryId = 0;
             PlaybackQueue.Clear();
             LookupMap.Clear();
+            ApplicationSettings.PutSettingsValue(ApplicationSettings.CURRENT_TRACK_PERCENTAGE, 0.0);
 
             DatabaseManager.Current.ClearPlaybackQueue();
         }

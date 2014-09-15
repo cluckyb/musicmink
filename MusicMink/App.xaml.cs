@@ -1,4 +1,5 @@
-﻿using MusicMink.ViewModels;
+﻿using MusicMink.MediaSources;
+using MusicMink.ViewModels;
 using MusicMinkAppLayer.Diagnostics;
 using System;
 using System.Reflection;
@@ -38,13 +39,9 @@ namespace MusicMink
 
         async void LogUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            e.Handled = true;
-
-            DebugHelper.Alert(new CallerInfo(), "UnhandledException: TYPE: {0} MESSAGE: {1}", e.Exception.GetType(), e.Message);
+            DebugHelper.Alert(new CallerInfo(), "UnhandledException: TYPE: {0} MESSAGE: {1} STRING: {2} SOURCE: {3}", e.Exception.GetType(), e.Message, e.Exception.ToString(), e.Exception.Source);
             
             await Logger.Current.Flush();
-
-            Exit();
         }
 
         /// <summary>
@@ -123,6 +120,8 @@ namespace MusicMink
 
             // TODO: need to do this async to get load times down
             LibraryViewModel.Current.InitalizeLibrary(Window.Current.Dispatcher);
+
+            MediaImportManager.Current.Initalize();
 
             pt.Trace("Startup Done");
         }

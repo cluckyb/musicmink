@@ -60,9 +60,18 @@ namespace MusicMink.Pages
 
         internal async void HandleFilePickerLaunch(FileOpenPickerContinuationEventArgs filePickerOpenArgs)
         {
-            DebugHelper.Assert(new CallerInfo(), filePickerOpenArgs.Files.Count == 1);
+            EditAlbum editAlbumDialog;
 
-            EditAlbum editAlbumDialog = new EditAlbum(Album, filePickerOpenArgs.Files[0]);
+            if (filePickerOpenArgs.Files.Count > 0)
+            {
+                DebugHelper.Assert(new CallerInfo(), filePickerOpenArgs.Files.Count == 1);
+
+                editAlbumDialog = new EditAlbum(Album, filePickerOpenArgs.Files[0]);
+            }
+            else
+            {
+                editAlbumDialog = new EditAlbum(Album);
+            }
 
             await editAlbumDialog.ShowAsync();
         }

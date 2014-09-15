@@ -540,8 +540,7 @@ namespace MusicMink.ViewModels
             }
             else
             {
-                Logger.Current.Log(new CallerInfo(), LogLevel.Warning, "Couldn't find song {0} in cache", songId);
-                // If not, see if its at least in the database
+                // If not, see if its in the database
                 return LookupSong(LibraryModel.Current.LookupSongById(songId));
             }
         }

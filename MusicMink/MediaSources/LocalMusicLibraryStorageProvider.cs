@@ -16,14 +16,14 @@ namespace MusicMink.MediaSources
 
         private List<string> RealMusicProperties = new List<string>(){"System.Music.Artist"};
 
-        public async Task SyncStorageSolution()
+        public async Task SyncStorageSolution(DateTime lastSync)
         {
-            await SyncStorageSolution(KnownFolders.MusicLibrary);
+            await SyncStorageSolution(KnownFolders.MusicLibrary, lastSync);
         }
 
-        public async Task SyncStorageSolution(StorageFolder target)
+        public async Task SyncStorageSolution(StorageFolder target, DateTime lastSync)
         {
-            await LoadFolder(target);
+            await LoadFolder(target, lastSync);
         }
 
         public void Cancel()
@@ -31,7 +31,30 @@ namespace MusicMink.MediaSources
             isCanceled = true;
         }
 
-        private async Task LoadFolder(StorageFolder folder)
+        public async Task<DateTime> LastUpdate()
+        {
+            IReadOnlyList<IStorageItem> fileList = await KnownFolders.MusicLibrary.GetItemsAsync();
+
+            BasicProperties basicProperties = await KnownFolders.MusicLibrary.GetBasicPropertiesAsync();
+
+            DateTime lastUpdateTime = basicProperties.DateModified.UtcDateTime;
+
+            foreach (IStorageItem storageItem in fileList)
+            {
+                basicProperties = await storageItem.GetBasicPropertiesAsync();
+
+                DateTime candidateTime = basicProperties.DateModified.UtcDateTime;
+
+                if (candidateTime > lastUpdateTime)
+                {
+                    lastUpdateTime = candidateTime;
+                }
+            }
+
+            return lastUpdateTime;
+        }
+
+        private async Task LoadFolder(StorageFolder folder, DateTime lastSync)
         {
             if (isCanceled) return;
 
@@ -49,7 +72,14 @@ namespace MusicMink.MediaSources
                 {
                     StorageFolder storageFolder = DebugHelper.CastAndAssert<StorageFolder>(storageItem);
 
-                    await LoadFolder(storageFolder);
+                    BasicProperties basicProperties = await storageFolder.GetBasicPropertiesAsync();
+
+                    DateTime candidateTime = basicProperties.DateModified.UtcDateTime;
+
+                    if (candidateTime > lastSync)
+                    {
+                        await LoadFolder(storageFolder, lastSync);
+                    }
                 }
             }
         }

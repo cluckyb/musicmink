@@ -1,4 +1,5 @@
 ﻿using MusicMink.Common;
+using MusicMinkAppLayer.Diagnostics;
 using MusicMinkAppLayer.Models;
 using System;
 using System.ComponentModel;
@@ -26,6 +27,8 @@ namespace MusicMink.ViewModels
             model.PropertyChanged += HandleModelPropertyChanged;
 
             LibraryViewModel.Current.PlayQueue.PropertyChanged += HandlePlayQueuePropertyChanged;
+
+            _song = LibraryViewModel.Current.LookupSongById(rootModel.SongId);
         }
 
         #region Event Handlers
@@ -71,6 +74,8 @@ namespace MusicMink.ViewModels
             {
                 if (_song == null)
                 {
+                    DebugHelper.Alert(new CallerInfo(), "Song should have been initalized in the constructor");
+                    
                     _song = LibraryViewModel.Current.LookupSongById(rootModel.SongId);
                 }
 

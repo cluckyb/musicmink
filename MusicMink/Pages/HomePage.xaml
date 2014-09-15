@@ -4,25 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MusicMink.Pages"
     xmlns:converters="using:MusicMink.Converters"
+    xmlns:controls="using:MusicMink.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     
     <Page.Resources>
-        <x:Double x:Key="DefaultSymbolSize">30.0</x:Double>
-        <x:Double x:Key="HalfDefaultSymbolSize">15.0</x:Double>
         <converters:NumericTransformConverter x:Key="AppWidthToTileSizeConverter" Margin="10" Sections="2" />
-
-        <Style x:Key="TileTextStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontSize" Value="{StaticResource TextStyleLargeFontSize}" />
-            <Setter Property="HorizontalAlignment" Value="Right" />
-            <Setter Property="VerticalAlignment" Value="Bottom" />
-            <Setter Property="TextAlignment" Value="Center" />
-            <Setter Property="TextWrapping" Value="WrapWholeWords" />
-            <Setter Property="Margin" Value="10" />
-        </Style>
     </Page.Resources>
 
     <Grid x:Name="LayoutRoot">
@@ -31,265 +20,136 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="0">
-            <GridView x:Name="RootNavigationGrid"
-                SelectionMode="None"      
-                >
-                <GridViewItem  x:Name="SongsNavigationItem" Tapped="HandleSongsNavigationItemTapped">
-                    <Grid
+        <ScrollViewer Grid.Row="1" x:Name="ContentRoot" Margin="0">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid
+                    x:Name="SongsTile"
+                    MinHeight="{Binding ActualWidth, ElementName=SongsTile}"
+                    >
+                    <controls:SymbolTile x:Uid="HomePageSongsTile"
+                        Tapped="HandleSongsNavigationItemTapped"
                         Margin="5"
-                        Background="{StaticResource PhoneAccentBrush}"
+                        Symbol="Audio"
+                        InnerMargin="25"                    
+                        />
+                </Grid>
+
+                <Grid
+                    x:Name="AlbumsTile"
+                    Grid.Column="1"
+                    MinHeight="{Binding ActualWidth, ElementName=AlbumsTile}"
+                    >
+                    <controls:SymbolTile x:Uid="HomePageAlbumsTile"
+                        Tapped="HandleAlbumNavigationItemTapped"
+                        Margin="5"
+                        Symbol="Library"
+                        InnerMargin="25"
+                        />
+                </Grid>
+
+                <Grid
+                    x:Name="ArtistsTile"
+                    Grid.Row="1"
+                    MinHeight="{Binding ActualWidth, ElementName=ArtistsTile}"
+                    >
+                    <controls:SymbolTile x:Uid="HomePageArtistsTile"
+                        Margin="5"
                         Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
                         Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                        >
-                        
-                        <SymbolIcon
-                            Symbol="Audio"
-                            Foreground="White"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Width="{StaticResource DefaultSymbolSize}"
-                            Height="{StaticResource DefaultSymbolSize}"
-                            >
-                            <SymbolIcon.RenderTransform>
-                                <ScaleTransform
-                                    CenterX="{StaticResource HalfDefaultSymbolSize}"
-                                    CenterY="{StaticResource HalfDefaultSymbolSize}"
-                                    ScaleX="4"
-                                    ScaleY="4"
-                                    />
-                            </SymbolIcon.RenderTransform>
-                        </SymbolIcon>
-
-
-                        <TextBlock
-                            x:Uid="HomePageSongsTile"
-                            Style="{StaticResource TileTextStyle}"
-                            />
-                    </Grid>
-                </GridViewItem>
-                <GridViewItem  x:Name="AlbumNavigationItem" Tapped="HandleAlbumNavigationItemTapped">
-                    <Grid
+                        Symbol="Library"
+                        InnerMargin="25"
+                        Tapped="HandleArtistsNavigationItemTapped"
+                        />                    
+                </Grid>
+                <Grid
+                    x:Name="PlaylistsTile"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    MinHeight="{Binding ActualWidth, ElementName=PlaylistsTile}"
+                    >
+                    <controls:SymbolTile x:Uid="HomePagePlaylistsTile"
                         Margin="5"
-                        Background="{StaticResource PhoneAccentBrush}"
                         Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
                         Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                        >
-                        
-                        <SymbolIcon
-                            Symbol="Library"
-                            Foreground="White"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Width="{StaticResource DefaultSymbolSize}"
-                            Height="{StaticResource DefaultSymbolSize}"
-                            >
-                            <SymbolIcon.RenderTransform>
-                                <ScaleTransform
-                                    CenterX="{StaticResource HalfDefaultSymbolSize}"
-                                    CenterY="{StaticResource HalfDefaultSymbolSize}"
-                                    ScaleX="4"
-                                    ScaleY="4"
-                                    />
-                            </SymbolIcon.RenderTransform>
-                        </SymbolIcon>                        
-                        
-                        <TextBlock x:Uid="HomePageAlbumsTile"
-                            Style="{StaticResource TileTextStyle}"
-                            />
-                    </Grid>
-                </GridViewItem>
-                <GridViewItem  x:Name="ArtistsNavigationItem" Tapped="HandleArtistsNavigationItemTapped">
-                    <Grid 
+                        Symbol="List"
+                        InnerMargin="25"
+                        Tapped="HandlePlaylistNavigationItemTapped"
+                        />                    
+                </Grid>
+
+                <Grid
+                    x:Name="MixesTile"
+                    Grid.Row="2"
+                    MinHeight="{Binding ActualWidth, ElementName=MixesTile}"
+                    >
+                    <controls:SymbolTile x:Uid="HomePageMixesTile"
                         Margin="5"
-                        Background="{StaticResource PhoneAccentBrush}"
                         Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
                         Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                        >
-
-                        <SymbolIcon
-                            Symbol="Library"
-                            Foreground="White"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Width="{StaticResource DefaultSymbolSize}"
-                            Height="{StaticResource DefaultSymbolSize}"
-                            >
-                            <SymbolIcon.RenderTransform>
-                                <ScaleTransform
-                                    CenterX="{StaticResource HalfDefaultSymbolSize}"
-                                    CenterY="{StaticResource HalfDefaultSymbolSize}"
-                                    ScaleX="-4"
-                                    ScaleY="4"
-                                    />
-                            </SymbolIcon.RenderTransform>
-                        </SymbolIcon>
-                        
-                        <TextBlock x:Uid="HomePageArtistsTile"
-                            Style="{StaticResource TileTextStyle}"
-                            />
-                    </Grid>
-                </GridViewItem>
-                <GridViewItem x:Name="PlaylistNavigationItem" Tapped="HandlePlaylistNavigationItemTapped">
-                    <Grid 
+                        Symbol="List"
+                        InnerMargin="25"
+                        Tapped="HandleMixesNavigationItemTapped"                                         
+                        />                    
+                </Grid>
+                <Grid
+                    x:Name="SearchTile"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    MinHeight="{Binding ActualWidth, ElementName=SearchTile}"
+                    Tapped="HandleSearchNavigationItemTapped"
+                    >
+                    <controls:SymbolTile x:Uid="HomePageSearchTile"
                         Margin="5"
-                        Background="{StaticResource PhoneAccentBrush}"
                         Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
                         Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                        >
-                        
-                        <SymbolIcon
-                            Symbol="List"
-                            Foreground="White"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Width="{StaticResource DefaultSymbolSize}"
-                            Height="{StaticResource DefaultSymbolSize}"
-                            >
-                            <SymbolIcon.RenderTransform>
-                                <ScaleTransform
-                                    CenterX="{StaticResource HalfDefaultSymbolSize}"
-                                    CenterY="{StaticResource HalfDefaultSymbolSize}"
-                                    ScaleX="4"
-                                    ScaleY="4"
-                                    />
-                            </SymbolIcon.RenderTransform>
-                        </SymbolIcon>                        
-                        
-                        <TextBlock x:Uid="HomePagePlaylistsTile"
-                            Style="{StaticResource TileTextStyle}"
-                            />
-                    </Grid>
-                </GridViewItem>
-                <GridViewItem x:Name="MixesNavigationItem" Tapped="HandleMixesNavigationItemTapped">
-                    <Grid 
+                        Symbol="Find"
+                        InnerMargin="25"
+                        />                    
+                </Grid>
+
+                <Grid
+                    x:Name="ManageLibraryTile"
+                    Grid.Row="3"
+                    MinHeight="{Binding ActualWidth, ElementName=ManageLibraryTile}"
+                    >
+                    <controls:SymbolTile x:Uid="HomePageManageLibraryTile"
                         Margin="5"
-                        Background="{StaticResource PhoneAccentBrush}"
                         Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
                         Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                        >
-
-                        <SymbolIcon
-                            Symbol="List"
-                            Foreground="White"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Width="{StaticResource DefaultSymbolSize}"
-                            Height="{StaticResource DefaultSymbolSize}"
-                            >
-                            <SymbolIcon.RenderTransform>
-                                <ScaleTransform
-                                    CenterX="{StaticResource HalfDefaultSymbolSize}"
-                                    CenterY="{StaticResource HalfDefaultSymbolSize}"
-                                    ScaleX="4"
-                                    ScaleY="4"
-                                    />
-                            </SymbolIcon.RenderTransform>
-                        </SymbolIcon>
-
-                        <TextBlock x:Uid="HomePageMixesTile"
-                            Style="{StaticResource TileTextStyle}"
-                            />
-                    </Grid>
-                </GridViewItem>
-                <GridViewItem x:Name="SearchNavigationItem" Tapped="HandleSearchNavigationItemTapped">
-                    <Grid 
+                        Symbol="MusicInfo"
+                        InnerMargin="25"
+                        Tapped="HandleLibraryNavigationItemTapped"                                         
+                        />                    
+                </Grid>
+                <Grid
+                    x:Name="SettingsTile"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    MinHeight="{Binding ActualWidth, ElementName=SettingsTile}"
+                    >
+                    <controls:SymbolTile x:Uid="HomePageSettingsTile"
                         Margin="5"
-                        Background="{StaticResource PhoneAccentBrush}"
                         Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
                         Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                        >
-
-                        <SymbolIcon
-                            Symbol="Find"
-                            Foreground="White"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Width="{StaticResource DefaultSymbolSize}"
-                            Height="{StaticResource DefaultSymbolSize}"
-                            >
-                            <SymbolIcon.RenderTransform>
-                                <ScaleTransform
-                                    CenterX="{StaticResource HalfDefaultSymbolSize}"
-                                    CenterY="{StaticResource HalfDefaultSymbolSize}"
-                                    ScaleX="4"
-                                    ScaleY="4"
-                                    />
-                            </SymbolIcon.RenderTransform>
-                        </SymbolIcon>
-
-                        <TextBlock x:Uid="HomePageSearchTile"
-                            Style="{StaticResource TileTextStyle}"
-                            />
-                    </Grid>
-                </GridViewItem>
-                <GridViewItem x:Name="LibraryNavigationItem" Tapped="HandleLibraryNavigationItemTapped">
-                    <Grid 
-                        Margin="5"
-                        Background="{StaticResource PhoneAccentBrush}"
-                        Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                        Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                        >
-
-                        <SymbolIcon
-                            Symbol="MusicInfo"
-                            Foreground="White"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Width="{StaticResource DefaultSymbolSize}"
-                            Height="{StaticResource DefaultSymbolSize}"
-                            >
-                            <SymbolIcon.RenderTransform>
-                                <ScaleTransform
-                                    CenterX="{StaticResource HalfDefaultSymbolSize}"
-                                    CenterY="{StaticResource HalfDefaultSymbolSize}"
-                                    ScaleX="4"
-                                    ScaleY="4"
-                                    />
-                            </SymbolIcon.RenderTransform>
-                        </SymbolIcon>
-
-                        <TextBlock x:Uid="HomePageManageLibraryTile"
-                            Style="{StaticResource TileTextStyle}"
-                            />
-                    </Grid>
-                </GridViewItem>
-                <GridViewItem x:Name="SettingsNavigationItem" Tapped="HandleSettingsNavigationItemTapped">
-                    <Grid 
-                        Margin="5"
-                        Background="{StaticResource PhoneAccentBrush}"
-                        Height="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                        Width="{Binding ActualWidth, ElementName=RootNavigationGrid, Converter={StaticResource AppWidthToTileSizeConverter}}"
-                        >
-                        
-                        <Rectangle
-                            Fill="{StaticResource PhoneAccentBrush}"
-                            />
-
-                        <SymbolIcon
-                            Symbol="Setting"
-                            Foreground="White"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Width="{StaticResource DefaultSymbolSize}"
-                            Height="{StaticResource DefaultSymbolSize}"
-                            >
-                            <SymbolIcon.RenderTransform>
-                                <ScaleTransform
-                                    CenterX="{StaticResource HalfDefaultSymbolSize}"
-                                    CenterY="{StaticResource HalfDefaultSymbolSize}"
-                                    ScaleX="4"
-                                    ScaleY="4"
-                                    />
-                            </SymbolIcon.RenderTransform>
-                        </SymbolIcon>
-
-                        <TextBlock x:Uid="HomePageSettingsTile"
-                            Style="{StaticResource TileTextStyle}"
-                            />
-                    </Grid>
-                </GridViewItem>
-            </GridView>
-        </Grid>
+                        Symbol="Setting"
+                        InnerMargin="25"
+                        Tapped="HandleSettingsNavigationItemTapped"
+                        />                    
+                </Grid>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </local:BasePage>

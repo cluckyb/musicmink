@@ -255,7 +255,7 @@
   <data name="SongsListHeader.Text" xml:space="preserve">
     <value>Songs</value>
   </data>
-  <data name="HomePageSongsTile.Text" xml:space="preserve">
+  <data name="HomePageSongsTile.Caption" xml:space="preserve">
     <value>Songs</value>
   </data>
   <data name="TitleStartStripMatch" xml:space="preserve">
@@ -426,19 +426,19 @@
   <data name="ImportStatsSongsSkippedCount.Text" xml:space="preserve">
     <value>Entries Skipped</value>
   </data>
-  <data name="HomePageAlbumsTile.Text" xml:space="preserve">
+  <data name="HomePageAlbumsTile.Caption" xml:space="preserve">
     <value>Albums</value>
   </data>
-  <data name="HomePageArtistsTile.Text" xml:space="preserve">
+  <data name="HomePageArtistsTile.Caption" xml:space="preserve">
     <value>Artists</value>
   </data>
-  <data name="HomePageManageLibraryTile.Text" xml:space="preserve">
+  <data name="HomePageManageLibraryTile.Caption" xml:space="preserve">
     <value>Manage Library</value>
   </data>
-  <data name="HomePagePlaylistsTile.Text" xml:space="preserve">
+  <data name="HomePagePlaylistsTile.Caption" xml:space="preserve">
     <value>Playlists</value>
   </data>
-  <data name="HomePageSettingsTile.Text" xml:space="preserve">
+  <data name="HomePageSettingsTile.Caption" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="UpdateLastFMArtAlbumsLeft.Text" xml:space="preserve">
@@ -549,10 +549,10 @@
   <data name="EditMixEditOrderPropertyTrackName" xml:space="preserve">
     <value>Track Name</value>
   </data>
-  <data name="HomePageMixesTile.Text" xml:space="preserve">
+  <data name="HomePageMixesTile.Caption" xml:space="preserve">
     <value>Mixes</value>
   </data>
-  <data name="HomePageSearchTile.Text" xml:space="preserve">
+  <data name="HomePageSearchTile.Caption" xml:space="preserve">
     <value>Search</value>
   </data>
   <data name="MixListAddButton.Label" xml:space="preserve">
@@ -749,5 +749,20 @@
   </data>
   <data name="CustomSyncPhoneContentButton.Content" xml:space="preserve">
     <value>Pick Sync Folder</value>
+  </data>
+  <data name="ImportStatsMessage.Text" xml:space="preserve">
+    <value>Importing Stats...</value>
+  </data>
+  <data name="RemoveOldSongsMessage.Text" xml:space="preserve">
+    <value>Removing Deleted Songs...</value>
+  </data>
+  <data name="StartSyncIcon.Caption" xml:space="preserve">
+    <value>Start Scan</value>
+  </data>
+  <data name="TapToCancel.Caption" xml:space="preserve">
+    <value>Tap to Cancel</value>
+  </data>
+  <data name="UpdateArtMessage.Text" xml:space="preserve">
+    <value>Updating Art...</value>
   </data>
 </root>

@@ -129,17 +129,23 @@ namespace MusicMink
                 {
                     FileOpenPickerContinuationEventArgs filePickerOpenArgs = DebugHelper.CastAndAssert<FileOpenPickerContinuationEventArgs>(continuationEventArgs);
 
-                    DebugHelper.Assert(new CallerInfo(), filePickerOpenArgs.Files.Count == 1);
+                    if (filePickerOpenArgs.Files.Count > 0)
+                    {
+                        DebugHelper.Assert(new CallerInfo(), filePickerOpenArgs.Files.Count == 1);
 
-                    IStorageFile pickedFile = filePickerOpenArgs.Files[0];
+                        IStorageFile pickedFile = filePickerOpenArgs.Files[0];
 
-                    MediaImportManager.Current.HandleFilePickerLaunch(pickedFile);
+                        MediaImportManager.Current.HandleFilePickerLaunch(pickedFile);
+                    }
                 }
                 else if (continuationEventArgs is FolderPickerContinuationEventArgs)
                 {
                     FolderPickerContinuationEventArgs folderOpenArgs = DebugHelper.CastAndAssert<FolderPickerContinuationEventArgs>(continuationEventArgs);
 
-                    MediaImportManager.Current.HandleSyncFolderLaunch(folderOpenArgs.Folder);
+                    if (folderOpenArgs.Folder != null)
+                    {
+                        MediaImportManager.Current.HandleSyncFolderLaunch(folderOpenArgs.Folder);
+                    }
                 }
             }
         }

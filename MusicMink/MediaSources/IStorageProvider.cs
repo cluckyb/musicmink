@@ -5,7 +5,7 @@ namespace MusicMink.MediaSources
 {
     interface IStorageProvider
     {
-        Task SyncStorageSolution();
+        Task SyncStorageSolution(DateTime lastSync);
 
         void Cancel();
 

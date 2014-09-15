@@ -1,0 +1,122 @@
+﻿<Button
+    x:Class="MusicMink.Controls.SymbolTile"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicMink.Controls"
+    xmlns:converters="using:MusicMink.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Stretch"
+    >
+    <Button.Resources>
+            <x:Double x:Key="DefaultSymbolSize">30.0</x:Double>
+            <x:Double x:Key="HalfDefaultSymbolSize">15.0</x:Double>
+
+            <Style x:Key="TileTextStyle" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontSize" Value="{StaticResource TextStyleLargeFontSize}" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="VerticalAlignment" Value="Bottom" />
+                <Setter Property="TextAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="WrapWholeWords" />
+                <Setter Property="Margin" Value="10" />
+            </Style>
+
+            <Style x:Key="TileTextStyleSmall" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontSize" Value="{StaticResource TextStyleSmallFontSize}" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="VerticalAlignment" Value="Bottom" />
+                <Setter Property="TextAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="WrapWholeWords" />
+                <Setter Property="Margin" Value="5" />
+            </Style>
+
+        <ControlTemplate x:Key="SymbolTileButtonStyle" TargetType="Button">
+            <Grid x:Name="Grid" Background="{StaticResource PhoneAccentBrush}">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualStateGroup.Transitions>
+                            <VisualTransition From="Pressed" To="Normal">
+                                <Storyboard>
+                                    <PointerUpThemeAnimation Storyboard.TargetName="Grid"/>
+                                </Storyboard>
+                            </VisualTransition>
+                        </VisualStateGroup.Transitions>
+                        <VisualState x:Name="Normal"/>
+                        <VisualState x:Name="Pressed">
+                            <Storyboard>
+                                <PointerDownThemeAnimation Storyboard.TargetName="Grid"/>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Disabled">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Grid">
+                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneDisabledBrush}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <Border x:Name="TiltContainer">
+                    <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" />
+                </Border>
+            </Grid>
+        </ControlTemplate>
+    </Button.Resources>
+    <Button.Template>
+        <StaticResource ResourceKey="SymbolTileButtonStyle" />
+    </Button.Template>
+    
+    <Grid x:Name="RootSymbolTile" VerticalAlignment="Stretch">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="TileSizeStates">
+                <VisualState x:Name="MyStandardSized">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames
+                            Storyboard.TargetName="CaptionTextBlock"
+                            Storyboard.TargetProperty="Style"
+                            >
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TileTextStyle}" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="MySmallSized"/>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <ProgressRing x:Name="ProgressIcon"
+            Foreground="White"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"      
+            Margin="10"
+            Visibility="Collapsed"
+            IsActive="True"
+            Background="Transparent"
+            />
+
+        <SymbolIcon x:Name="SymbolIcon"
+            Foreground="White"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="{StaticResource DefaultSymbolSize}"
+            Height="{StaticResource DefaultSymbolSize}"
+            >
+            <SymbolIcon.RenderTransform>
+                <ScaleTransform
+                    x:Name="SymbolTileScaleTransform"
+                    CenterX="{StaticResource HalfDefaultSymbolSize}"
+                    CenterY="{StaticResource HalfDefaultSymbolSize}"
+                    />
+            </SymbolIcon.RenderTransform>
+        </SymbolIcon>
+
+        <TextBlock x:Name="CaptionTextBlock"
+            Style="{StaticResource TileTextStyleSmall}"
+            />
+    </Grid>
+</Button>

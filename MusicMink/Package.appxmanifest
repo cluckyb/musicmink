@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="0290e893-677d-436f-905e-f1c926689deb" Publisher="CN=clucky" Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="0290e893-677d-436f-905e-f1c926689deb" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="24922DrewBesse.MusicMink" Publisher="CN=F63AA0E1-C75A-4902-A873-4CF8D920A570" Version="1.2.0.2" />
+  <mp:PhoneIdentity PhoneProductId="3bce5f76-16a3-4ff6-93f4-a32e96d5d0c1" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Music Mink</DisplayName>
     <PublisherDisplayName>Drew Besse</PublisherDisplayName>
@@ -22,7 +22,7 @@
             <m3:ShowOn Tile="square150x150Logo" />
           </m3:ShowNameOnTiles>
         </m3:DefaultTile>
-        <m3:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="purple" />
+        <m3:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="black" />
         <m3:InitialRotationPreference>
           <m3:Rotation Preference="portrait" />
         </m3:InitialRotationPreference>

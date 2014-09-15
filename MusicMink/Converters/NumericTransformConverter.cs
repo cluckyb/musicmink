@@ -14,6 +14,8 @@ namespace MusicMink.Converters
         {
             double valueAsDouble = DebugHelper.CastAndAssert<double>(value);
 
+            System.Diagnostics.Debug.WriteLine("Input "  + valueAsDouble + " output " + ((valueAsDouble) / Sections - Margin));
+
             return (valueAsDouble) / Sections - Margin;
         }
 
