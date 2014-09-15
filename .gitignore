@@ -9,3 +9,5 @@ MusicMinkBackgroundAudioPlayer/obj/**
 packages/**
 MusicMink.v12.suo
 MusicMink/Package.StoreAssociation.xml
+*.suo
+*.user
