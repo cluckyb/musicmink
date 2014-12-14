@@ -670,7 +670,7 @@
     <value>Artist</value>
   </data>
   <data name="LibraryPagesEmptyLibraryMessage.Text" xml:space="preserve">
-    <value>Your music collection is either empty or you haven't imported it yet. To import your music collection, use the "Manage Library" tile.</value>
+    <value>Your music collection is either empty or you haven't imported it yet. To import your music collection, use "manage library"</value>
   </data>
   <data name="SearchPageHeader.Text" xml:space="preserve">
     <value>Search</value>
@@ -764,5 +764,86 @@
   </data>
   <data name="UpdateArtMessage.Text" xml:space="preserve">
     <value>Updating Art...</value>
+  </data>
+  <data name="NowPlayingPageHeader.Text" xml:space="preserve">
+    <value>Now Playing</value>
+  </data>
+  <data name="NowPlayingPageQueueLeft.Text" xml:space="preserve">
+    <value>Left In Queue</value>
+  </data>
+  <data name="QueuePageHeader.Text" xml:space="preserve">
+    <value>Queue</value>
+  </data>
+  <data name="HomePageHeader.Text" xml:space="preserve">
+    <value>Music</value>
+  </data>
+  <data name="LibraryPageHeader.Text" xml:space="preserve">
+    <value>Library</value>
+  </data>
+  <data name="NewHomePageAlbumsEntry.Text" xml:space="preserve">
+    <value>Albums</value>
+  </data>
+  <data name="NewHomePageArtistsEntry.Text" xml:space="preserve">
+    <value>Artists</value>
+  </data>
+  <data name="NewHomePageLibraryEntry.Text" xml:space="preserve">
+    <value>Library</value>
+  </data>
+  <data name="NewHomePageManageLibraryEntry.Text" xml:space="preserve">
+    <value>Manage Library</value>
+  </data>
+  <data name="NewHomePageMixesEntry.Text" xml:space="preserve">
+    <value>Mixes</value>
+  </data>
+  <data name="NewHomePageNowPlayingEntry.Text" xml:space="preserve">
+    <value>Now Playing</value>
+  </data>
+  <data name="NewHomePagePlaylistsEntry.Text" xml:space="preserve">
+    <value>Playlists</value>
+  </data>
+  <data name="NewHomePageQueueEntry.Text" xml:space="preserve">
+    <value>Queue</value>
+  </data>
+  <data name="NewHomePageSearchEntry.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="NewHomePageSettingsEntry.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="NewHomePageSongsEntry.Text" xml:space="preserve">
+    <value>Songs</value>
+  </data>
+  <data name="SettingsEnableClassicMode.Header" xml:space="preserve">
+    <value>Classic View</value>
+  </data>
+  <data name="SettingsEnableClassicMode.OffContent" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="SettingsEnableClassicMode.OnContent" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="SettingsSettingsEnableClassicModeMessage.Text" xml:space="preserve">
+    <value>Note: You must close and restart the app for this setting to take effect</value>
+  </data>
+  <data name="LibraryPageManageButton.Label" xml:space="preserve">
+    <value>Manage Library</value>
+  </data>
+  <data name="LibraryPageSearchButton.Label" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="LibraryPageShuffleButton.Label" xml:space="preserve">
+    <value>Shuffle All</value>
+  </data>
+  <data name="LibraryPageStatsButton.Label" xml:space="preserve">
+    <value>Collection Stats</value>
+  </data>
+  <data name="DialogEditAlbumCurrentArtTextBlock.Text" xml:space="preserve">
+    <value>Current Art</value>
+  </data>
+  <data name="NowPlayingNotActiveMessage.Text" xml:space="preserve">
+    <value>No active song.</value>
+  </data>
+  <data name="PlayqueueEmptyMessage.Text" xml:space="preserve">
+    <value>No songs in queue.</value>
   </data>
 </root>

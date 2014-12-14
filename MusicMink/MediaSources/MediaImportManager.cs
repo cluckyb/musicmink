@@ -40,7 +40,7 @@ namespace MusicMink.MediaSources
         UpdateArt
     }
 
-    public class MediaImportManager : INotifyPropertyChanged
+    public class MediaImportManager : NotifyPropertyChangedUI
     {
         private const string UPLOAD_STATS_FILE_NAME = "MusicMinkDataExport.txt";
 
@@ -690,7 +690,7 @@ namespace MusicMink.MediaSources
                                 song.Rating = uint.Parse(Rating);
 
                                 // TODO: let user toggle this
-                                // song.PlayCount = uint.Parse(PlayCount);
+                                song.PlayCount = uint.Parse(PlayCount);
 
                                 DateTime realLastPlayed = new DateTime(long.Parse(LastPlayed));
 
@@ -848,20 +848,6 @@ namespace MusicMink.MediaSources
         private void CancelScanLastmForArtInternal()
         {
             stopLastFMScanFlag = true;
-        }
-
-        #endregion
-
-        # region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void NotifyPropertyChanged(String propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (null != handler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         #endregion

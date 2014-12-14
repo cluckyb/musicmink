@@ -1,13 +1,16 @@
-﻿using MusicMinkAppLayer.Diagnostics;
+﻿using MusicMink.Common;
+using MusicMinkAppLayer.Diagnostics;
 using MusicMinkAppLayer.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
 
 namespace MusicMink.ViewModels
 {
-    public abstract class BaseViewModel<T> : INotifyPropertyChanged
+    public abstract class BaseViewModel<T> : NotifyPropertyChangedUI
         where T : RootModel
     {
         protected T rootModel;
@@ -15,16 +18,6 @@ namespace MusicMink.ViewModels
         public BaseViewModel(T model)
         {
             rootModel = model;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void NotifyPropertyChanged(String propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (null != handler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         protected void SetModelField<U>(string modelProperty, U value, string property)

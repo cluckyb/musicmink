@@ -22,8 +22,7 @@
             Text="{Binding Artist.Name}"
             />             
         
-        <TextBlock
-            Text="Current Art"
+        <TextBlock x:Uid="DialogEditAlbumCurrentArtTextBlock"
             FontSize="{StaticResource TextStyleMediumFontSize}"
             />
         <Border

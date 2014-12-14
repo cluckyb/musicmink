@@ -11,6 +11,11 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     
+    <UserControl.Resources>
+        <converters:ColorToStyleConverter x:Key="AppBarButtonStyleSelector" TargetStyle="{StaticResource PlayerControlAppBarButtonStyle}" TargetBrush="{StaticResource PlayerControlForegroundColor}" />
+
+    </UserControl.Resources>
+    
     <Grid x:Name="LayoutRoot">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="ExpandedStates">
@@ -84,7 +89,6 @@
                 <TextBlock x:Name="NameEntry"
                     Text="{Binding Song.Name}"
                     FontSize="{StaticResource TextStyleExtraLargeFontSize}"
-                    Foreground="{ThemeResource PlayerControlForegroundColor}"
                     TextWrapping="NoWrap"
                     TextTrimming="None"
                     ManipulationMode="TranslateX,TranslateRailsX,System"
@@ -95,7 +99,6 @@
                     Grid.Row="1"
                     Grid.Column="1"                    
                     FontSize="{StaticResource TextStyleSmallFontSize}"
-                    Foreground="{ThemeResource PlayerControlForegroundColor}"
                     >
                     <Run Text="{Binding Song.ArtistName}" />
                     <Run Text=" - " />
@@ -111,7 +114,6 @@
                     HorizontalAlignment="Center"
                     Symbol="Audio"
                     Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}"
-                    Foreground="{ThemeResource PlayerControlForegroundColor}"
                     />
                 
                 <TextBlock
@@ -124,7 +126,6 @@
                     HorizontalAlignment="Center"
                     Text="{Binding RemainingPosition}"
                     FontSize="{StaticResource TextStyleMediumFontSize}"
-                    Foreground="{ThemeResource PlayerControlForegroundColor}"
                     Visibility="{Binding RemainingPosition, Converter={StaticResource GreaterThanZeroToVisibilityConverter}}"
                     />
 
@@ -138,7 +139,6 @@
                     HorizontalAlignment="Center"
                     Text="-"
                     FontSize="{StaticResource TextStyleMediumFontSize}"
-                    Foreground="{ThemeResource PlayerControlForegroundColor}"
                     Visibility="{Binding IsPlayed, Converter={StaticResource BoolToVisibilityConverter}}"
                     />
             </Grid>
@@ -159,7 +159,6 @@
                     x:Name="ExtraInfoStringTextBlock"
                     Margin="30,0,0,0"
 					FontSize="{StaticResource TextStyleSmallFontSize}"
-                    Foreground="{ThemeResource PlayerControlForegroundColor}"                    
 					Text="{Binding Song.ExtraInfoString}"
 					/>
 
@@ -168,7 +167,7 @@
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     Rating="{Binding Song.Rating, Mode=TwoWay}"
-                    BorderColor="{ThemeResource PlayerControlForegroundColor}"
+                    BorderColor="{Binding ElementName=ExtraInfoStringTextBlock, Path=Foreground}"
                     />
 
                 <Grid x:Name="IconList"
@@ -186,36 +185,36 @@
                     <AppBarButton x:Uid="QueueItemPlayRoundButton"
                         Grid.Column="0"                             
                         Icon="Play"
-                        Command="{Binding PlayFromHere}"                                  
-                        Style="{StaticResource PlayerControlAppBarButtonStyle}"                                  
+                        Command="{Binding PlayFromHere}"
+                        Style="{Binding Foreground, ElementName=ExtraInfoStringTextBlock, Converter={StaticResource AppBarButtonStyleSelector}}" 
                         />
 
                     <AppBarButton x:Uid="QueueItemQueueRoundButton"
                         Grid.Column="1"                             
                         Icon="Clock"
-                        Command="{Binding Song.QueueSong}"                                  
-                        Style="{StaticResource PlayerControlAppBarButtonStyle}"                                  
+                        Command="{Binding Song.QueueSong}"
+                        Style="{Binding Foreground, ElementName=ExtraInfoStringTextBlock, Converter={StaticResource AppBarButtonStyleSelector}}" 
                         />
 
                     <AppBarButton x:Uid="QueueItemAddRoundButton"
                         Grid.Column="2"                             
                         Icon="List"
                         Command="{Binding Song.AddSongToPlaylist}"
-                        Style="{StaticResource PlayerControlAppBarButtonStyle}"                                  
+                        Style="{Binding Foreground, ElementName=ExtraInfoStringTextBlock, Converter={StaticResource AppBarButtonStyleSelector}}" 
                         />
 
                     <AppBarButton x:Uid="QueueItemEditRoundButton"
                         Grid.Column="3"
                         Icon="Edit"
                         Command="{Binding Song.EditSong}"
-                        Style="{StaticResource PlayerControlAppBarButtonStyle}"                                  
+                        Style="{Binding Foreground, ElementName=ExtraInfoStringTextBlock, Converter={StaticResource AppBarButtonStyleSelector}}" 
                         />
 
                     <AppBarButton x:Uid="QueueItemRemoveRoundButton"
                         Grid.Column="4"                             
                         Icon="Delete"
                         Command="{Binding RemoveFromQueue}"      
-                        Style="{StaticResource PlayerControlAppBarButtonStyle}"                                  
+                        Style="{Binding Foreground, ElementName=ExtraInfoStringTextBlock, Converter={StaticResource AppBarButtonStyleSelector}}" 
                         />                    
                 </Grid>
             </Grid>

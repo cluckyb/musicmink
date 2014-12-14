@@ -1,0 +1,105 @@
+﻿<local:BasePage
+    x:Class="MusicMink.Pages.Queue"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicMink.Pages"
+    xmlns:controls="using:MusicMink.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dv="using:MusicMink.ViewModels.DesignData"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:MusicMink.Converters"
+    xmlns:listitem="using:MusicMink.ListItems"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    >
+    
+    <d:Page.DataContext>
+        <dv:PlayQueueDesignData />
+    </d:Page.DataContext>
+    
+    <Page.Resources>
+        <converters:ReorderModeToBoolConverter x:Key="BoolToReorderModeConverter" />
+        <converters:ReorderModeToBoolConverter x:Key="NotBoolToReorderModeConverter" Invert="True"/>
+    </Page.Resources>
+    
+    <Grid>
+        <Grid.Background>
+            <ImageBrush
+                ImageSource="{Binding CurrentTrack.Album.AlbumArt}"
+                Stretch="UniformToFill"
+                AlignmentX="Center"
+                AlignmentY="Center"
+                Opacity="0.20"
+                />
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Uid="QueuePageHeader"
+            Style="{StaticResource HeaderTextBlockStyle}"
+            Margin="10,0,10,0"
+            />
+
+        <StackPanel
+            Grid.Row="2"
+            Orientation="Horizontal"
+            HorizontalAlignment="Center"
+            >
+            <AppBarButton x:Uid="PlayQueueShuffleRemaining"
+                Icon="Shuffle"
+                IsEnabled="{Binding ReorderMode, ElementName=PlayqueueList, Converter={StaticResource NotBoolToReorderModeConverter}}"
+                Command="{Binding ShuffleRemaining}"      
+                />
+            <AppBarToggleButton x:Uid="PlayQueueReorder"
+                Icon="Repair"
+                IsChecked="{Binding ReorderMode, ElementName=PlayqueueList, Converter={StaticResource BoolToReorderModeConverter}, Mode=TwoWay}"
+                Tapped="HandlePlayQueueReorderAppBarToggleButtonTapped"
+                />
+            <AppBarButton x:Uid="PlayQueueClearPlayed"
+                Icon="Upload"
+                IsEnabled="{Binding ReorderMode, ElementName=PlayqueueList, Converter={StaticResource NotBoolToReorderModeConverter}}"
+                Command="{Binding ClearPlayed}"
+                />
+            <AppBarButton x:Uid="PlayQueueClearAll"
+                Icon="Clear"
+                IsEnabled="{Binding ReorderMode, ElementName=PlayqueueList, Converter={StaticResource NotBoolToReorderModeConverter}}"
+                Command="{Binding ClearAll}"
+                />
+        </StackPanel>
+
+        <TextBlock x:Uid="PlayqueueEmptyMessage"
+            Grid.Row="1"
+            Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"                           
+            FontSize="{StaticResource TextStyleSmallFontSize}"
+            TextWrapping="WrapWholeWords"
+            TextAlignment="Center"
+            FontStyle="Italic"
+            Foreground="{StaticResource PhoneForegroundBrush}"
+            />
+                            
+        <ListView x:Name="PlayqueueList"
+            Grid.Row="1"
+            ItemsSource="{Binding PlaybackQueue}"
+            CanDragItems="True"
+            SelectionMode="None"
+            IsSwipeEnabled="True"
+            IsHoldingEnabled="True"
+            Holding="HandlePlayqueueListHolding"
+            DoubleTapped="HandlePlayqueueListDoubleTapped"
+            Visibility="{Binding IsEmpty, Converter={StaticResource NotBoolToVisibilityConverter}}"
+            >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <listitem:PlayQueueListItem
+                        DataContext="{Binding}"
+                        Width="{Binding ActualWidth, ElementName=PlayqueueList, Converter={StaticResource ListWidthToWorkableSectionWidthConverter}}" 
+                        />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</local:BasePage>

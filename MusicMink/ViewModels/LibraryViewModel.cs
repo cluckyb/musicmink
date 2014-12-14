@@ -17,7 +17,7 @@ using Windows.UI.Core;
 
 namespace MusicMink.ViewModels
 {
-    class LibraryViewModel : INotifyPropertyChanged
+    class LibraryViewModel : NotifyPropertyChangedUI
     {
         private static LibraryViewModel _current;
         public static LibraryViewModel Current
@@ -51,13 +51,19 @@ namespace MusicMink.ViewModels
 
             _playQueue = new PlayQueueViewModel(LibraryModel.Current.PlayQueue);
 
+            NavigationManager.Current.PropertyChanged += HandleNavigationManagerPropertyChanged;
+
             perf.Trace("first pass load done");
         }
 
-        ~LibraryViewModel()
+        void HandleNavigationManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            LibraryModel.Current.Playlists.CollectionChanged -= HandlePlaylistsCollectionChanged;
-            LibraryModel.Current.AllSongs.CollectionChanged -= HandleAllSongsCollectionChanged;
+            switch (e.PropertyName)
+            {
+                case NavigationManager.Properties.IsHome:
+                    GoHome.RaiseExecuteChanged();
+                    break;
+            }
         }
 
         public void PreInitalize()
@@ -66,23 +72,13 @@ namespace MusicMink.ViewModels
         }
 
         // Delayed constructor for once LibraryModel is loaded
-        public Task InitalizeLibrary(CoreDispatcher uiDispatcher)
+        public Task InitalizeLibrary()
         {
             LibraryLoaded = false;
             MixesLoaded = false;
 
             return Task.Factory.StartNew(() =>
             {
-                foreach (ArtistModel newArtist in LibraryModel.Current.AllArtists)
-                {
-                    LookupArtist(newArtist);
-                }
-
-                foreach (AlbumModel newAlbum in LibraryModel.Current.AllAlbums)
-                {
-                    LookupAlbum(newAlbum);
-                }
-
                 foreach (SongModel newSong in LibraryModel.Current.AllSongs)
                 {
                     LookupSong(newSong);
@@ -98,22 +94,16 @@ namespace MusicMink.ViewModels
                     LookupMix(newMix);
                 }
 
-                uiDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    LibraryLoaded = true;
+                LibraryLoaded = true;
 
-                    NotifyPropertyChanged(Properties.IsEmpty);
-                });
+                NotifyPropertyChanged(Properties.IsEmpty);
 
                 foreach (MixViewModel newMix in MixCollection)
                 {
                     newMix.Initalize();
                 }
 
-                uiDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    MixesLoaded = true;
-                });
+                MixesLoaded = true;
             });            
         }
 
@@ -279,6 +269,7 @@ namespace MusicMink.ViewModels
             if (LibraryLoaded)
             {
                 NotifyPropertyChanged(Properties.IsEmpty);
+                ShuffleAllSongs.RaiseExecuteChanged();
             }
         }
 
@@ -331,6 +322,78 @@ namespace MusicMink.ViewModels
         private bool CanExecuteAddNewMix(object parameter)
         {
             return MixesLoaded;
+        }
+
+        private RelayCommand _navigate;
+        public RelayCommand Navigate
+        {
+            get
+            {
+                if (_navigate == null) _navigate = new RelayCommand(CanExecuteNavigate, ExecuteNavigate);
+
+                return _navigate;
+            }
+        }
+
+        private void ExecuteNavigate(object parameter)
+        {
+            string parameterAsString = DebugHelper.CastAndAssert<string>(parameter);
+            NavigationLocation target = NavigationLocation.Home;
+
+            DebugHelper.Assert(new CallerInfo(), Enum.TryParse<NavigationLocation>(parameterAsString, out target), "Couldn't find location named {0}", parameterAsString);
+
+            NavigationManager.Current.Navigate(target);
+        }
+
+        private bool CanExecuteNavigate(object parameter)
+        {
+            return true;
+        }
+
+        private RelayCommand _goHome;
+        public RelayCommand GoHome
+        {
+            get
+            {
+                if (_goHome == null) _goHome = new RelayCommand(CanExecuteGoHome, ExecuteGoHome);
+
+                return _goHome;
+            }
+        }
+
+        private void ExecuteGoHome(object parameter)
+        {
+            NavigationManager.Current.GoHome();
+        }
+
+        private bool CanExecuteGoHome(object parameter)
+        {
+            return NavigationManager.Current.IsHome;
+        }
+
+        private RelayCommand _shuffleAllSongs;
+        public RelayCommand ShuffleAllSongs
+        {
+            get
+            {
+                if (_shuffleAllSongs == null) _shuffleAllSongs = new RelayCommand(CanExecuteShuffleAllSongs, ExecuteShuffleAllSongs);
+
+                return _shuffleAllSongs;
+            }
+        }
+
+        private void ExecuteShuffleAllSongs(object parameter)
+        {
+            int limit = int.Parse(DebugHelper.CastAndAssert<string>(parameter));
+
+            LibraryViewModel.Current.PlayQueue.ShuffleSongList(FlatSongCollection, true, limit);
+        }
+
+        private bool CanExecuteShuffleAllSongs(object parameter)
+        {
+            int limit = int.Parse(DebugHelper.CastAndAssert<string>(parameter));
+
+            return FlatSongCollection.Count > limit;
         }
 
         #endregion
@@ -443,9 +506,9 @@ namespace MusicMink.ViewModels
             }
         }
 
-        public ArtistViewModel LookupArtistByName(string name)
+        public ArtistViewModel LookupArtistByName(string name, bool createIfNotFound = true)
         {
-            return LookupArtist(LibraryModel.Current.LookupArtistByName(name));
+            return LookupArtist(LibraryModel.Current.LookupArtistByName(name, createIfNotFound));
         }
 
         internal void RemoveArtistIfNeeded(ArtistViewModel artistViewModel)
@@ -547,7 +610,7 @@ namespace MusicMink.ViewModels
 
         internal SongViewModel LookupSongByName(string TrackName, string ArtistName)
         {
-            ArtistViewModel artist = LookupArtistByName(ArtistName);
+            ArtistViewModel artist = LookupArtistByName(ArtistName, false);
 
             if (artist == null)
             {
@@ -569,6 +632,7 @@ namespace MusicMink.ViewModels
             else
             {
                 ArtistViewModel artist = LookupArtistById(song.ArtistId);
+
                 AlbumViewModel album = LookupAlbumById(song.AlbumId);
 
                 SongViewModel newSongViewModel = new SongViewModel(song, artist, album);
@@ -779,20 +843,6 @@ namespace MusicMink.ViewModels
             foreach (MixViewModel mix in MixCollection)
             {
                 mix.OnSongPropertyChanged(songViewModel, propertyName);
-            }
-        }
-
-        #endregion
-
-        # region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void NotifyPropertyChanged(String propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (null != handler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 

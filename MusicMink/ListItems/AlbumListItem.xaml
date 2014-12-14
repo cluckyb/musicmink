@@ -17,28 +17,19 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Border
-            Grid.Row="0"
-            Grid.RowSpan="2"
-            BorderBrush="{StaticResource PhoneForegroundBrush}"
-            Background="Transparent"
-            BorderThickness="3"
-            Visibility="{Binding HasAlbumArt, Converter={StaticResource NotBoolToVisibilityConverter}}"
-            />
+        
         <Image
             Grid.Row="0"
             Grid.RowSpan="2"
-            Visibility="{Binding HasAlbumArt, Converter={StaticResource BoolToVisibilityConverter}}"
             Source="{Binding AlbumArt}"
             Stretch="Fill"
             />
         <Grid Grid.Row="1">
             <Rectangle
-                Fill="Black"
+                Fill="{StaticResource PhoneBackgroundBrush}"
                 Opacity="0.5"                
                 />
             <TextBlock
-                Foreground="White"
                 Margin="5"
                 FontWeight="Bold"
                 Text="{Binding Name}"

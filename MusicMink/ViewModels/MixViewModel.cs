@@ -552,12 +552,12 @@ namespace MusicMink.ViewModels
         {
             UpdateDependencyList();
 
+            CurrentSongs.CollectionChanged += HandleCurrentSongsCollectionChanged;
+
             foreach (SongViewModel song in LibraryViewModel.Current.FlatSongCollection)
             {
                 ReevaulateSong(song);
             }
-
-            CurrentSongs.CollectionChanged += HandleCurrentSongsCollectionChanged;
 
             LibraryViewModel.Current.FlatSongCollection.CollectionChanged += HandleFlatSongCollectionChanged;
 
@@ -617,27 +617,13 @@ namespace MusicMink.ViewModels
         {
             bool belongsInList = !IsCircular && RootEvaluator.Eval(song);
 
-            bool updated = false;
-
             if (belongsInList && !CurrentSongs.ActuallyContains(song))
             {
                 CurrentSongs.Add(song);
-
-                updated = true;
             }
             else if (!belongsInList && CurrentSongs.ActuallyContains(song))
             {
                 CurrentSongs.Remove(song);
-
-                updated = true;
-            }
-
-            if (updated && !IsCircular)
-            {
-                foreach (MixViewModel mixViewModel in DependentMixes)
-                {
-                    mixViewModel.ReevaulateSong(song);
-                }
             }
         }
 

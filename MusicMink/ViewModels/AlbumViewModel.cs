@@ -18,7 +18,6 @@ namespace MusicMink.ViewModels
         public static class Properties
         {
             public const string AlbumId = "AlbumId";
-
             public const string ArtistName = "ArtistName";
             public const string AlbumArt = "AlbumArt";
             public const string AlbumArtSource = "AlbumArtSource";
@@ -30,7 +29,6 @@ namespace MusicMink.ViewModels
             public const string Songs = "SongCount";
             public const string SongCount = "SongCount";
             public const string SortName = "SortName";
-
             public const string IsBeingDeleted = "IsBeingDeleted";
         }
 
@@ -143,6 +141,8 @@ namespace MusicMink.ViewModels
             }
         }
 
+        private static Uri DEFAULT_ALBUM_ART = new Uri("ms-appx:///Assets/DefaultAlbumImage.png");
+
         private Uri _albumArt;
         public Uri AlbumArt
         {
@@ -152,39 +152,9 @@ namespace MusicMink.ViewModels
                 {
                     UpdateAlbumArt();
                 }
-
-                return _albumArt;
+                return (_albumArt == null) ? DEFAULT_ALBUM_ART : _albumArt;
             }
         }
-
-        public async Task<Uri> GetAlbumArt()
-        {
-            await UpdateAlbumArt();
-
-            return AlbumArt;
-        }
-
-        private async Task UpdateAlbumArt()
-        {
-            if (!HasAlbumArt)
-            {
-                _albumArt = null;
-                return;
-            }
-
-            IStorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(AlbumArtSource);
-
-            if (file == null)
-            {
-                _albumArt = null;
-                return;
-            }
-
-            _albumArt = new Uri(file.Path);
-
-            NotifyPropertyChanged(Properties.AlbumArt);
-        }
-
 
         public string AlbumArtSource
         {
@@ -302,6 +272,34 @@ namespace MusicMink.ViewModels
         #endregion
 
         #region Methods
+
+        public async Task<Uri> GetAlbumArt()
+        {
+            await UpdateAlbumArt();
+
+            return AlbumArt;
+        }
+
+        private async Task UpdateAlbumArt()
+        {
+            if (!HasAlbumArt)
+            {
+                _albumArt = null;
+                return;
+            }
+
+            IStorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(AlbumArtSource);
+
+            if (file == null)
+            {
+                _albumArt = null;
+                return;
+            }
+
+            _albumArt = new Uri(file.Path);
+
+            NotifyPropertyChanged(Properties.AlbumArt);
+        }
 
         public void ResetLength()
         {

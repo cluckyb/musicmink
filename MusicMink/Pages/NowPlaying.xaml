@@ -1,0 +1,159 @@
+﻿<local:BasePage
+    x:Class="MusicMink.Pages.NowPlaying"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicMink.Pages"
+    xmlns:controls="using:MusicMink.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dv="using:MusicMink.ViewModels.DesignData"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:MusicMink.Converters"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    >
+    
+    <d:Page.DataContext>
+        <dv:PlayQueueDesignData />
+    </d:Page.DataContext>
+    
+    <Grid>
+
+        <Grid Visibility="{Binding IsActive, Converter={StaticResource NotBoolToVisibilityConverter}}">
+            <StackPanel>
+                <TextBlock x:Uid="NowPlayingPageHeader"
+                Style="{StaticResource HeaderTextBlockStyle}"
+                Margin="10,0,10,0"
+                />
+
+                <TextBlock x:Uid="NowPlayingNotActiveMessage"
+                FontSize="{StaticResource TextStyleSmallFontSize}"
+                TextWrapping="WrapWholeWords"
+                TextAlignment="Justify"
+                FontStyle="Italic"
+                Foreground="{StaticResource PhoneForegroundBrush}"
+                />
+            </StackPanel>
+        </Grid>
+        
+        <Grid
+            Visibility="{Binding IsActive, Converter={StaticResource BoolToVisibilityConverter}}"
+            >
+        <Grid.Background>
+            <ImageBrush ImageSource="{Binding CurrentTrack.Artist.Picture}" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center" Opacity="0.20" />
+        </Grid.Background>        
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+                
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="12*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Uid="NowPlayingPageHeader"
+            Style="{StaticResource HeaderTextBlockStyle}"
+            Grid.ColumnSpan="5"
+            Margin="10,0,10,0"
+            />
+
+        <controls:ScalingTextBox            
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="5"
+            MaxFontSize="{StaticResource TextStyleExtraExtraLargeFontSize}"                    
+            MinFontSize="{StaticResource TextStyleSmallFontSize}"
+            TextForeground="{ThemeResource PhoneForegroundBrush}"
+            HorizontalAlignment="Center"
+            Text="{Binding CurrentTrack.Name}"
+            Margin="0,0,0,5"
+            />
+              
+        <Image
+            Grid.Row="3"
+            Grid.Column="2"
+            HorizontalAlignment="Center"
+            Source="{Binding CurrentTrack.Album.AlbumArt}"            
+            Height="{Binding Path=ActualWidth, ElementName=TestElement}"
+            ManipulationMode="TranslateX,TranslateRailsX,System"
+            ManipulationCompleted="Rectangle_ManipulationCompleted"
+            />
+        
+        <Image x:Name="PrevTrackImage"
+            Grid.Row="3"
+            Grid.Column="0"
+            HorizontalAlignment="Right"
+            Source="{Binding PrevTrack.Album.AlbumArt}"
+            Stretch="UniformToFill"
+            Margin="0,10,0,10"
+            DoubleTapped="PrevTrackImageDoubleTapped"
+            ManipulationMode="TranslateX,TranslateRailsX,System"
+            ManipulationCompleted="Rectangle_ManipulationCompleted"
+            />
+
+        <Image x:Name="NextTrackImage"
+            Grid.Row="3"
+            Grid.Column="4"
+            HorizontalAlignment="Left"
+            Source="{Binding NextTrack.Album.AlbumArt}"
+            Stretch="UniformToFill"
+            Margin="0,10,0,10"
+            DoubleTapped="NextTrackImageDoubleTapped"
+            ManipulationMode="TranslateX,TranslateRailsX,System"
+            ManipulationCompleted="Rectangle_ManipulationCompleted"
+            />
+
+        <controls:StarRater
+            ScaleToWidth="True"
+            Rating="{Binding CurrentTrack.Rating, Mode=TwoWay}"
+            Grid.Row="4"
+            Grid.Column="2"
+            />
+
+        <controls:ScalingTextBox            
+            Grid.Row="5"
+            Grid.Column="2"
+            MaxFontSize="{StaticResource TextStyleExtraLargeFontSize}"                    
+            MinFontSize="{StaticResource TextStyleSmallFontSize}"
+            TextForeground="{ThemeResource PhoneForegroundBrush}"
+            HorizontalAlignment="Left"
+            Text="{Binding CurrentTrack.Artist.Name}"
+            />
+
+        <controls:ScalingTextBox            
+            Grid.Row="6"
+            Grid.Column="2"
+            MaxFontSize="{StaticResource TextStyleExtraLargeFontSize}"                    
+            MinFontSize="{StaticResource TextStyleSmallFontSize}"
+            TextForeground="{ThemeResource PhoneForegroundBrush}"
+            HorizontalAlignment="Left"
+            Text="{Binding CurrentTrack.Album.Name}"
+            FontStyle="Italic"
+            />
+
+        <TextBlock
+            Grid.Row="7"
+            Grid.Column="0"
+            Grid.ColumnSpan="5"
+            FontSize="{StaticResource TextStyleExtraLargeFontSize}"                    
+            HorizontalAlignment="Right"
+            Margin="5"
+            Tapped="TextBlock_Tapped"
+            >
+            <Run Text="{Binding TracksLeft}" />
+            <Run x:Uid="NowPlayingPageQueueLeft" />
+        </TextBlock>
+        </Grid>    
+    </Grid>
+</local:BasePage>

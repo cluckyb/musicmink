@@ -2,6 +2,7 @@
 using MusicMinkAppLayer.Helpers;
 using MusicMinkAppLayer.Tables;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -183,6 +184,49 @@ namespace MusicMinkAppLayer.PlayQueue
             await PlayCurrent();
         }
 
+        /// <summary>
+        /// Tries to play the track with TrackInfo. If MakeActive is false, doesn't start playback just
+        /// moves the play queue to that track
+        /// </summary>
+        /// <param name="trackInfo"></param>
+        /// <param name="makeActive"></param>
+        /// <returns></returns>
+        async Task PlayTrack(TrackInfo trackInfo, bool makeActive)
+        {
+            try
+            {
+                StorageFile file = await StorageFile.GetFileFromPathAsync(trackInfo.Path);
+
+                if (!makeActive)
+                {
+                    playAfterOpen = false;
+                }
+                else
+                {
+                    isFirstOpen = true;
+                }
+
+                mediaPlayer.SetFileSource(file);
+                IsActive = makeActive;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Logger.Current.Log(new CallerInfo(), LogLevel.Error, "Couldn't play track {0} got UnauthorizedAccessException message {1}", trackInfo.SongId, ex.Message);
+
+                IsActive = false;
+
+                PlayNext();
+            }
+            catch (FileNotFoundException ex)
+            {
+                Logger.Current.Log(new CallerInfo(), LogLevel.Error, "Couldn't play track {0} got FileNotFoundException message {1}", trackInfo.SongId, ex.Message);
+
+                IsActive = false;
+
+                PlayNext();
+            }
+        }
+
         async Task PlayCurrent()
         {
             int rowId = ApplicationSettings.GetSettingsValue<int>(ApplicationSettings.CURRENT_PLAYQUEUE_POSITION, 0);
@@ -197,22 +241,7 @@ namespace MusicMinkAppLayer.PlayQueue
             // TODO: #18  Support other types
             if (trackInfo != null)
             {
-                try
-                {
-                    StorageFile file = await StorageFile.GetFileFromPathAsync(trackInfo.Path);
-
-                    isFirstOpen = true;
-                    mediaPlayer.SetFileSource(file);
-                    IsActive = true;
-                }
-                catch (Exception ex)
-                {
-                    Logger.Current.Log(new CallerInfo(), LogLevel.Error, "Couldn't play track {0} got message {1}", trackInfo.SongId, ex.Message);
-
-                    IsActive = false;
-
-                    PlayNext();
-                }
+                await PlayTrack(trackInfo, true);
             }
             else
             {
@@ -228,10 +257,7 @@ namespace MusicMinkAppLayer.PlayQueue
 
                     if (trackInfo != null)
                     {
-                        StorageFile file = await StorageFile.GetFileFromPathAsync(trackInfo.Path);
-
-                        playAfterOpen = false;
-                        mediaPlayer.SetFileSource(file);
+                        await PlayTrack(trackInfo, false);
                     }
                 }
                 else

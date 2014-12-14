@@ -9,7 +9,7 @@ using Windows.Storage;
 
 namespace MusicMink.ViewModels
 {
-    class SettingsViewModel : INotifyPropertyChanged
+    class SettingsViewModel : NotifyPropertyChangedUI
     {
         public const string EMAIL_TARGET = "chimewp@gmail.com";
         public const string EMAIL_NAME = "MusicMink";
@@ -27,6 +27,8 @@ namespace MusicMink.ViewModels
 
             public const string IsLastFMAuthed = "IsLastFMAuthed";
             public const string IsLastFMAuthInProgress = "IsLastFMAuthInProgress";
+
+            public const string IsClassicModeEnabled = "IsClassicModeEnabled";
         }
 
         private static SettingsViewModel _current;
@@ -150,7 +152,7 @@ namespace MusicMink.ViewModels
             }
             set
             {
-                SetSettingField<bool>(ApplicationSettings.SETTING_IS_LASTFM_SCROBBLING_ENABLED, value, Properties.IsLoggingEnabled);
+                SetSettingField<bool>(ApplicationSettings.SETTING_IS_LASTFM_SCROBBLING_ENABLED, value, Properties.IsLastFMScrobblingEnabled);
             }
         }
 
@@ -217,6 +219,18 @@ namespace MusicMink.ViewModels
             }
         }
 
+        public bool IsClassicModeEnabled
+        {
+            get
+            {
+                return GetSettingField<bool>(ApplicationSettings.SETTING_IS_CLASSIC_MODE_ON, false);
+            }
+            set
+            {
+                SetSettingField<bool>(ApplicationSettings.SETTING_IS_CLASSIC_MODE_ON, value, Properties.IsClassicModeEnabled);
+            }
+        }
+
         #endregion
 
         #region Properties
@@ -248,20 +262,6 @@ namespace MusicMink.ViewModels
         protected U GetSettingField<U>(string setting_key, U defaultValue)
         {
             return ApplicationSettings.GetSettingsValue<U>(setting_key, defaultValue);
-        }
-
-        #endregion
-
-        #region NotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void NotifyPropertyChanged(String propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (null != handler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         #endregion

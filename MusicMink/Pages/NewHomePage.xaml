@@ -1,0 +1,211 @@
+﻿<local:BasePage
+    x:Class="MusicMink.Pages.NewHomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicMink.Pages"
+    xmlns:controls="using:MusicMink.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dv="using:MusicMink.ViewModels.DesignData"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:MusicMink.Converters"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    >
+
+    <Page.Resources>
+        <converters:NumericTransformConverter x:Key="AppWidthToTileSizeConverter" Margin="10" Sections="2" />
+    </Page.Resources>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Uid="HomePageHeader"
+            Style="{StaticResource HeaderTextBlockStyle}"
+            Grid.ColumnSpan="5"
+            Margin="10,0,10,0"
+            />
+
+        <ScrollViewer Grid.Row="1" x:Name="ContentRoot" Margin="0">
+            <StackPanel>
+                <Button
+                    Style="{StaticResource EmptyButton}"
+                    Command="{Binding Navigate}"
+                    CommandParameter="NowPlaying"
+                    Visibility="{Binding PlayQueue.IsActive, Converter={StaticResource BoolToVisibilityConverter}}"                    
+                    >
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Audio" Width="60" Height="60" />
+                        <TextBlock x:Uid="NewHomePageNowPlayingEntry" Style="{StaticResource ListViewItemTextBlockStyle}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Style="{StaticResource EmptyButton}"
+                    Command="{Binding Navigate}"
+                    CommandParameter="Queue"
+                    Visibility="{Binding PlayQueue.IsEmpty, Converter={StaticResource NotBoolToVisibilityConverter}}"                    
+                    >
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Clock" Width="60" Height="60" />
+                        <TextBlock x:Uid="NewHomePageQueueEntry" Style="{StaticResource ListViewItemTextBlockStyle}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Style="{StaticResource EmptyButton}"
+                    Command="{Binding Navigate}"
+                    CommandParameter="Library"
+                    >
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Library" Width="60" Height="60" />
+                        <TextBlock x:Uid="NewHomePageLibraryEntry" Style="{StaticResource ListViewItemTextBlockStyle}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>        
+                <Button
+                    Style="{StaticResource EmptyButton}"
+                    Command="{Binding Navigate}"
+                    CommandParameter="PlaylistList"
+                    >
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="List" Width="60" Height="60" />
+                        <TextBlock x:Uid="NewHomePagePlaylistsEntry" Style="{StaticResource ListViewItemTextBlockStyle}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Style="{StaticResource EmptyButton}"
+                    Command="{Binding Navigate}"
+                    CommandParameter="MixList"
+                    >
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="List" Width="60" Height="60" />
+                        <TextBlock x:Uid="NewHomePageMixesEntry" Style="{StaticResource ListViewItemTextBlockStyle}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>                
+                <Button
+                    Style="{StaticResource EmptyButton}"
+                    Command="{Binding Navigate}"
+                    CommandParameter="SearchPage"
+                    >
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Find" Width="60" Height="60" />
+                        <TextBlock x:Uid="NewHomePageSearchEntry" Style="{StaticResource ListViewItemTextBlockStyle}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Style="{StaticResource EmptyButton}"
+                    Command="{Binding Navigate}"
+                    CommandParameter="ManageLibrary"
+                    >
+
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="MusicInfo" Width="60" Height="60" />
+                        <TextBlock x:Uid="NewHomePageManageLibraryEntry" Style="{StaticResource ListViewItemTextBlockStyle}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Style="{StaticResource EmptyButton}"
+                    Command="{Binding Navigate}"
+                    CommandParameter="SettingsPage"
+                    >
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Setting" Width="60" Height="60" />
+                        <TextBlock x:Uid="NewHomePageSettingsEntry" Style="{StaticResource ListViewItemTextBlockStyle}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+
+
+
+            </StackPanel>
+            
+            <!--
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid
+                    x:Name="LibraryTile"
+                    MinHeight="{Binding ActualWidth, ElementName=LibraryTile}"
+                    >
+                    <controls:SymbolTile x:Uid="NewHomePageLibraryTile"
+                        Margin="5"
+                        Symbol="Library"
+                        InnerMargin="25"                    
+                        />
+                </Grid>
+
+                <Grid
+                    x:Name="PlaylistsTile"
+                    Grid.Column="1"
+                    MinHeight="{Binding ActualWidth, ElementName=PlaylistsTile}"
+                    >
+                    <controls:SymbolTile x:Uid="NewHomePagePlaylistsTile"
+                        Margin="5"
+                        Symbol="List"
+                        InnerMargin="25"
+                        />
+                </Grid>
+
+                <Grid
+                    x:Name="NowPlayingTile"
+                    Grid.Row="1"
+                    MinHeight="{Binding ActualWidth, ElementName=NowPlayingTile}"
+                    >
+                    <controls:SymbolTile x:Uid="HomePageNowPlayingLibraryTile"
+                        Margin="5"
+                        Symbol="Audio"
+                        InnerMargin="25"
+                        />
+                </Grid>
+
+                <Grid
+                    x:Name="QueueTile"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    MinHeight="{Binding ActualWidth, ElementName=QueueTile}"
+                    >
+                    <controls:SymbolTile x:Uid="NewHomePageQueueTile"
+                        Margin="5"
+                        Symbol="Clock"
+                        InnerMargin="25"
+                        />
+                </Grid>
+
+                <Grid
+                    x:Name="ManageLibraryTile"
+                    Grid.Row="2"
+                    MinHeight="{Binding ActualWidth, ElementName=ManageLibraryTile}"
+                    >
+                    <controls:SymbolTile x:Uid="NewHomePageManageLibraryTile"
+                        Margin="5"
+                        Symbol="MusicInfo"
+                        InnerMargin="25"
+                        />
+                </Grid>
+                
+                <Grid
+                    x:Name="SettingsTile"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    MinHeight="{Binding ActualWidth, ElementName=SettingsTile}"
+                    >
+                    <controls:SymbolTile x:Uid="NewHomePageSettingsTile"
+                        Margin="5"
+                        Symbol="Setting"
+                        InnerMargin="25"
+                        />
+                </Grid>
+            </Grid>
+            -->
+        </ScrollViewer>
+    </Grid>
+</local:BasePage>

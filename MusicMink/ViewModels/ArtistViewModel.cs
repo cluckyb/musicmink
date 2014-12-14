@@ -25,6 +25,8 @@ namespace MusicMink.ViewModels
             public const string SortName = "SortName";
             public const string Songs = "Songs";
 
+            public const string Picture = "Picture";
+
             public const string IsBeingDeleted = "IsBeingDeleted";
         }
 
@@ -56,16 +58,22 @@ namespace MusicMink.ViewModels
 
         private void HandleSongsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            NotifyPropertyChanged(Properties.ContentInfo);
-            NotifyPropertyChanged(Properties.ContentInfoSongs);
-            NotifyPropertyChanged(Properties.IsSongsEmpty);
+            if (LibraryViewModel.Current.LibraryLoaded)
+            {
+                NotifyPropertyChanged(Properties.ContentInfo);
+                NotifyPropertyChanged(Properties.ContentInfoSongs);
+                NotifyPropertyChanged(Properties.IsSongsEmpty);
+            }
         }
 
         private void HandleAlbumsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            NotifyPropertyChanged(Properties.ContentInfo);
-            NotifyPropertyChanged(Properties.ContentInfoAlbums);
-            NotifyPropertyChanged(Properties.IsAlbumsEmpty);
+            if (LibraryViewModel.Current.LibraryLoaded)
+            {
+                NotifyPropertyChanged(Properties.ContentInfo);
+                NotifyPropertyChanged(Properties.ContentInfoAlbums);
+                NotifyPropertyChanged(Properties.IsAlbumsEmpty);
+            }
         }
 
         #endregion
@@ -208,6 +216,15 @@ namespace MusicMink.ViewModels
                 }
 
                 return _sortName;
+            }
+        }
+
+        // TODO: Actually get real picture with uri and stuff
+        public string Picture
+        {
+            get
+            {
+                return null;
             }
         }
 

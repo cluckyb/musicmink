@@ -75,6 +75,25 @@ namespace MusicMink.ListItems
             this.InitializeComponent();
 
             this.DataContextChanged += HandleSongListItemDataContextChanged;
+
+            this.NameEntry.SizeChanged += NameEntry_SizeChanged;
+        }
+
+        void NameEntry_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdateManipulationMode();
+        }
+
+        void UpdateManipulationMode()
+        {
+            if (NameEntry.ActualWidth < NameViewer.ActualWidth)
+            {
+                this.NameEntry.ManipulationMode = ManipulationModes.System;
+            }
+            else
+            {
+                this.NameEntry.ManipulationMode = ManipulationModes.System | ManipulationModes.TranslateRailsX | ManipulationModes.TranslateX;
+            }
         }
 
         void HandleSongListItemDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
@@ -138,7 +157,7 @@ namespace MusicMink.ListItems
 
         private void HandleNameTextBlockManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
-            double newOffset = NameViewer.HorizontalOffset - 3 * e.Delta.Translation.X;
+            double newOffset = NameViewer.HorizontalOffset - 5 * e.Delta.Translation.X;
 
             NameViewer.ChangeView(newOffset, null, null);
         }

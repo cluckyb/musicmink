@@ -6,15 +6,13 @@ namespace MusicMink.Converters
 {
     class NumericTransformConverter : IValueConverter
     {
-        public int Sections { get; set; }
+        public double Sections { get; set; }
 
-        public int Margin { get; set; }
+        public double Margin { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             double valueAsDouble = DebugHelper.CastAndAssert<double>(value);
-
-            System.Diagnostics.Debug.WriteLine("Input "  + valueAsDouble + " output " + ((valueAsDouble) / Sections - Margin));
 
             return (valueAsDouble) / Sections - Margin;
         }

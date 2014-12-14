@@ -216,19 +216,26 @@ namespace MusicMinkAppLayer.Models
             }
         }
 
-        public ArtistModel LookupArtistByName(string artistName)
+        public ArtistModel LookupArtistByName(string artistName, bool createIfNotFound = true)
         {
             ArtistTable artistTable = DatabaseManager.Current.LookupArtist(artistName);
 
             if (artistTable == null)
             {
-                ArtistTable newArtist = new ArtistTable(artistName);
-                DatabaseManager.Current.AddArtist(newArtist);
+                if (createIfNotFound)
+                {
+                    ArtistTable newArtist = new ArtistTable(artistName);
+                    DatabaseManager.Current.AddArtist(newArtist);
 
-                ArtistModel artistModel = new ArtistModel(newArtist);
-                artistLookupDictionary.Add(artistModel.ArtistId, artistModel);
+                    ArtistModel artistModel = new ArtistModel(newArtist);
+                    artistLookupDictionary.Add(artistModel.ArtistId, artistModel);
 
-                return artistModel;
+                    return artistModel;
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
             {

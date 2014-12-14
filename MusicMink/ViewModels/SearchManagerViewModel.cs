@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace MusicMink.ViewModels
 {
-    public class SearchManagerViewModel : INotifyPropertyChanged
+    public class SearchManagerViewModel : NotifyPropertyChangedUI
     {
         private static SearchManagerViewModel _current;
         public static SearchManagerViewModel Current
@@ -215,19 +215,5 @@ namespace MusicMink.ViewModels
             NotifyPropertyChanged(Properties.SearchInProgress);
             NotifyPropertyChanged(Properties.ContentInfoArtists);
         }
-
-        # region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void NotifyPropertyChanged(String propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (null != handler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
     }
 }

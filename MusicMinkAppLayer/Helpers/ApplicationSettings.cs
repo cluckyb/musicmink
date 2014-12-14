@@ -11,6 +11,7 @@ namespace MusicMinkAppLayer.Helpers
         #region KEYS
 
         public const string SETTING_IS_LOGGING_ENABLED = "SETTING_IS_LOGGING_ENABLED_KEY";
+        public const string SETTING_IS_CLASSIC_MODE_ON = "SETTING_IS_CLASSIC_MODE_KEY";
 
         public const string SETTING_IS_LASTFM_SCROBBLING_ENABLED = "SETTING_IS_LASTFM_SCROBBLING_KEY";
         public const string SETTING_LASTFM_USERNAME = "SETTING_LASTFM_USERNAME_KEY";

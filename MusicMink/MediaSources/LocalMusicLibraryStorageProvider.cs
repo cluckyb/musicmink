@@ -14,7 +14,7 @@ namespace MusicMink.MediaSources
 
         private bool isCanceled = false;
 
-        private List<string> RealMusicProperties = new List<string>(){"System.Music.Artist"};
+        private List<string> RealMusicProperties = new List<string>(){"System.Music.Artist", "System.DRM.IsProtected"};
 
         public async Task SyncStorageSolution(DateTime lastSync)
         {

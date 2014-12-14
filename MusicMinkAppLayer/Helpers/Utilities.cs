@@ -10,7 +10,7 @@ namespace MusicMinkAppLayer.Helpers
     {
         public static bool IsSupportedFileType(string fileType)
         {
-            return (fileType.ToLowerInvariant() == ".mp3" || fileType.ToLowerInvariant() == ".m4a");
+            return (fileType.ToLowerInvariant() == ".mp3" || fileType.ToLowerInvariant() == ".m4a" || fileType.ToLowerInvariant() == ".wma");
         }
 
         public static object GetDefault(Type t)

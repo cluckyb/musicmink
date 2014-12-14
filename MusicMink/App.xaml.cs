@@ -1,4 +1,5 @@
 ﻿using MusicMink.MediaSources;
+using MusicMink.Pages;
 using MusicMink.ViewModels;
 using MusicMinkAppLayer.Diagnostics;
 using System;
@@ -109,7 +110,14 @@ namespace MusicMink
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                if (!rootFrame.Navigate(typeof(MainPage), e.Arguments))
+
+                Type target = typeof(LandingPage);
+                if (SettingsViewModel.Current.IsClassicModeEnabled)
+                {
+                    target = typeof(MainPage);
+                }
+
+                if (!rootFrame.Navigate(target, e.Arguments))
                 {
                     throw new Exception("Failed to create initial page");
                 }
@@ -119,7 +127,7 @@ namespace MusicMink
             Window.Current.Activate();
 
             // TODO: need to do this async to get load times down
-            LibraryViewModel.Current.InitalizeLibrary(Window.Current.Dispatcher);
+            LibraryViewModel.Current.InitalizeLibrary();
 
             MediaImportManager.Current.Initalize();
 

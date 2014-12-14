@@ -23,8 +23,14 @@ namespace MusicMink.ViewModels
             public const string IsActive = "IsActive";
             public const string TotalTicks = "TotalTicks";
             public const string TotalTime = "TotalTime";
+            public const string TimeLeft = "TimeLeft";
             public const string ElapsedTime = "ElapsedTime";
             public const string PercentTime = "PercentTime";
+            public const string NextTrack = "NextTrack";
+            public const string PrevTrack = "PrevTrack";
+            public const string ProgressTime = "ProgressTime";
+            public const string TracksLeft = "TracksLeft";
+            public const string IsEmpty = "IsEmpty";
         }
 
         private Dictionary<int, PlayQueueEntryViewModel> LookupDictionary = new Dictionary<int, PlayQueueEntryViewModel>();
@@ -92,30 +98,38 @@ namespace MusicMink.ViewModels
                     NotifyPropertyChanged(Properties.IsActive);
                     break;
                 case PlayQueueModel.Properties.NowPlaying:
-                    Debug.WriteLine("Now playing: {0}", rootModel.NowPlaying);
                     CurrentTrack = LibraryViewModel.Current.LookupSongById(rootModel.NowPlaying);
                     break;
                 case PlayQueueModel.Properties.NextTrack:
+                    NotifyPropertyChanged(Properties.NextTrack);
                     SkipPlayer.RaiseExecuteChanged();
                     break;
                 case PlayQueueModel.Properties.PrevTrack:
+                    NotifyPropertyChanged(Properties.PrevTrack);
                     PrevPlayer.RaiseExecuteChanged();
                     break;
                 case PlayQueueModel.Properties.IsPlaying:
                     NotifyPropertyChanged(Properties.IsPlaying);
                     break;
                 case PlayQueueModel.Properties.CurrentTime:
+                    NotifyPropertyChanged(Properties.TimeLeft);
                     NotifyPropertyChanged(Properties.ElapsedTime);
                     NotifyPropertyChanged(Properties.PercentTime);
+                    NotifyPropertyChanged(Properties.ProgressTime);
                     break;
                 case PlayQueueModel.Properties.FullTime:
+                    NotifyPropertyChanged(Properties.TimeLeft);
                     NotifyPropertyChanged(Properties.TotalTicks);
                     NotifyPropertyChanged(Properties.TotalTime);
                     NotifyPropertyChanged(Properties.PercentTime);
+                    NotifyPropertyChanged(Properties.ProgressTime);
                     break;
                 case PlayQueueModel.Properties.CurrentPlaybackQueueEntryId:
                     NotifyPropertyChanged(Properties.CurrentTrackRowId);
                     NotifyPropertyChanged(Properties.CurrentTrackPosition);
+                    NotifyPropertyChanged(Properties.TracksLeft);
+                    NotifyPropertyChanged(Properties.NextTrack);
+                    NotifyPropertyChanged(Properties.PrevTrack);
                     ClearPlayed.RaiseExecuteChanged();
                     break;
             }
@@ -166,6 +180,7 @@ namespace MusicMink.ViewModels
 
                 PlayPausePlayer.RaiseExecuteChanged();
                 ShuffleRemaining.RaiseExecuteChanged();
+                NotifyPropertyChanged(Properties.IsEmpty);
             }
 
             int currentPosition = 1;
@@ -174,7 +189,9 @@ namespace MusicMink.ViewModels
                 model.TotalPosition = currentPosition;
                 currentPosition++;
             }
-            NotifyPropertyChanged(Properties.CurrentTrackPosition);
+            NotifyPropertyChanged(Properties.NextTrack);
+            NotifyPropertyChanged(Properties.PrevTrack);
+            NotifyPropertyChanged(Properties.TracksLeft);
             ClearPlayed.RaiseExecuteChanged();
             ClearAll.RaiseExecuteChanged();
         }
@@ -204,6 +221,22 @@ namespace MusicMink.ViewModels
             get
             {
                 return rootModel.CurrentTime.ToString(@"%m\:ss");
+            }
+        }
+
+        public String ProgressTime
+        {
+            get
+            {
+                return ElapsedTime + @"/" + TotalTime;
+            }
+        }
+
+        public String TimeLeft
+        {
+            get
+            {
+                return (rootModel.CurrentTime - rootModel.FullTime).ToString(@"\-%m\:ss");
             }
         }
 
@@ -240,6 +273,28 @@ namespace MusicMink.ViewModels
             }
         }
 
+        public SongViewModel NextTrack
+        {
+            get
+            {
+                // CurrentTrackPosition is a 1-indexed so don't have to + 1
+                if (CurrentTrackPosition >= PlaybackQueue.Count) return null;
+
+                return PlaybackQueue[CurrentTrackPosition].Song;
+            }
+        }
+
+        public SongViewModel PrevTrack
+        {
+            get
+            {
+                // CurrentTrackPosition is a 1-indexed, so need to look in array position -2
+                if (CurrentTrackPosition <= 1) return null;
+
+                return PlaybackQueue[CurrentTrackPosition - 2].Song;
+            }
+        }
+
         public int CurrentTrackPosition
         {
             get
@@ -255,6 +310,15 @@ namespace MusicMink.ViewModels
                 return activeRow.TotalPosition;
             }
         }
+
+        public int TracksLeft
+        {
+            get
+            {
+                return PlaybackQueue.Count - CurrentTrackPosition;
+            }
+        }
+
 
         public int CurrentTrackRowId
         {
@@ -296,6 +360,15 @@ namespace MusicMink.ViewModels
                 return CurrentTrack != null;
             }
         }
+
+        public bool IsEmpty
+        {
+            get
+            {
+                return PlaybackQueue.Count == 0;
+            }
+        }
+
         #endregion
 
         #region Commands

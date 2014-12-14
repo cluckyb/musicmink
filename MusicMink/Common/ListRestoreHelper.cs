@@ -11,14 +11,31 @@ namespace MusicMink.Common
     /// </summary>
     public class ListRestoreHelper
     {
-        private const string LAST_INDEX_KEY = "LastVisibleIndex";
+        private const string LAST_INDEX_KEY = "LastVisibleIndex_";
         private int lastFrameInViewIndex = -1;
 
         private ListViewBase Root;
 
+        private string Key;
+
+        private string FullKey
+        {
+            get
+            {
+                return LAST_INDEX_KEY + Key;
+            }
+        }
+
         public ListRestoreHelper(ListViewBase root)
         {
             Root = root;
+            Key = string.Empty;
+        }
+
+        public ListRestoreHelper(ListViewBase root, string key)
+        {
+            Root = root;
+            Key = key;
         }
 
         public void ScrollSavedItemIntoView()
@@ -36,7 +53,7 @@ namespace MusicMink.Common
         {
             object lastIndex;
 
-            if (pageState != null && pageState.TryGetValue(LAST_INDEX_KEY, out lastIndex))
+            if (pageState != null && pageState.TryGetValue(FullKey, out lastIndex))
             {
                 lastFrameInViewIndex = DebugHelper.CastAndAssert<int>(lastIndex);
             }
@@ -50,7 +67,7 @@ namespace MusicMink.Common
 
             if (stackPanel != null)
             {
-                pageState.Add(LAST_INDEX_KEY, stackPanel.LastVisibleIndex);
+                pageState.Add(FullKey, stackPanel.LastVisibleIndex);
             }
             else
             {
@@ -58,7 +75,7 @@ namespace MusicMink.Common
 
                 if (wrapGrid != null)
                 {
-                    pageState.Add(LAST_INDEX_KEY, wrapGrid.LastVisibleIndex);
+                    pageState.Add(FullKey, wrapGrid.LastVisibleIndex);
                 }
                 else
                 {

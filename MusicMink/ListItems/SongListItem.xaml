@@ -131,7 +131,6 @@
                         Foreground="{ThemeResource PhoneForegroundBrush}"
                         TextWrapping="NoWrap"
                         TextTrimming="None"
-                        ManipulationMode="TranslateX,TranslateRailsX,System"
                         ManipulationDelta="HandleNameTextBlockManipulationDelta"
                         />
                 </ScrollViewer>

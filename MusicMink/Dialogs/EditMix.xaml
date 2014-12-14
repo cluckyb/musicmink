@@ -91,7 +91,6 @@
                         InputScope="Number"                             
                         />
                     <TextBlock x:Uid="DialogEditMixLimitSongs"
-                        Text="Songs"
                         VerticalAlignment="Bottom"
                         FontSize="{StaticResource TextStyleExtraLargeFontSize}"
                         />

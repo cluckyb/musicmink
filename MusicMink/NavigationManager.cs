@@ -1,4 +1,5 @@
-﻿using MusicMink.MediaSources;
+﻿using MusicMink.Common;
+using MusicMink.MediaSources;
 using MusicMink.Pages;
 using MusicMinkAppLayer.Diagnostics;
 using System;
@@ -12,6 +13,9 @@ namespace MusicMink
     enum NavigationLocation
     {
         Home,
+        NewHome,
+
+        Library,
 
         AlbumList,
         ArtistList,
@@ -27,6 +31,9 @@ namespace MusicMink
         SearchPage,
         SettingsPage,
         ManageLibrary,
+
+        Queue,
+        NowPlaying
     }
 
     abstract class ContinuationInfo { }
@@ -36,7 +43,7 @@ namespace MusicMink
     /// Also helps manage ContinuationInfo (information passed through app sessions
     /// like with the AlbumArt File Picker)
     /// </summary>
-    class NavigationManager
+    class NavigationManager : NotifyPropertyChangedUI
     {
         private static NavigationManager _current;
         public static NavigationManager Current
@@ -52,6 +59,11 @@ namespace MusicMink
             }
         }
 
+        public static class Properties
+        {
+            public const string IsHome = "IsHome";
+        }
+
         private Frame mainNavigationFrame;
 
         public ContinuationInfo ContinuationInfo = null;
@@ -61,6 +73,14 @@ namespace MusicMink
             while (mainNavigationFrame.CanGoBack)
             {
                 mainNavigationFrame.GoBack();
+            }
+        }
+
+        public bool IsHome
+        {
+            get
+            {
+                return mainNavigationFrame.CanGoBack;
             }
         }
         
@@ -99,6 +119,14 @@ namespace MusicMink
                     return typeof(Settings);
                 case NavigationLocation.SongList:
                     return typeof(SongList);
+                case NavigationLocation.Queue:
+                    return typeof(Queue);
+                case NavigationLocation.NowPlaying:
+                    return typeof(NowPlaying);
+                case NavigationLocation.NewHome:
+                    return typeof(NewHomePage);
+                case NavigationLocation.Library:
+                    return typeof(Library);
                 default:
                     DebugHelper.Alert(new CallerInfo(), "Unexpected NavigationLocation {0}", location);
                     return typeof(HomePage);
@@ -108,7 +136,19 @@ namespace MusicMink
 
         internal void SetRootFrame(Frame MainContentFrame)
         {
+            if (mainNavigationFrame != null)
+            {
+                mainNavigationFrame.Navigated -= HandleMainNavigationFrameNavigated;
+            }
+
             mainNavigationFrame = MainContentFrame;
+
+            mainNavigationFrame.Navigated += HandleMainNavigationFrameNavigated;
+        }
+
+        void HandleMainNavigationFrameNavigated(object sender, Windows.UI.Xaml.Navigation.NavigationEventArgs e)
+        {
+            NotifyPropertyChanged(Properties.IsHome);
         }
 
         internal void HandleContinuation(IContinuationActivatedEventArgs continuationEventArgs)
@@ -148,6 +188,6 @@ namespace MusicMink
                     }
                 }
             }
-        }
+        }  
     }
 }

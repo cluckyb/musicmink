@@ -87,7 +87,18 @@
                         Visibility="{Binding IsLastFMAuthed, Converter={StaticResource NotBoolToVisibilityConverter}}"
                         />
                 </Grid>
-            </StackPanel>
+
+                <ToggleSwitch x:Uid="SettingsEnableClassicMode"
+                    IsOn="{Binding IsClassicModeEnabled, Mode=TwoWay}"
+                    />
+                <TextBlock x:Uid="SettingsSettingsEnableClassicModeMessage"
+                    FontSize="{StaticResource TextStyleSmallFontSize}"
+                    TextWrapping="WrapWholeWords"
+                    TextAlignment="Justify"
+                    FontStyle="Italic"
+                    Foreground="{StaticResource PhoneForegroundBrush}"
+                    />
+                </StackPanel>
             </ScrollViewer>
         </Grid>
     </Grid>
